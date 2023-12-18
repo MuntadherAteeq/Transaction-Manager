@@ -2,9 +2,9 @@
 
 <p align="center">
   <picture style="width: 500px">
-    <source media="(prefers-color-scheme: light)" srcset="./resources/Banner-light.png" />
-    <source media="(prefers-color-scheme: dark)" srcset="./resources/Banner-dark.png" />
-    <img src="./resources/Banner-dark.png" width="500" alt="BlockSuite logo and name" />
+    <source media="(prefers-color-scheme: light)" srcset="./resources/Banner-dark.png" />
+    <source media="(prefers-color-scheme: dark)" srcset="./resources/Banner-light.png" />
+    <img src="./resources/Banner-light.png" width="500" alt="BlockSuite logo and name" />
   </picture>
 </p>
 
