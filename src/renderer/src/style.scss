@@ -1,0 +1,489 @@
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+// .Var
+:root {
+  --title-bar-hight: 40px;
+  --background-primary: hsla(0, 0%, 9%);
+  --background-secondary: hsla(0, 0%, 12%);
+  --text-color: hsla(0, 0%, 80%, 1);
+  --outline-color: hsl(0, 0%, 25%);
+  --background-hover: hsla(0, 0%, 50%, 0.3);
+  --tools-color: hsl(203, 91%, 40%);
+  --positive-color: hsl(150, 95%, 35%);
+  --negative-color: hsl(350, 95%, 35%);
+}
+
+body {
+  width: 100dvw;
+  height: 100dvh;
+  color: var(--text-color);
+  overflow: hidden;
+  position: relative;
+  color: var(--text-color);
+  font-family: sans-serif;
+}
+
+.title-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--background-primary);
+  height: var(--title-bar-hight);
+  width: 100%;
+  .options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    button {
+      color: var(--text-color);
+      border: unset;
+      width: auto;
+      padding: 0 7px;
+      height: 25px;
+      background: transparent;
+      border-radius: 5px;
+      font-size: 15px;
+      opacity: 0.8;
+      &:hover {
+        background: var(--background-hover);
+        opacity: 1;
+      }
+    }
+  }
+  .search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-secondary);
+    border-radius: 7px;
+    border: 1px solid #515151;
+    background: #2b2b2b;
+    color: var(--text-color);
+    width: 450px;
+    height: 25px;
+    &:hover {
+      background-color: var(--background-hover);
+      border: 1px hsla(0, 0%, 100%, 0.3) solid;
+    }
+  }
+  .actions {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    max-width: 140px;
+    transition: 500ms ease all;
+    flex: 0 0 150px;
+    & svg {
+      flex-basis: 50px;
+      width: 100%;
+      height: 100%;
+      padding: 14px;
+      transition: 220ms ease all;
+      &:hover {
+        background: var(--background-hover);
+        path {
+          fill: #fff;
+        }
+      }
+      &:first-child {
+        padding: 0 18px;
+      }
+      &:last-child:hover {
+        background-color: crimson;
+      }
+      path {
+        fill: var(--text-color);
+      }
+    }
+  }
+}
+.app-container {
+  display: flex;
+  position: relative;
+  height: calc(100dvh - var(--title-bar-hight));
+  scrollbar-gutter: stable both-edges;
+  background: var(--background-secondary);
+  outline: 1px solid var(--outline-color);
+}
+.activity-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto;
+  height: 100%;
+  min-width: 60px;
+  max-width: 60px;
+  background: var(--background-primary);
+  outline: 1px solid var(--outline-color);
+
+  .active {
+    border-left: 3px solid var(--tools-color) !important;
+    & path {
+      opacity: 1 !important;
+    }
+  }
+  .top,
+  .bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    & > svg {
+      padding: 12px;
+      width: 100%;
+      height: 60px;
+      border-left: 3px solid transparent;
+      path {
+        fill: var(--text-color);
+        opacity: 0.5;
+      }
+    }
+    & svg:hover {
+      path {
+        opacity: 1;
+      }
+    }
+  }
+}
+.l-side-bar {
+  $header-hight: 60px;
+
+  position: relative;
+  min-width: 270px;
+  background: var(--background-primary);
+  outline: 1px solid var(--outline-color);
+  user-select: none;
+  padding: 1px;
+  z-index: 1;
+
+  .tab-title {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    height: $header-hight;
+    text-transform: uppercase;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    opacity: 0.8;
+    letter-spacing: 2px;
+    user-select: none;
+  }
+  .content {
+    height: calc(100% - $header-hight);
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+    &:hover {
+      &::-webkit-scrollbar-thumb {
+        background-color: var(
+          --background-hover
+        ); /* Set the background color of the scrollbar thumb */
+        border-radius: 3px; /* Add a rounded border to the scrollbar thumb */
+        opacity: 0.2;
+      }
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: var(
+        --background-primary
+      ); /* Set the background color of the scrollbar track */
+    }
+  }
+}
+.r-side-bar {
+  $header-hight: 60px;
+  position: relative;
+  min-width: 300px;
+  background: var(--background-primary);
+  outline: 1px solid var(--outline-color);
+  user-select: none;
+  padding: 1px;
+  z-index: 1;
+  // TODO : remove this style it might be unnecessary
+  .tab-title {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    height: $header-hight;
+    text-transform: uppercase;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    opacity: 0.8;
+    letter-spacing: 2px;
+    user-select: none;
+  }
+}
+.handle {
+  top: 0;
+  display: block;
+  position: absolute;
+  width: 6px;
+  height: 100%;
+  border: 0;
+  cursor: e-resize;
+  transition: background-color 200ms ease;
+  &:hover {
+    background-color: var(--tools-color);
+    transition-delay: 300ms;
+  }
+  &.active {
+    background-color: var(--tools-color);
+  }
+}
+
+.deal-item {
+  display: flex;
+  flex-direction: row;
+  min-height: 80px;
+  user-select: none;
+  position: relative;
+  scrollbar-gutter: stable;
+
+  // Deal Item hover Effect
+
+  &:hover {
+    background-color: var(--background-hover);
+  }
+
+  .avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    & > img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 30vw;
+    }
+  }
+  .info-container {
+    overflow: hidden;
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 5px;
+    flex-direction: column;
+    text-align: end;
+
+    // horizontal line in under each DealItem
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: 0px;
+      display: block;
+      width: 90%;
+      height: 1px;
+      background-color: var(--text-color);
+      opacity: 0.1;
+    }
+    .bottom {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-direction: row;
+    }
+    .name {
+      text-align: left;
+      white-space: nowrap; /* Prevent file names from wrapping */
+      overflow: hidden; /* Hide any text that overflows the width of the file manager sidebar */
+      text-overflow: ellipsis; /* Add an ellipsis (...) to the end of any text that overflows */
+    }
+    .date {
+      opacity: 0.7;
+    }
+    .positive {
+      color: var(--positive-color);
+    }
+    .negative {
+      color: var(--negative-color);
+    }
+  }
+}
+
+.editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  z-index: 1;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      background-color: var(
+        --background-hover
+      ); /* Set the background color of the scrollbar thumb */
+      border-radius: 3px; /* Add a rounded border to the scrollbar thumb */
+      opacity: 0;
+    }
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: var(--background-secondary);
+  }
+}
+.trans-container {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+.transaction {
+  & > #Tran {
+    width: 100%;
+    justify-content: space-between;
+    // user-select: none;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-primary);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    & > #top-bar {
+      flex-wrap: wrap;
+      position: relative;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      height: auto;
+      &::before {
+        bottom: 0;
+        position: absolute;
+        content: "";
+        display: block;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(
+          90deg,
+          var(--text-color) 0%,
+          transparent 100%
+        );
+      }
+
+      & > #price {
+        width: 100%;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 15px;
+        color: var(--text-color);
+        font-family: Roboto;
+        font-size: 22px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+      }
+    }
+
+    & > #content {
+      all: unset;
+      display: flex;
+      align-items: center;
+      margin: 1rem 1rem 0 1rem;
+      min-height: 1rem;
+      font-size: 14px;
+      border: 0;
+      background-color: var(--background-primary);
+      color: var(--text-color);
+    }
+
+    & > #time {
+      text-align: right;
+      right: 1rem;
+      bottom: 0.5rem;
+      margin: 1px 15px;
+      color: var(--text-color);
+      font-size: 13px;
+      opacity: 0.4;
+    }
+  }
+  &.positive {
+    & > #Tran > #top-bar::before {
+      background: linear-gradient(
+        90deg,
+        var(--positive-color) 0%,
+        transparent 100%
+      );
+    }
+
+    & > #Tran > #top-bar > #price {
+      color: var(--positive-color);
+    }
+  }
+  &.negative {
+    & > div#Tran > div#top-bar::before {
+      background: linear-gradient(
+        90deg,
+        var(--negative-color) 0%,
+        transparent 100%
+      );
+    }
+
+    & > div#Tran > div#top-bar > div#price {
+      color: var(--negative-color);
+    }
+  }
+}
+
+.deal-prop {
+  width: 100%;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  position: relative;
+  justify-content: space-around;
+  background-color: var(--background-secondary);
+  border-radius: 10px;
+  padding: 2.5px;
+
+  .type {
+    display: flex;
+    flex-direction: row;
+    min-width: 100px;
+    font-size: 14px;
+    .logo {
+      width: 18px;
+      height: 18px;
+      margin: 0 10px;
+    }
+    .label{
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .value {
+    flex: 1;
+    position: relative;
+    border-radius: 7px;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-primary);
+    input {
+      width: 100%;
+      height: 100%;
+      background-color: var(--background-primary);
+      display: flex;
+      align-items: center;
+      border: 0;
+      border-radius: 0px 7px 7px 0px;
+      outline: 0;
+      color: var(--text-color);
+      text-align: center;
+    }
+    input:focus {
+      outline: 0;
+    }
+  }
+}
