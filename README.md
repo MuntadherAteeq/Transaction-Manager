@@ -26,7 +26,7 @@ Transaction Manager is a web application that allows users to create deals and m
 
 ## Technologies Used
 
-![Electron](https://skillicons.dev/icons?i=electron,vite,svelte,typescript,sass)
+![Technologies ](https://skillicons.dev/icons?i=electron,vite,svelte,typescript,sass)
 
 - Electron: Electron is used to build cross-platform desktop applications using web technologies.
 - Svelte: Svelte is a JavaScript framework for building user interfaces.
@@ -60,6 +60,10 @@ npm run dev
 ## Contributing
 
 Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
+
+or join us in Telegram group
+
+<a href="https://t.me/+U5HLk3J2cZs1NWQ8">![badge](https://img.shields.io/badge/Telegram-Transaction_Manager-blue?logo=telegram&blue=white)</a>
 
 ## License
 
