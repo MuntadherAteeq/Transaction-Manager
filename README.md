@@ -2,11 +2,12 @@
 
 <p align="center">
   <picture style="width: 500px">
-    <source media="(prefers-color-scheme: light)" srcset="./resources/Banner-dark.png" />
-    <source media="(prefers-color-scheme: dark)" srcset="./resources/Banner-light.png" />
-    <img src="./resources/Banner-light.png" width="500" alt="BlockSuite logo and name" />
+    <source media="(prefers-color-scheme: light)" srcset="./resources/banner-light.png" />
+    <source media="(prefers-color-scheme: dark)" srcset="./resources/banner-dark.png" />
+    <img src="./resources/banner-dark.png" width="100%" alt="Transaction Manager logo and name" />
   </picture>
 </p>
+---
 
 Transaction Manager is a web application that allows users to create deals and manage transactions within those deals. It is built using Electron, Svelte, Vite, and Sass.
 
