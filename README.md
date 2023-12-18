@@ -1,5 +1,17 @@
 # Transaction Manager
 
+---
+
+<p align="center">
+  <picture style="width: 500px">
+    <source media="(prefers-color-scheme: light)" srcset="./resources/banner_light.png" />
+    <source media="(prefers-color-scheme: dark)" srcset="./resources/banner_dark.png" />
+    <img src="./resources/banner_light.png" width="500" alt="BlockSuite logo and name" />
+  </picture>
+</p>
+
+---
+
 Transaction Manager is a web application that allows users to create deals and manage transactions within those deals. It is built using Electron, Svelte, Vite, and Sass.
 
 ![UI preview](./resources/UI_1.png)
@@ -9,8 +21,11 @@ Transaction Manager is a web application that allows users to create deals and m
 - Create and manage deals
 - Add transactions to each deal
 - View and edit deal details
+
+## Upcoming Features
+
 - Filter and search deals and transactions
-- Export deals and transactions to CSV
+- Export deals and transactions to CSV,Excel
 
 ## Technologies Used
 
@@ -43,7 +58,7 @@ cd transaction-manager npm install
 npm run dev
 ```
 
-2. Access the application in your browser at `http://localhost:5000`.
+1. Access the application in your browser at `http://localhost:5173`.
 
 ## Contributing
 
