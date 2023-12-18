@@ -8,8 +8,6 @@
   </picture>
 </p>
 
----
-
 Transaction Manager is a web application that allows users to create deals and manage transactions within those deals. It is built using Electron, Svelte, Vite, and Sass.
 
 ![UI preview](./resources/UI_1.png)
