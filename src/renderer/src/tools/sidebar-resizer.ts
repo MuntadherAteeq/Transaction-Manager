@@ -11,7 +11,7 @@ export default function sidebar_resize(
     resizer.style.left = `-3px`;
   }
 
-  resizer.addEventListener("mousedown", (event) => {
+  resizer.addEventListener("mousedown", () => {
     document.body.style.cursor = "e-resize";
     resizer.classList.add("active");
     document.addEventListener("mousemove", resize, false);

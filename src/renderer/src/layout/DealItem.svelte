@@ -1,11 +1,14 @@
-<script>
-  import avatar from "../assets/Avatar.png";
-  export let deal = undefined
+<script lang="ts">
+  // import { Tray, nativeImage } from "electron";
+  import avatar from "../../../../resources/Avatar.png?asset";
+  // let tray = new Tray(nativeImage.createFromPath(avatar))
+  console.log(avatar)
+  // console.log(tray)
 </script>
 
 <div class="deal-item">
   <div class="avatar-container">
-    <img src={avatar} alt="avatar" />
+    <img alt="avatar" src={avatar} />
   </div>
   <div class="info-container">
     <div class="top">
