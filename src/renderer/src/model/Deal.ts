@@ -25,6 +25,7 @@ export default class Deal {
     let index = this.transactions.indexOf(transaction);
     if (index > -1) {
       this.transactions.splice(index, 1);
+      this.total - transaction.amount;
     }
   }
 

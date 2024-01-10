@@ -10,6 +10,5 @@ export default defineConfig({
   },
   renderer: {
     plugins: [svelte()],
-    assetsInclude: /\.(png|jpe?g|gif|svg)$/,
   },
 });

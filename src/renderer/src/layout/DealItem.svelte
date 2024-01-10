@@ -1,9 +1,5 @@
 <script lang="ts">
-  // import { Tray, nativeImage } from "electron";
-  import avatar from "../../../../resources/Avatar.png?asset";
-  // let tray = new Tray(nativeImage.createFromPath(avatar))
-  console.log(avatar)
-  // console.log(tray)
+  import avatar from "../../../../resources/Avatar.png";
 </script>
 
 <div class="deal-item">
