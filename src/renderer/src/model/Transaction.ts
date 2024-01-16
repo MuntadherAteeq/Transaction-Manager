@@ -10,6 +10,9 @@ export default class Transaction {
     id?: string,
   ) {
     this._id = id || ulid();
+    this.amount = amount || undefined;
+    this.date = date || new Date();
+    this.description = description || "";
   }
   get id() {
     return this._id;

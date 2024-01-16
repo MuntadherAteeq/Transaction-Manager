@@ -2,11 +2,11 @@ import { ulid } from "ulid";
 import type Transaction from "./Transaction";
 
 export default class Deal {
-  _id: string;
+  private _id: string;
 
   constructor(
-    public name: string,
-    public total: number,
+    public name?: string,
+    public total?: number,
     public date?: Date,
     id?: string,
     public transactions?: Transaction[],
@@ -35,5 +35,8 @@ export default class Deal {
       sum += transaction.amount;
     }
     return sum;
+  }
+  get id(): string {
+    return this._id;
   }
 }

@@ -1,5 +1,4 @@
 import { defineConfig, externalizeDepsPlugin } from "electron-vite";
-import { svelte } from "@sveltejs/vite-plugin-svelte";
 
 export default defineConfig({
   main: {
@@ -9,6 +8,6 @@ export default defineConfig({
     plugins: [externalizeDepsPlugin()],
   },
   renderer: {
-    plugins: [svelte()],
+    plugins: [],
   },
 });
