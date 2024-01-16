@@ -1,4 +1,4 @@
-export default class IconAdd extends HTMLElement {
+export default class Icon_Add extends HTMLElement {
   constructor() {
     super();
     this.innerHTML = `
@@ -11,4 +11,4 @@ export default class IconAdd extends HTMLElement {
 `;
   }
 }
-customElements.define("icon-add", IconAdd);
+customElements.define("icon-add", Icon_Add);

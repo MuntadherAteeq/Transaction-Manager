@@ -1,4 +1,4 @@
-export default class IconBox extends HTMLElement {
+export default class Icon_Box extends HTMLElement {
   constructor() {
     super();
     this.innerHTML = `
@@ -22,4 +22,4 @@ class="active"
 `;
   }
 }
-customElements.define("icon-box", IconBox);
+customElements.define("icon-box", Icon_Box);

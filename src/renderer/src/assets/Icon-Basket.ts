@@ -1,4 +1,4 @@
-export default class IconBasket extends HTMLElement {
+export default class Icon_Basket extends HTMLElement {
   constructor() {
     super();
     this.innerHTML = `
@@ -24,4 +24,4 @@ export default class IconBasket extends HTMLElement {
     `;
   }
 }
-customElements.define("icon-basket", IconBasket);
+customElements.define("icon-basket", Icon_Basket);
