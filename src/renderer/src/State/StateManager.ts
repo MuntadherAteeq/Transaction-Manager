@@ -1,12 +1,15 @@
+import Icon_Box from "../Assets/Icon-Box";
+import Icon_History from "../Assets/Icon-History";
+import Icon_Wallet from "../Assets/Icon-Wallet";
 import database from "../Database/Database";
+import { Activities } from "../Layout/ActicityBar";
 import Deal from "../Model/Deal";
 
 export class $State {
+
   private deals: Map<string, Deal>;
   private ActiveDealListeners: Function[] = [];
   private _ActiveDeal: Deal | null = null;
-  // private selectedTransaction: Transaction[] | null = null;
-  // private selectedDeal: Deal[] | null = null;
   constructor() {
     this.load();
   }
@@ -25,9 +28,9 @@ export class $State {
     const deal = database.createNewDeal();
     this.deals.set(deal.id, deal);
     this._ActiveDeal = deal;
-    this.notify();
+    this.notifyActiveDealChanged();
   }
-  notify() {
+  notifyActiveDealChanged() {
     this.ActiveDealListeners.forEach((listener) => listener());
   }
   load() {
@@ -41,6 +44,12 @@ export class $State {
   }
   set ActiveDeal(Deal: Deal | null) {
     this._ActiveDeal = Deal;
-    this.notify();
+    this.notifyActiveDealChanged();
   }
+
 }
+
+
+
+const State = new $State();
+export default State;

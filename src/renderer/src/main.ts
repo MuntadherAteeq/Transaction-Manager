@@ -26,5 +26,3 @@ export default class App extends HTMLElement {
   connectedCallback() {}
 }
 customElements.define("transaction-manager", App);
-
-
