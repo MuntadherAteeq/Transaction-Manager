@@ -16,8 +16,14 @@ export default class Deal {
     this.transactions = transactions || [];
   }
 
-  subscribeToDeal(callback: Function): void {
+  subscribeToDeal(callback: Function): Function {
     this.subscriptions.push(callback);
+    return () => {
+      let index = this.subscriptions.indexOf(callback);
+      if (index > -1) {
+        this.subscriptions.splice(index, 1);
+      }
+    };
   }
   notify(): void {
     for (let callback of this.subscriptions) {
