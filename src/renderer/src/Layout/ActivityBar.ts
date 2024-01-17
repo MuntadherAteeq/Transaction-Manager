@@ -12,13 +12,13 @@ export const Activities = {
     name: "Inbox",
     icon: new Icon_Box(),
   },
-  wallet: {
-    name: "Wallet",
-    icon: new Icon_Wallet(),
-  },
   history: {
     name: "History",
     icon: new Icon_History(),
+  },
+  wallet: {
+    name: "Wallet",
+    icon: new Icon_Wallet(),
   },
 };
 
