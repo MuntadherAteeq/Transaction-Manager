@@ -8,7 +8,7 @@ export default class L_SideBar extends HTMLElement {
     this.innerHTML = `
     <div class="l-sidebar">
         <div class="tab-title">
-            <span>${ActivityBar.ActiveActivity.name}</span>
+            <span>${this.label}</span>
         </div>
         <div class="content">
             <deal-item />
@@ -17,10 +17,10 @@ export default class L_SideBar extends HTMLElement {
     `;
   }
   connectedCallback() {
-    sidebar_resize(this, "right");
-    ActivityBar.subscribeToActivity(this.render.bind(this));
+    sidebar_resize(this, "left");
+    ActivityBar.subscribeToActivity(this.updateLabel.bind(this));
   }
-  render() {
+  updateLabel() {
     this.querySelector(".tab-title span").textContent =
       ActivityBar.ActiveActivity.name;
   }

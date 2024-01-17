@@ -7,11 +7,11 @@ export default class R_SideBar extends HTMLElement {
           <div class="tab-title">
               <span>Record</span>
           </div>
-          <deal-information />
+          <deal-information></deal-information>
       `;
   }
   connectedCallback() {
-    sidebar_resize(this, "left");
+    sidebar_resize(this, "right");
   }
 }
 customElements.define("r-sidebar", R_SideBar);

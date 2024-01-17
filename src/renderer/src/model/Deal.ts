@@ -3,7 +3,7 @@ import type Transaction from "./Transaction";
 
 export default class Deal {
   private _id: string;
-
+  private subscriptions: Function[];
   constructor(
     public name?: string,
     public total?: number,
@@ -16,6 +16,14 @@ export default class Deal {
     this.transactions = transactions || [];
   }
 
+  subscribeToDeal(callback: Function): void {
+    this.subscriptions.push(callback);
+  }
+  notify(): void {
+    for (let callback of this.subscriptions) {
+      callback();
+    }
+  }
   addTransaction(transaction: Transaction): void {
     this.transactions.push(transaction);
     this.total += transaction.amount;

@@ -5,7 +5,7 @@ export default function sidebar_resize(
   const resizer = document.createElement("hr");
   resizer.classList.add("handle");
 
-  if (location === "right") {
+  if (location === "left") {
     resizer.style.right = `-3px`;
   } else {
     resizer.style.left = `-3px`;
@@ -28,7 +28,7 @@ export default function sidebar_resize(
 
   function resize(e: MouseEvent) {
     let size;
-    if (location === "right") {
+    if (location === "left") {
       size = e.x - 65;
     } else {
       size = -1 * (e.x - document.body.getBoundingClientRect().width);

@@ -5,7 +5,6 @@ export default class Editor extends HTMLElement {
         <div class="editor">
         <div class="trans-container">
           <transaction-item></transaction-item>
-
         </div>
       </div>
     `;
