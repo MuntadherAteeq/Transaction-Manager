@@ -11,8 +11,6 @@
 
 Transaction Manager is a web application that allows users to create deals and manage transactions within those deals. It is built using Electron, Svelte, Vite, and Sass.
 
-![UI preview](./resources/UI_1.png)
-
 ## Features
 
 - Create and manage deals
@@ -26,10 +24,9 @@ Transaction Manager is a web application that allows users to create deals and m
 
 ## Technologies Used
 
-![Technologies ](https://skillicons.dev/icons?i=electron,vite,svelte,typescript,sass)
+![Technologies ](https://skillicons.dev/icons?i=electron,vite,typescript,sass)
 
 - Electron: Electron is used to build cross-platform desktop applications using web technologies.
-- Svelte: Svelte is a JavaScript framework for building user interfaces.
 - Vite: Vite is a build tool that provides fast and efficient development server and build pipeline for modern web applications.
 - Sass: Sass is a CSS preprocessor that helps in writing maintainable and reusable CSS.
 

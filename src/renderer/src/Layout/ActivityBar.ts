@@ -1,7 +1,7 @@
 import Icon_Box from "../Assets/Icon-Box";
 import Icon_Wallet from "../Assets/Icon-Wallet";
 import Icon_History from "../Assets/Icon-History";
-import Icon_Settings from "../Assets/Icon-Settings";
+
 
 type Activity = {
   name: string;
