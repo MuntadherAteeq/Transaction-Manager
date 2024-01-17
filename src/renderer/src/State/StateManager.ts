@@ -1,12 +1,7 @@
-import Icon_Box from "../Assets/Icon-Box";
-import Icon_History from "../Assets/Icon-History";
-import Icon_Wallet from "../Assets/Icon-Wallet";
 import database from "../Database/Database";
-import { Activities } from "../Layout/ActicityBar";
 import Deal from "../Model/Deal";
 
 export class $State {
-
   private deals: Map<string, Deal>;
   private ActiveDealListeners: Function[] = [];
   private _ActiveDeal: Deal | null = null;
@@ -46,10 +41,6 @@ export class $State {
     this._ActiveDeal = Deal;
     this.notifyActiveDealChanged();
   }
-
 }
-
-
-
 const State = new $State();
 export default State;
