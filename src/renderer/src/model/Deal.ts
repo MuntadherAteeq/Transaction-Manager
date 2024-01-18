@@ -2,18 +2,22 @@ import { ulid } from "ulid";
 import type Transaction from "./Transaction";
 
 export default class Deal {
-  private _id: string;
+  public _id: string;
+  public _rev: string;
   private subscriptions: Function[];
-  constructor(
-    public name?: string,
-    public total?: number,
-    public date?: Date,
-    id?: string,
-    public transactions?: Transaction[],
-  ) {
-    this._id = id || ulid();
-    this.date = date || new Date();
-    this.transactions = transactions || [];
+  public name?: string;
+  public total?: number;
+  public date?: Date;
+  public transactions?: Transaction[];
+
+  constructor(deal?: any) {
+    this.name = deal?.name || "untitled";
+    this._id = deal?.id || ulid();
+    this.date = deal?.date || new Date();
+    this.transactions = deal?.transactions || [];
+    this.subscriptions = [];
+    this.total = deal?.total || 0;
+    this._rev = deal?._rev || "";
   }
 
   subscribeToDeal(callback: Function): Function {
@@ -41,16 +45,5 @@ export default class Deal {
       this.transactions.splice(index, 1);
       this.total - transaction.amount;
     }
-  }
-
-  getTotalAmount(): number {
-    let sum = 0;
-    for (let transaction of this.transactions) {
-      sum += transaction.amount;
-    }
-    return sum;
-  }
-  get id(): string {
-    return this._id;
   }
 }

@@ -23,6 +23,12 @@
   "dependencies": {
     "@electron-toolkit/preload": "^2.0.0",
     "@electron-toolkit/utils": "^2.0.0",
+    "@types/jquery": "^3.5.29",
+    "@types/jqueryui": "^1.12.21",
+    "@types/pouchdb": "^6.4.2",
+    "jquery": "^3.7.1",
+    "jquery-ui": "^1.13.2",
+    "pouchdb": "^8.0.1",
     "sass": "^1.69.5",
     "ulid": "^2.3.0"
   },

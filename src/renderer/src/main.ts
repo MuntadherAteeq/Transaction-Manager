@@ -1,4 +1,10 @@
+declare global {
+  interface Window {
+    $: JQueryStatic;
+  }
+}
 import "./style.scss";
+import "./jQuery.scss";
 import TitleBar from "./Layout/TitleBar";
 import ActivityBar from "./Layout/ActivityBar";
 import L_SideBar from "./Layout/L-SideBar";
@@ -8,7 +14,8 @@ import Transaction_Item from "./Components/Transaction-Item";
 import DealRecord from "./Components/Deal-Record";
 import Editor from "./Layout/Editor";
 import database from "./Database/Database";
-import type Deal from "./Model/Deal";
+import Deal from "./Model/Deal";
+import Database from "./Database/Database";
 
 export default class App extends HTMLElement {
   constructor() {
@@ -23,6 +30,11 @@ export default class App extends HTMLElement {
       </div>
     `;
   }
-  connectedCallback() {}
+  connectedCallback() {
+    const db = Database;
+    // db.createNewDeal()
+    console.log(db.getDeals());
+    console.log(db.getDeals().then((deals) => console.log(deals)));
+  }
 }
 customElements.define("transaction-manager", App);
