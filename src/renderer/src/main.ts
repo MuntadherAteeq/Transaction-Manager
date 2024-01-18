@@ -32,9 +32,6 @@ export default class App extends HTMLElement {
   }
   connectedCallback() {
     const db = Database;
-    // db.createNewDeal()
-    console.log(db.getDeals());
-    console.log(db.getDeals().then((deals) => console.log(deals)));
   }
 }
 customElements.define("transaction-manager", App);

@@ -4,7 +4,7 @@ import type Transaction from "./Transaction";
 export default class Deal {
   public _id: string;
   public _rev: string;
-  private subscriptions: Function[];
+  public subscriptions: Function[];
   public name?: string;
   public total?: number;
   public date?: Date;

@@ -10,17 +10,13 @@ class Database {
     this.db.put(deal);
     return deal;
   }
-  async getDeals() {
-    const map = new Map<string, Deal>();
-    await this.db
-      .allDocs({ include_docs: true })
-      .then((docs) => {
-        docs.rows.forEach((row) => {
-          map.set(row.doc._id, new Deal(row.doc));
-        });
-      })
-      .catch((err) => console.log(err));
-    return map;
+  async getDealsMap() {
+    const deals = new Map();
+    const docs = await this.db.allDocs({ include_docs: true });
+    docs.rows.forEach((row) => {
+      deals.set(row.doc._id, new Deal(row.doc));
+    });
+    return deals;
   }
   getDealById(id: string) {
     return new Deal(this.db.get(id));
