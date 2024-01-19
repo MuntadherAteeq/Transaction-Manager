@@ -17,10 +17,15 @@ class Database {
     docs.rows.forEach((row) => {
       deals.push(row.doc);
     });
-    console.log(deals)
+    console.log(deals);
     return deals;
   }
 
+  remove(deal: Deal) {
+    this.db.get(deal._id).then((doc) => {
+      this.db.remove(doc);
+    });
+  }
   clear() {
     this.db.allDocs({ include_docs: true }).then((docs) => {
       docs.rows.forEach((row) => {

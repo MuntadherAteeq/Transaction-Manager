@@ -9,7 +9,6 @@ class State {
   public DealsSubscribers: Function[] = [];
   constructor() {
     this.load();
-    // hello world
   }
 
   public async load() {
@@ -32,6 +31,7 @@ class State {
     return deal;
   }
   removeDeal(deal: Deal) {
+    database.remove(deal);
     this.deals.delete(deal._id);
     this.notifyDealsSubscribers();
   }
