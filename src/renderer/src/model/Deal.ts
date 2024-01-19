@@ -4,18 +4,18 @@ import type Transaction from "./Transaction";
 export default class Deal {
   public _id: string;
   public _rev: string;
-  public subscriptions: Function[];
   public name?: string;
   public total?: number;
   public date?: Date;
   public transactions?: Transaction[];
+  public subscriptions: Function[] = [];
 
   constructor(deal?: any) {
     this.name = deal?.name || "untitled";
-    this._id = deal?.id || ulid();
-    this.date = deal?.date || new Date();
+    this._id = deal?._id || ulid();
+    this.date =
+      typeof deal?.date === "string" ? new Date(deal.date) : new Date();
     this.transactions = deal?.transactions || [];
-    this.subscriptions = [];
     this.total = deal?.total || 0;
     this._rev = deal?._rev || "";
   }
@@ -45,5 +45,31 @@ export default class Deal {
       this.transactions.splice(index, 1);
       this.total - transaction.amount;
     }
+  }
+  setName(name: string): void {
+    this.name = name;
+    this.notify();
+  }
+  setDate(date: Date): void {
+    this.date = date;
+    this.notify();
+  }
+  setTotal(total: number): void {
+    this.total = total;
+    this.notify();
+  }
+  setTransactions(transactions: Transaction[]): void {
+    this.transactions = transactions;
+    this.notify();
+  }
+  toJSON() {
+    return {
+      _id: this._id,
+      _rev: this._rev,
+      name: this.name,
+      date: this.date,
+      total: this.total,
+      transactions: this.transactions,
+    };
   }
 }

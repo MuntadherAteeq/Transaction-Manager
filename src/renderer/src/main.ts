@@ -31,7 +31,7 @@ export default class App extends HTMLElement {
     `;
   }
   connectedCallback() {
-    const db = Database;
+
   }
 }
 customElements.define("transaction-manager", App);

@@ -1,46 +1,48 @@
 import database from "../Database/Database";
 import Deal from "../Model/Deal";
 
-export class $State {
-  private deals: Map<string, Deal>;
-  private ActiveDealListeners: Function[] = [];
-  private _ActiveDeal: Deal | null = null;
+class State {
+  public deals: Map<string, Deal>;
+  public ActiveDealSubscribers: Function[] = [];
+  public ActiveDeal: Deal | null = null;
+  public ActivitySubscribers: Function[] = [];
+  public DealsSubscribers: Function[] = [];
   constructor() {
     this.load();
+    // hello world
   }
 
-  updateDeals(Deal: Deal) {
-    this.deals.set(Deal.id, Deal);
-    database.updateDeal(Deal);
+  public async load() {
+    const deals = await database.getAll();
+    this.deals = new Map();
+    deals.forEach((deal) => {
+      this.deals.set(deal._id, new Deal(deal));
+    });
+    this.notifyDealsSubscribers();
   }
-  getDeals() {
-    return this.deals;
-  }
-  setActiveDeal(Deal: Deal) {
-    this._ActiveDeal = Deal;
+  public notifyDealsSubscribers() {
+    this.DealsSubscribers.forEach((subscriber) => {
+      subscriber();
+    });
   }
   createNewDeal() {
-    const deal = database.createNewDeal();
-    this.deals.set(deal.id, deal);
-    this._ActiveDeal = deal;
-    this.notifyActiveDealChanged();
+    const deal = database.create_New_Deal();
+    this.deals.set(deal._id, deal);
+    this.notifyDealsSubscribers();
+    return deal;
   }
-  notifyActiveDealChanged() {
-    this.ActiveDealListeners.forEach((listener) => listener());
+  removeDeal(deal: Deal) {
+    this.deals.delete(deal._id);
+    this.notifyDealsSubscribers();
   }
-  load() {
-    this.deals = database.getDeals();
+  public subscribeToDeals(subscriber: Function) {
+    this.DealsSubscribers.push(subscriber);
   }
-  subscribeToActiveDeal(listener: Function) {
-    this.ActiveDealListeners.push(listener);
-  }
-  get ActiveDeal() {
-    return this._ActiveDeal;
-  }
-  set ActiveDeal(Deal: Deal | null) {
-    this._ActiveDeal = Deal;
-    this.notifyActiveDealChanged();
+  clearDeals() {
+    database.clear();
+    this.deals.clear();
+    this.notifyDealsSubscribers();
   }
 }
-const State = new $State();
-export default State;
+const $State = new State();
+export default $State;

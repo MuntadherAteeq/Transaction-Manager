@@ -5,27 +5,31 @@ class Database {
   constructor() {
     this.db = new PouchDB("test");
   }
-  createNewDeal() {
+  create_New_Deal() {
     const deal = new Deal();
-    this.db.put(deal);
+    this.db.put(deal.toJSON());
     return deal;
   }
-  async getDealsMap() {
-    const deals = new Map();
+
+  async getAll() {
+    const deals: Deal[] = [];
     const docs = await this.db.allDocs({ include_docs: true });
     docs.rows.forEach((row) => {
-      deals.set(row.doc._id, new Deal(row.doc));
+      deals.push(row.doc);
     });
+    console.log(deals)
     return deals;
   }
-  getDealById(id: string) {
-    return new Deal(this.db.get(id));
+
+  clear() {
+    this.db.allDocs({ include_docs: true }).then((docs) => {
+      docs.rows.forEach((row) => {
+        this.db.remove(row.doc);
+      });
+    });
   }
-  updateDeal(deal: Deal) {
-    this.db.put(deal);
-  }
-  deleteDeal(deal) {
-    this.db.remove(deal);
+  destroy() {
+    this.db.destroy();
   }
 }
 const database = new Database();

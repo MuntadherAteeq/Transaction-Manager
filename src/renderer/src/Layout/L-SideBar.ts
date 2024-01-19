@@ -1,5 +1,7 @@
 import DealItem from "../Components/Deal-Item";
 import database from "../Database/Database";
+import Deal from "../Model/Deal";
+import $State from "../State/StateManager";
 import sidebar_resize from "../Tools/sidebar-resizer";
 import ActivityBar from "./ActivityBar";
 
@@ -21,16 +23,20 @@ export default class L_SideBar extends HTMLElement {
   connectedCallback() {
     sidebar_resize(this, "left");
     ActivityBar.subscribeToActivity(this.updateLabel.bind(this));
-    database.getDealsMap().then((deals) => {
-      for (let deal of deals) {
-        let deal_item = new DealItem(deal[1]);
-        this.querySelector(".content").appendChild(deal_item);
-      }
-    });
+    $State.subscribeToDeals(this.renderList.bind(this));
   }
   updateLabel() {
     this.querySelector(".tab-title span").textContent =
       ActivityBar.ActiveActivity.name;
+  }
+
+  renderList() {
+    const content = this.querySelector(".content");
+    content.innerHTML = "";
+    $State.deals.forEach((deal) => {
+      const dealItem = new DealItem(deal);
+      content.appendChild(dealItem);
+    });
   }
 }
 customElements.define("l-sidebar", L_SideBar);

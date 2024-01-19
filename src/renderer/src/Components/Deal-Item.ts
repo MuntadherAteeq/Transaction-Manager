@@ -1,5 +1,6 @@
 import avatar from "../../../../resources/Avatar.png";
 import type Deal from "../Model/Deal";
+import $State from "../State/StateManager";
 
 export default class DealItem extends HTMLElement {
   public deal?: Deal;
@@ -25,6 +26,10 @@ export default class DealItem extends HTMLElement {
     const avatarImg = this.querySelector("#avatar") as HTMLImageElement;
     avatarImg.src = avatar;
     this.deal?.subscribeToDeal(this.update.bind(this));
+
+    this.addEventListener("click", () => {
+      $State.removeDeal(this.deal);
+    });
   }
   setTitle(title: string) {
     this.querySelector(".name").textContent = title;
