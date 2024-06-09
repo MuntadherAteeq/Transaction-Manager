@@ -1,24 +1,26 @@
 {
-  "extends": "@electron-toolkit/tsconfig/tsconfig.json",
-  "exclude": [
-    "src/renderer/src/Tools/jQuery.js",
-    "src/renderer/src/Tools/jquery-ui.js",
-    "src/renderer/src/Tools/pouchdb-8.0.1.js"
-  ],
-  "include": [
-    "src/renderer/src/env.d.ts",
-    "src/renderer/src/**/*",
-    "src/preload/*.d.ts"
-  ],
   "compilerOptions": {
-    "verbatimModuleSyntax": true,
-    "useDefineForClassFields": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": false,
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
-    "checkJs": true,
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "types": ["electron-vite/node", "jquery", "jqueryui","pouchdb"]
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }

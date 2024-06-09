@@ -1,49 +1,26 @@
 {
   "name": "transaction-manager",
-  "version": "0.0.1",
-  "description": "Transaction Manager is a web application that allows users to manage deals and transactions within those deals.",
-  "main": "./out/main/index.js",
-  "author": "MuntadherAteeq",
-  "homepage": "",
-  "license": "MIT",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "format": "prettier --plugin prettier-plugin-svelte --write .",
-    "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
-    "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
-    "svelte-check": "svelte-check --tsconfig ./tsconfig.json",
-    "typecheck": "npm run typecheck:node && npm run svelte-check",
-    "start": "electron-vite preview",
-    "dev": "electron-vite dev",
-    "build": "npm run typecheck && electron-vite build",
-    "postinstall": "electron-builder install-app-deps",
-    "build:win": "npm run build && electron-builder --win --config",
-    "build:mac": "npm run build && electron-builder --mac --config",
-    "build:linux": "npm run build && electron-builder --linux --config"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@electron-toolkit/preload": "^2.0.0",
-    "@electron-toolkit/utils": "^2.0.0",
-    "@types/jquery": "^3.5.29",
-    "@types/jqueryui": "^1.12.21",
-    "@types/pouchdb": "^6.4.2",
-    "jquery": "^3.7.1",
-    "jquery-ui": "^1.13.2",
-    "pouchdb": "^8.0.1",
-    "sass": "^1.69.5",
-    "ulid": "^2.3.0"
+    "react": "^18",
+    "react-dom": "^18",
+    "next": "14.2.3"
   },
   "devDependencies": {
-    "@electron-toolkit/eslint-config-prettier": "^1.0.1",
-    "@electron-toolkit/eslint-config-ts": "^1.0.0",
-    "@electron-toolkit/tsconfig": "^1.0.1",
-    "@types/node": "^18.17.5",
-    "electron": "^25.6.0",
-    "electron-builder": "^24.6.3",
-    "electron-vite": "^1.0.27",
-    "eslint": "^8.47.0",
-    "prettier": "^3.0.2",
-    "tslib": "^2.6.2",
-    "typescript": "^5.1.6",
-    "vite": "^4.4.9"
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3"
   }
 }

@@ -7,28 +7,25 @@
     <img src="./resources/banner-dark.png" width="100%" alt="Transaction Manager logo and name" />
   </picture>
 </p>
----
 
-Transaction Manager is a web application that allows users to create deals and manage transactions within those deals. It is built using Electron, Vite, and Sass.
+
+Transaction Manager is a web application that allows users to create Records and manage Transactions. It is built using Next.js
 
 ## Features
 
-- Create and manage deals
-- Add transactions to each deal
-- View and edit deal details
+- Create and manage Records
+- Add transactions to each Records
+- View and edit Records details
 
 ## Upcoming Features
 
-- Filter and search deals and transactions
-- Export deals and transactions to CSV,Excel
+- Filter and search Records and transactions
+- Export Records and Transactions to CSV
 
 ## Technologies Used
 
-![Technologies ](https://skillicons.dev/icons?i=electron,vite,typescript,sass)
+![Technologies ](https://skillicons.dev/icons?i=next,typescript,prisma,react,tailwind)
 
-- Electron: Electron is used to build cross-platform desktop applications using web technologies.
-- Vite: Vite is a build tool that provides fast and efficient development server and build pipeline for modern web applications.
-- Sass: Sass is a CSS preprocessor that helps in writing maintainable and reusable CSS.
 
 ## Installation
 
@@ -52,7 +49,7 @@ cd transaction-manager npm install
 npm run dev
 ```
 
-1. Access the application in your browser at `http://localhost:5173`.
+1. Access the application in your browser at `http://localhost:3000`.
 
 ## Contributing
 
