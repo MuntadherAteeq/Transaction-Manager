@@ -14,6 +14,24 @@
   --positive: hsl(150, 95%, 35%);
   --negative: hsl(350, 95%, 35%);
 }
+
+body {
+  width: 100vw;
+  height: 100vh;
+  color: var(--text);
+  overflow: hidden;
+  position: relative;
+  color: var(--text);
+  font-family: sans-serif;
+}
+.App-Container {
+  display: flex;
+  position: relative;
+  height: calc(100vh - var(--title-bar-hight));
+  scrollbar-gutter: stable both-edges;
+  background: var(--foreground);
+  outline: 1px solid var(--outline);
+}
 // Menu and Header Section
 .Title-Bar {
   display: flex;
@@ -77,10 +95,10 @@
     }
   }
 }
+
 // Lift Sidebar
 .L-Sidebar {
   height: 100%;
-  /* width: 100%; */
   min-width: 270px;
   position: relative;
   display: flex;
@@ -88,7 +106,7 @@
   background: var(--background);
   outline: 1px solid var(--outline);
   user-select: none;
-  z-index: 1;
+  z-index: 2;
 
   .tab-title {
     padding: 20px;
@@ -135,8 +153,9 @@
   outline: 1px solid var(--outline);
   user-select: none;
   padding: 1px;
-  z-index: 1;
+  z-index: 3;
 }
+
 // Categories Section
 .ActivityBar {
   display: flex;
@@ -148,6 +167,7 @@
   max-width: 60px;
   background: var(--background);
   outline: 1px solid var(--outline);
+  z-index: 1;
 
   input[type="radio"] {
     display: none;
@@ -255,13 +275,7 @@
     }
   }
 }
-// Single Line Text
-.ellipsis {
-  text-align: left;
-  white-space: nowrap; /* Prevent file names from wrapping */
-  overflow: hidden; /* Hide any text that overflows the width of the file manager sidebar */
-  text-overflow: ellipsis; /* Add an ellipsis (...) to the end of any text that overflows */
-}
+
 // Transactions Editor
 .Editor {
   position: relative;
@@ -386,8 +400,10 @@
     opacity: 1;
   }
 }
-.App-Container {
-  display: flex;
-  height: 100%;
-  width: 100%;
+// Single Line Text
+.ellipsis {
+  text-align: left;
+  white-space: nowrap; /* Prevent file names from wrapping */
+  overflow: hidden; /* Hide any text that overflows the width of the file manager sidebar */
+  text-overflow: ellipsis; /* Add an ellipsis (...) to the end of any text that overflows */
 }

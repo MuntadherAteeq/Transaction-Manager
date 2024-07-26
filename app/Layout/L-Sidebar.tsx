@@ -39,7 +39,6 @@ export default function L_Sidebar(props: React.HTMLAttributes<HTMLDivElement>) {
   )
 }
 
-
 // export function sidebar_resize(
 //   sidebar: HTMLElement,
 //   location: "left" | "right" = "right"

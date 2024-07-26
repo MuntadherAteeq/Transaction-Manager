@@ -8,7 +8,7 @@ interface DealItemProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 export default function DealItem(props: DealItemProps) {
   return (
-    <div {...props}>
+    <div {...props} className="Deal-Item">
       <div className="avatar-container">
         <Image src={avatar} id="avatar" alt="avatar" draggable="false" />
       </div>
