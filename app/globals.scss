@@ -23,6 +23,7 @@ body {
   position: relative;
   color: var(--text);
   font-family: sans-serif;
+  user-select: none;
 }
 .App-Container {
   display: flex;
