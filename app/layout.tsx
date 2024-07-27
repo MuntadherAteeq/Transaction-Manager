@@ -25,13 +25,11 @@ export default function RootLayout({
         <TitleBar />
         <div className="App-Container">
           <ActivityBar />
-          <L_Sidebar />
-          <Editor />
-          <R_Sidebar />
+          <L_Sidebar>{children}</L_Sidebar>
+          {/* <Editor />
+          <R_Sidebar /> */}
         </div>
       </body>
     </html>
   )
 }
-
-
