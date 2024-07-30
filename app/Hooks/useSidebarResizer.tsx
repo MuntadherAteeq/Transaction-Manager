@@ -32,7 +32,6 @@ const useSidebarResize = (
 
     // add event listeners for mousemove and mouseup
     const onMouseMove = (e: MouseEvent) => {
-      console.log("mousemove")
       const sidebarRect = sidebar.getBoundingClientRect()
       const bodyRect = document.body.getBoundingClientRect()
 
@@ -50,7 +49,6 @@ const useSidebarResize = (
 
     // remove event listeners and reset cursor
     const onMouseUp = () => {
-      console.log("mouseup")
       document.body.style.cursor = "unset"
       resizer.classList.remove("active")
       document.removeEventListener("mousemove", onMouseMove, false)
@@ -59,7 +57,6 @@ const useSidebarResize = (
     }
 
     const onMouseDown = () => {
-      console.log("mousedown")
       document.body.style.cursor = "e-resize"
       resizer.classList.add("active")
       document.addEventListener("mousemove", onMouseMove, false)

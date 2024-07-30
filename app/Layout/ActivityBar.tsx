@@ -36,7 +36,7 @@ const Activity = ({ id, svg, active, ...props }: ActivityProps) => {
         <input
           id={id}
           type="radio"
-          checked={path.slice(1) === id ? true : false}
+          checked={path.split("/")[1] === id ? true : false}
           name="Activity"
         />
         {svg}
