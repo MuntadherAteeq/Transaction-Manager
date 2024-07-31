@@ -1,10 +1,8 @@
 "use client"
 import { usePathname } from "next/navigation"
 import useSidebarResizer from "../Hooks/useSidebarResizer"
-import { useLayoutEffect, useState } from "react"
 
 export default function L_Sidebar(props: React.HTMLAttributes<HTMLDivElement>) {
-  const [isOpen, setOpen] = useState(true)
   const [sideBarRef] = useSidebarResizer()
   const path = usePathname()
 
