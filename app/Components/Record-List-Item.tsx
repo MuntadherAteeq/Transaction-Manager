@@ -1,12 +1,12 @@
 import avatar from "../Assets/Images/Avatar.png"
 import Image from "next/image"
-interface DealItemProps extends React.HTMLAttributes<HTMLDivElement> {
+interface Record_Item_Props extends React.HTMLAttributes<HTMLDivElement> {
   avatar?: string
   name?: string
   date?: string
   total?: string
 }
-export default function DealItem(props: DealItemProps) {
+export default function Record_List_item(props: Record_Item_Props) {
   return (
     <div {...props} className="Deal-Item">
       <div className="avatar-container">

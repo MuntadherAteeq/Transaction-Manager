@@ -11,7 +11,7 @@ export default function L_Sidebar(props: React.HTMLAttributes<HTMLDivElement>) {
       <div className="tab-title">
         <span>{path.split("/")[1]}</span>
       </div>
-      <div className="content"></div>
+      <div className="content">{props.children}</div>
     </div>
   )
 }
