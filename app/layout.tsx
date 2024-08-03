@@ -25,9 +25,7 @@ export default function RootLayout({
         <TitleBar />
         <div className="App-Container">
           <ActivityBar />
-          <L_Sidebar>{children}</L_Sidebar>
-          <Editor />
-          {/* <R_Sidebar /> */}
+          {children}
         </div>
       </body>
     </html>
