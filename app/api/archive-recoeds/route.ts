@@ -8,9 +8,9 @@ export async function GET(req: NextRequest) {
       const records = await prisma.record.findMany()
       return new NextResponse(JSON.stringify(records), { status: 200 })
     } catch (error) {
-      console.error(error)
+      return new NextResponse(null, { status: 500 })
     }
   } else {
-    console.log("Invalid request method")
+    return new NextResponse(null, { status: 405 })
   }
 }
