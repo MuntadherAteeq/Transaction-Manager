@@ -10,8 +10,8 @@ export default function Editor(props: DataTableProps) {
         <div className="Tabs">
           <div className="Tab">
             <Image src={avatar} alt="avatar" />
-            <p>Muntadher Ahmed Ateeq Sam with juice</p>
-            <Button inline>X</Button>
+            <p>Muntadher Ahmed Ateeq</p>
+            <Button>X</Button>
           </div>
         </div>
       </div>

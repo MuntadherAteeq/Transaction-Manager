@@ -7,8 +7,8 @@ export default function TitleBar(props: PropsType) {
     <div className="Title-Bar">
       <div className="options">
         {/* <logo-blue /> */}
-        <Button inline>New</Button>
-        <Button inline>Clear</Button>
+        <Button>New</Button>
+        <Button>Clear</Button>
       </div>
       <button className="search">
         {/* <icon-search /> */}

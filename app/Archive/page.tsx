@@ -1,5 +1,4 @@
 import Record_List_item from "../Components/Record-List-Item"
-import useSidebarResize from "../Hooks/useSidebarResizer"
 import L_Sidebar from "../Layout/L-Sidebar"
 
 export default async function page(props: any) {

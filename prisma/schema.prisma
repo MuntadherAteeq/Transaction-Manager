@@ -10,15 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id       String  @id @default(cuid())
-  email    String  @unique
-  name     String?
-  password String
-
-  Record Record[]
-}
-
 model Record {
   id    String @id @default(cuid())
   title String
@@ -29,6 +20,4 @@ model Record {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
 }

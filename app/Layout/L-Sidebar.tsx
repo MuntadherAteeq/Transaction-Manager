@@ -1,8 +1,9 @@
 "use client"
 import { usePathname } from "next/navigation"
 import useSidebarResizer from "../Hooks/useSidebarResizer"
-import Plus from "../Assets/Icons/Plus"
 import Search from "../Assets/Icons/Search"
+import { ChangeEvent, useState } from "react"
+import AddButton from "../Components/AddButton"
 
 export default function L_Sidebar(props: React.HTMLAttributes<HTMLDivElement>) {
   const [sideBarRef] = useSidebarResizer()
@@ -14,16 +15,36 @@ export default function L_Sidebar(props: React.HTMLAttributes<HTMLDivElement>) {
         <span>{path.split("/")[1]}</span>
       </div>
       <div className="tools">
-        <label htmlFor="RecordSearch" className="Search-Container">
-          <Search />
-          <input type="text" placeholder="Search" id="RecordSearch" />
-        </label>
-        <button className="Primary-Button">
-          <Plus />
-        </button>
+        <SearchField />
+        <AddButton />
       </div>
-
       <div className="content">{props.children}</div>
     </div>
+  )
+}
+
+
+
+export function SearchField() {
+  const [search, setSearch] = useState("")
+
+  function handleSearchBox(e: ChangeEvent<HTMLInputElement>): void {
+    const searchInput = e.target
+    if (e.currentTarget.value === "") {
+      searchInput.removeAttribute("value")
+    }
+    setSearch(e.currentTarget.value)
+  }
+  return (
+    <label htmlFor="RecordSearch" className="Search-Container">
+      <Search />
+      <input
+        type="text"
+        placeholder="Search"
+        id="RecordSearch"
+        onChange={(e) => handleSearchBox(e)}
+        {...(search !== "" ? { value: search } : {})}
+      />
+    </label>
   )
 }
