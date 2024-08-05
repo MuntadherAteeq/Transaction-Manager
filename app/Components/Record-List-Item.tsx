@@ -10,15 +10,23 @@ export default function Record_List_item(props: Record_Item_Props) {
   return (
     <div {...props} className="Deal-Item">
       <div className="avatar-container">
-        <Image src={avatar} id="avatar" alt="avatar" draggable="false" />
+        <Image
+          src={avatar}
+          id="avatar"
+          alt="avatar"
+          draggable="false"
+          priority={true}
+        />
       </div>
       <div className="info-container">
         <div className="top">
-          <div className="name">Muntadher Ahmed Ali Rhone Lorem, ipsum.</div>
+          <div className="name">{props.name}</div>
         </div>
         <div className="bottom">
-          <div className="date">2024</div>
-          <div className="total">30.000 BD</div>
+          <div className="date">
+            {props.date && new Date(props.date).toLocaleDateString()}
+          </div>
+          <div className="total">{props.total} BD</div>
         </div>
       </div>
     </div>
