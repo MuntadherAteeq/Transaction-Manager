@@ -23,8 +23,6 @@ export default function L_Sidebar(props: React.HTMLAttributes<HTMLDivElement>) {
   )
 }
 
-
-
 export function SearchField() {
   const [search, setSearch] = useState("")
 
