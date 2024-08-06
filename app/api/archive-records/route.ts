@@ -6,6 +6,7 @@ export async function GET(req: NextRequest) {
     try {
       const prisma = new PrismaClient()
       const records = await prisma.record.findMany()
+
       return new NextResponse(JSON.stringify(records), { status: 200 })
     } catch (error) {
       return new NextResponse(null, { status: 500 })

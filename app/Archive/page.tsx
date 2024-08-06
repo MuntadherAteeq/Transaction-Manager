@@ -2,8 +2,10 @@ import Record_List_item from "../Components/Record-List-Item"
 import L_Sidebar from "../Layout/L-Sidebar"
 
 export default async function Archive(props: any) {
-  const response = await fetch("http://localhost:3000/api/archive-recoeds") // Adjust the path if necessary
-  const records = await response.json()
+  const res = await fetch("http://localhost:3000/api/archive-records", {
+    cache: "no-cache",
+  })
+  const records = await res.json()
   return (
     <>
       <L_Sidebar>
