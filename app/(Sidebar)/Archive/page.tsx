@@ -30,7 +30,13 @@ export default function Archive(props: any) {
         <span className="sr-only">Loading...</span>
       </div>
     )
-
+  if (Array.isArray(records) && records.length === 0) {
+    return (
+      <div className="w-full flex relative items-center justify-center">
+        <h1 className="text-2xl text-stone-500">No records found</h1>
+      </div>
+    )
+  }
   return (
     <>
       <ul>

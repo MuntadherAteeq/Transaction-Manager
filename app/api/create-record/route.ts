@@ -15,8 +15,9 @@ export async function POST(req: NextRequest) {
           total: 0,
         },
       })
-      return NextResponse.redirect(new URL("/Archive", req.url))
-      // return new Response("", { status: 201 })
+
+      // return NextResponse.redirect(new URL("/Archive", req.url))
+      return new Response("", { status: 201 })
     } catch (error) {
       return new Response("Error creating record", { status: 500 })
     }

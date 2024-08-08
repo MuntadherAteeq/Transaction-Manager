@@ -1,6 +1,7 @@
 import { useState } from "react"
 import Plus from "../Assets/Icons/Plus"
-import { redirect, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
+import useSWR, { mutate } from "swr"
 
 export default function AddButton() {
   const [isLoading, setIsLoading] = useState(false)
@@ -16,7 +17,10 @@ export default function AddButton() {
       },
       body: JSON.stringify({ key: "value" }),
     })
-    await router.push("/Archive")
+    if (await response.ok) {
+      setIsLoading(false)
+      mutate("/api/archive-records")
+    }
   }
 
   return (
