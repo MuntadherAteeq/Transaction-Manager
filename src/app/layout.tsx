@@ -3,12 +3,13 @@ import "./globals.css"
 import "./styles.scss"
 import { ThemeProvider } from "@/components/ui/theme-provider"
 import { GeistSans } from "geist/font/sans"
+import favicon from "./favicon.ico"
 
 export const metadata: Metadata = {
   title: "Transaction Manager",
   description: "A Simple transaction manager app for managing your finances.",
   icons: {
-    icon: "./favicon.ico",
+    icon: favicon.src,
   },
 }
 
