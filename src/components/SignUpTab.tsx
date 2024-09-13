@@ -24,6 +24,7 @@ import { useForm } from "react-hook-form"
 import { signUp } from "@/app/Auth/signUp"
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 // Updated schema with custom validation
 export const SignUpSchema = z
@@ -39,6 +40,7 @@ export const SignUpSchema = z
 
 export default function SignUpTab() {
   const [error, setError] = useState("")
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
@@ -51,6 +53,7 @@ export default function SignUpTab() {
   async function onSubmit(data: z.infer<typeof SignUpSchema>) {
     const res = await signUp(data)
     setError(res.error)
+    if (res.success) router.push("/")
   }
   return (
     <>

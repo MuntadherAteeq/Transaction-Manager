@@ -24,7 +24,7 @@ import { useForm } from "react-hook-form"
 import { signIn } from "@/app/Auth/signIn"
 import { useState } from "react"
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
-
+import { useRouter } from "next/navigation"
 export const SignInSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
@@ -32,6 +32,7 @@ export const SignInSchema = z.object({
 
 export default function SignInTab() {
   const [error, setError] = useState("")
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof SignInSchema>>({
     resolver: zodResolver(SignInSchema),
@@ -40,10 +41,13 @@ export default function SignInTab() {
       password: "",
     },
   })
+
   async function onSubmit(data: z.infer<typeof SignInSchema>) {
     const res = await signIn(data)
     setError(res.error)
+    if (res.success) router.push("/")
   }
+
   return (
     <>
       <Card>
