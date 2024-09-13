@@ -1,11 +1,19 @@
-import { Button } from "@/components/ui/button"
+import SignOutButton from "@/components/SignOutButton"
+import { getUser } from "./Library/lucia"
+import { redirect } from "next/navigation"
 
-export default function Home({ children }: { children: React.ReactNode }) {
+export default async function Home({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const session = await getUser()
+  if (session === null) redirect("/Auth")
   return (
     <>
-      <Button>Click me</Button>
+      <SignOutButton>Sign Out</SignOutButton>
+      <h1 className="scroll-m-20 text-3xl font-bold tracking-tight">HI</h1>
       {children}
-      <h1 className="scroll-m-20 text-3xl font-bold tracking-tight">Next.js</h1>
     </>
   )
 }
