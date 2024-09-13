@@ -5,7 +5,7 @@ import { Button } from "./ui/button"
 export default function SignOutButton({
   children,
 }: {
-  children: React.ReactNode
+  children?: React.ReactNode
 }) {
   async function handleSignOut() {
     await signOut()

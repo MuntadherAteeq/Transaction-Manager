@@ -55,7 +55,7 @@ export const signUp = async (values: z.infer<typeof SignUpSchema>) => {
   } catch (error) {
     return { error: "An error occurred", success: false }
   }
-  return { success: true }
+  return { error: "", success: true }
 }
 
 export const signOut = async () => {
