@@ -3,6 +3,7 @@ import { z } from "zod"
 import prisma from "../Library/prisma"
 import { SignInSchema } from "@/components/SignInTab"
 import argon2 from "argon2"
+import { SignUpSchema } from "@/components/SignUpTab"
 
 export const signIn = async (values: z.infer<typeof SignInSchema>) => {
   try {
@@ -16,5 +17,24 @@ export const signIn = async (values: z.infer<typeof SignInSchema>) => {
   } catch (error) {
     return { error: "An error occurred", success: false }
   }
-  return { error: "Email and Password are Incorrect", success: false }
+  return { error: "Email or Password are Incorrect", success: false }
+}
+
+export const signUp = async (values: z.infer<typeof SignUpSchema>) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email: values.email },
+    })
+    if (user) return { error: "User already exists", success: false }
+
+    await prisma.user.create({
+      data: {
+        email: values.email,
+        password: await argon2.hash(values.password),
+      },
+    })
+  } catch (error) {
+    return { error: "An error occurred", success: false }
+  }
+  return { error: "", success: true }
 }

@@ -21,10 +21,10 @@ import {
   FormMessage,
 } from "./ui/form"
 import { useForm } from "react-hook-form"
-import { signIn } from "@/app/Auth/signIn"
 import { useState } from "react"
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
 import { useRouter } from "next/navigation"
+import { signIn } from "@/app/Auth/auth.actions"
 export const SignInSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),

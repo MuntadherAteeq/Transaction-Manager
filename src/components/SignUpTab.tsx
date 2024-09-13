@@ -21,10 +21,10 @@ import {
   FormMessage,
 } from "./ui/form"
 import { useForm } from "react-hook-form"
-import { signUp } from "@/app/Auth/signUp"
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { signUp } from "@/app/Auth/auth.actions"
 
 // Updated schema with custom validation
 export const SignUpSchema = z
