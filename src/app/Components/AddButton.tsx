@@ -2,6 +2,12 @@ import { useState } from "react"
 import Plus_Icon from "../Assets/Icons/Plus"
 import { usePathname } from "next/navigation"
 import { mutate } from "swr"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@radix-ui/react-tooltip"
 
 export default function AddButton() {
   const [isLoading, setIsLoading] = useState(false)
@@ -23,12 +29,25 @@ export default function AddButton() {
   }
 
   return (
-    <button
-      className="Primary-Button"
-      onClick={handleClick}
-      disabled={isLoading}
-    >
-      <Plus_Icon />
-    </button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger
+          className="Primary-Button flex items-center"
+          onClick={handleClick}
+          disabled={isLoading}
+        >
+          <Plus_Icon />
+        </TooltipTrigger>
+        <TooltipContent side="right">
+          <div
+            role="tooltip"
+            className=" px-3 py-2 text-sm font-medium   rounded-lg shadow-sm tooltip bg-background"
+          >
+            Create new Record
+            <div className="tooltip-arrow" data-popper-arrow></div>
+          </div>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   )
 }

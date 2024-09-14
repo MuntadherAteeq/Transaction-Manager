@@ -1,5 +1,5 @@
 "use client"
-import { History_Icon } from "../Assets/Icons/History"
+import { History_Icon } from "../Assets/Icons/Histoey"
 import { Settings_Icon } from "../Assets/Icons/Settings"
 import Wallet_Icon from "../Assets/Icons/Wallet"
 import { Box_Icon } from "../Assets/Icons/Box"

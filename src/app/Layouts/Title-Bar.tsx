@@ -1,5 +1,6 @@
 "use client"
 
+import SignOutButton from "@/components/SignOutButton"
 import { usePathname } from "next/navigation"
 import { mutate } from "swr"
 
@@ -33,9 +34,7 @@ export default function TitleBar() {
         Search
       </button> */}
       <div className="actions">
-        {/* <icon-minus /> */}
-        {/* <icon-square /> */}
-        {/* <icon-x /> */}
+        <SignOutButton>Sign Out</SignOutButton>
       </div>
     </div>
   )
