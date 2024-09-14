@@ -29,3 +29,41 @@ model Session {
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id])
 }
+
+model Record {
+  id        Int      @id @default(autoincrement())
+  category  String?
+  name      String?  @default("Untitled")
+  total     Float    @default(0)
+  email     String?
+  phone     String?
+  address   String?
+  tables    Table[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  desc      String?
+}
+
+model Table {
+  id           Int           @id @default(autoincrement())
+  recordId     Int
+  name         String?       @default("Untitled")
+  description  String?
+  total        Decimal       @default(0)
+  transactions Transaction[]
+  record       Record        @relation(fields: [recordId], references: [id])
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @default(now())
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  tableId     Int
+  amount      Decimal  @default(0)
+  type        String
+  description String?
+  date        DateTime
+  table       Table    @relation(fields: [tableId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
