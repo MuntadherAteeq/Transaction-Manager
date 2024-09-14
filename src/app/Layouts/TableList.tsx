@@ -4,13 +4,12 @@ import TransactionTable from "../Table/page"
 import useSWR from "swr"
 import { usePathname } from "next/navigation"
 import Spinner from "../Components/Spinner"
+import { fetcher } from "../Utils/common"
 
-let fetcher = (url: string) => fetch(url).then((res) => res.json())
 export default function TableList() {
   const id = usePathname().split("/")[2]
   const api = `/API/tables?recordId=${id}`
-  const { data: tables, error, mutate } = useSWR(api, fetcher)
-  console.log(tables)
+  const { data: tables, error } = useSWR(api, fetcher)
   return (
     <>
       {error ? (

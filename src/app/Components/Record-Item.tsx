@@ -2,7 +2,7 @@ import avatar from "../Assets/Images/Avatar.png"
 import Image from "next/image"
 import type { Record } from "@prisma/client"
 
-export default function Record_List_item({ record }: { record: Record }) {
+export default function Record_item({ record }: { record: Record }) {
   const data = record
   return (
     <div className="Deal-Item">

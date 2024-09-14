@@ -1,14 +1,11 @@
-import { redirect } from "next/navigation"
+import { ReactNode } from "react"
 import Editor from "../Layouts/Editor"
 import R_Sidebar from "../Layouts/R-Sidebar"
-import { getUser } from "../Library/lucia"
 
-export default async function Editor_Page(props: any) {
-  const session = await getUser()
-  if (session === null) redirect("/Auth")
+export default function Editor_Page({ children }: { children: ReactNode }) {
   return (
     <>
-      {props.children}
+      {children}
       <Editor />
       <R_Sidebar />
     </>

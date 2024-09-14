@@ -7,16 +7,18 @@ import TableList from "../../Layouts/TableList"
 import { redirect } from "next/navigation"
 import { getUser } from "@/app/Library/lucia"
 
-export default async function Record_Page(props: any) {
+export default async function Record_Page({
+  params,
+}: {
+  children: React.ReactNode
+  params: { id: string[] }
+}) {
   const session = await getUser()
   if (session === null) redirect("/Auth")
   const prisma = new PrismaClient()
 
   const record = await prisma.record.findFirst({
-    where: { id: Number.parseInt(props.params.id[0]) },
-  })
-  const tables = await prisma.table.findMany({
-    where: { recordId: Number.parseInt(props.params.id[0]) },
+    where: { id: Number.parseInt(params.id[0]) },
   })
   return (
     <>
