@@ -15,12 +15,16 @@ export const POST = Handle(async (req: NextRequest) => {
   if (activity === null || !Activities.includes(activity))
     return ErrorResponse("Invalid Activity", 400)
 
-  await prisma.record.create({
+  const record = await prisma.record.create({
     data: {
       category: activity,
       userId: user?.id,
     },
   })
-
-  return JsonResponse("Record Created", 201)
+  await prisma.table.create({
+    data: {
+      recordId: record.id,
+    },
+  })
+  return JsonResponse(record, 200)
 })

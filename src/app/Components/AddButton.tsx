@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Plus_Icon from "../Assets/Icons/Plus"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { mutate } from "swr"
 import {
   Tooltip,
@@ -12,6 +12,7 @@ import {
 export default function AddButton() {
   const [isLoading, setIsLoading] = useState(false)
   const activity = usePathname().split("/")[1]
+  const route = useRouter()
   const handleClick = async () => {
     setIsLoading(true)
 
@@ -22,9 +23,13 @@ export default function AddButton() {
       },
       body: JSON.stringify({ activity }),
     })
-    if (await response.ok) {
+    if (response.ok) {
       setIsLoading(false)
-      mutate(`/API/records?activity=${activity}`)
+      const list = await mutate(`/API/records?activity=${activity}`)
+      if (list && Array.isArray(list)) {
+        const record = list[list.length - 1]
+        route.push(`/${activity}/${record.id}`)
+      }
     }
   }
 
