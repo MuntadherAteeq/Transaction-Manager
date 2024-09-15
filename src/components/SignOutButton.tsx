@@ -18,7 +18,7 @@ export default function SignOutButton({
 
   return (
     <Button
-      className="inline-button !text-red-600 hover:!bg-red-700 hover:!text-foreground"
+      className="inline-button !text-red-600 hover:!bg-red-900 hover:!text-foreground"
       onClick={handleSignOut}
     >
       {children}
