@@ -3,8 +3,9 @@
 import { AgGridReact } from "ag-grid-react"
 import { useMemo, useState } from "react"
 import { ColDef } from "ag-grid-community"
+import { Table } from "@prisma/client"
 
-export default function TransactionTable(props: any) {
+export default function TransactionTable({ table }: { table: Table }) {
   const defaultColDef = useMemo(() => {
     return {
       sortable: true,
@@ -13,14 +14,29 @@ export default function TransactionTable(props: any) {
   }, [])
 
   const [colDefs, setColDefs] = useState<ColDef[]>([
-    { field: "desc" },
+    { field: "desc", editable: true },
     {
       field: "price",
-      cellRenderer: (params: { value: any }) => {
-        return `${params.value} BD `
+      editable: true,
+      cellRenderer: (params: { value: number }) => {
+        if (params.value === undefined || params.value === 0) return ""
+        return `${params.value.toFixed(3)} BD`
       },
     },
-    { field: "qty" },
+    {
+      field: "qty",
+      editable: true,
+      cellRenderer: (params: { value: number }) => {
+        if (
+          params.value === undefined ||
+          params.value === 0 ||
+          params.value === 1 ||
+          params.value === null
+        )
+          return ""
+        return `${params.value}`
+      },
+    },
     {
       field: "total",
       valueGetter: (params: { data: { price: number; qty: number } }) => {
@@ -30,24 +46,10 @@ export default function TransactionTable(props: any) {
   ])
 
   // Row Data: The data to be displayed.
-  const [rowData, setRowData] = useState([
-    { desc: "Tesla", price: 64950, qty: 3 },
-    { desc: "Ford", price: 33850, qty: 1 },
-    { desc: "Toyota", price: 29600, qty: 2 },
-  ])
+  const [rowData, setRowData] = useState([{ desc: "", price: 0, qty: null }])
 
   // Calculate the total of all totals
-  const totalSum = rowData.reduce((acc, row) => acc + row.price * row.qty, 0)
-
-  // Footer Row Data
-  const footerRowData = [
-    {
-      desc: "Total",
-      price: "",
-      qty: "",
-      total: totalSum,
-    },
-  ]
+  // const Sum = rowData.reduce((acc, row) => acc + row.price * row.qty, 0)
 
   return (
     <div className="flex flex-col w-full h-full">
