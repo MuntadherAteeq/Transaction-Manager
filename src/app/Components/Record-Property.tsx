@@ -1,4 +1,6 @@
+"use client"
 import { Decimal } from "@prisma/client/runtime/library"
+import { useState } from "react"
 
 export interface RecordPropertyProps {
   title: string
@@ -14,6 +16,7 @@ export function Record_Property({
   value,
 }: RecordPropertyProps) {
   const id = crypto.getRandomValues(new Uint32Array(1))[0].toString()
+  const [data, setData] = useState(value?.toString())
 
   return (
     <label htmlFor={id} className="Record_Property">
@@ -24,7 +27,9 @@ export function Record_Property({
         type={type}
         autoComplete="off"
         id={id}
-        value={value?.toString()}
+        onChange={(e) => setData(e.target.value)}
+        value={data}
+        readOnly
       />
     </label>
   )

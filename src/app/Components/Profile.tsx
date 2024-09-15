@@ -6,12 +6,11 @@ import Calender_Icon from "../Assets/Icons/Calender"
 import Email_Icon from "../Assets/Icons/Email"
 import Info_Icon from "../Assets/Icons/info"
 import { ReactNode, useMemo, useState } from "react"
-import Image from "next/image"
-import avatar from "../Assets/Images/avatar.png"
 import { Trash_Icon } from "../Assets/Icons/Trash"
 import Done_Icon from "../Assets/Icons/Done"
 import { Settings_Icon } from "../Assets/Icons/Settings"
 import Export_Icon from "../Assets/Icons/Export"
+import Avatar from "./Avatar"
 
 export default function Profile({ record }: { record: Record }) {
   const [name, setName] = useState(record.name)
@@ -39,7 +38,7 @@ export default function Profile({ record }: { record: Record }) {
     <div className="Profile">
       <div className="top">
         <div className="header">
-          <Image src={avatar} alt={"avatar"} />
+          <Avatar />
           <input
             id="Name"
             autoComplete="off"

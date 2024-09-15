@@ -22,7 +22,7 @@ export default function Record_List({ activity }: { activity: string }) {
         <>
           <div className="tools">
             <SearchField />
-            <AddButton />
+            <AddButton activity={activity} />
           </div>
           <ul>
             {!records ? (

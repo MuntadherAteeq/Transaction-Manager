@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Plus_Icon from "../Assets/Icons/Plus"
-import { usePathname, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { mutate } from "swr"
 import {
   Tooltip,
@@ -9,9 +9,8 @@ import {
   TooltipTrigger,
 } from "@radix-ui/react-tooltip"
 
-export default function AddButton() {
+export default function AddButton({ activity }: { activity: string }) {
   const [isLoading, setIsLoading] = useState(false)
-  const activity = usePathname().split("/")[1]
   const route = useRouter()
   const handleClick = async () => {
     setIsLoading(true)

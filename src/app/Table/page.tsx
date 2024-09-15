@@ -1,11 +1,23 @@
 "use client"
 
 import { AgGridReact } from "ag-grid-react"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { ColDef } from "ag-grid-community"
-import { Table } from "@prisma/client"
+import { Table, Transaction } from "@prisma/client"
+import { getTransactions } from "./table.actions"
+import AddTransactionButton from "./AddTransactionButton"
 
 export default function TransactionTable({ table }: { table: Table }) {
+  const [data, setData] = useState<Transaction[]>([])
+
+  useEffect(() => {
+    async function fetchData() {
+      const result = await (await getTransactions(table.id)).data
+      setData(result)
+    }
+    fetchData()
+  }, [])
+
   const defaultColDef = useMemo(() => {
     return {
       sortable: true,
@@ -61,7 +73,6 @@ export default function TransactionTable({ table }: { table: Table }) {
 
   return (
     <div className="flex flex-col w-full h-full">
-      <button className="inline-button">Add New Transaction</button>
       <AgGridReact
         className="ag-theme-quartz-dark w-full h-full"
         rowData={rowData}
@@ -69,6 +80,7 @@ export default function TransactionTable({ table }: { table: Table }) {
         domLayout="autoHeight"
         defaultColDef={defaultColDef}
       />
+      <AddTransactionButton tableId={table.id} />
     </div>
   )
 }

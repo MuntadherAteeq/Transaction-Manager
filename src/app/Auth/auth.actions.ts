@@ -63,7 +63,16 @@ export const signOut = async () => {
   const sessionId = cookies().get(sessionCookieName)?.value
   if (!sessionId) return { error: "No session found", success: false }
 
-  await lucia.deleteExpiredSessions()
-  cookies().delete(sessionCookieName)
-  return { success: true }
+  try {
+    const { user } = await lucia.validateSession(sessionId)
+    if (user) {
+      await prisma.session.deleteMany({
+        where: { userId: user.id },
+      })
+    }
+    cookies().delete(sessionCookieName)
+    return { success: true }
+  } catch (error) {
+    return { error: "An error occurred", success: false }
+  }
 }

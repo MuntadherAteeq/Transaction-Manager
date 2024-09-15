@@ -3,11 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "bunx prisma db push; next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "prisma": "bunx prisma db push"
+    "lint": "next lint"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

@@ -1,19 +1,12 @@
-import avatar from "../Assets/Images/Avatar.png"
-import Image from "next/image"
 import type { Record } from "@prisma/client"
+import Avatar from "./Avatar"
 
 export default function Record_item({ record }: { record: Record }) {
   const data = record
   return (
     <div className="Deal-Item">
       <div className="avatar-container">
-        <Image
-          src={avatar}
-          id="avatar"
-          alt="avatar"
-          draggable="false"
-          priority={true}
-        />
+        <Avatar id="avatar" draggable="false" />
       </div>
       <div className="info-container">
         <div className="top">
