@@ -23,16 +23,25 @@ label {
 // dark theme
 :root {
   --title-bar-hight: 40px;
-  --background-color: #171717;
-  --foreground-color: #292929;
-  --text: #cccccc;
+  --background-color: hsl(0, 0%, 9%);
+  --foreground-color: hsl(0, 0%, 16%);
+  --text: hsl(0, 0%, 80%);
   --outline: #404040;
   --hover: #80808025;
   --hover-x2: #80808010;
   --primary-color: #097cc3;
-  --positive: #04ae59;
-  --negative: #ae0421;
+  --positive: hsl(150, 96%, 35%);
+  --negative: hsl(350, 96%, 35%);
   --primary-hover: #097cc325;
+  // Shadcn Themes
+  --background: 0, 0%, 9%;
+  --foreground: 0, 0%, 80%;
+  --card: 0, 0%, 16%;
+  --border: 0, 0%, 20%;
+  --input: 0, 0%, 40%;
+  --primary: 0, 0%, 9%;
+  --primary-foreground: 0, 0%, 80%;
+  --destructive: 350, 96%, 35%;
 }
 
 body {
