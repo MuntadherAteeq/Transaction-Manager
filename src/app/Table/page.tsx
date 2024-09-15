@@ -19,7 +19,12 @@ export default function TransactionTable({ table }: { table: Table }) {
       field: "price",
       editable: true,
       cellRenderer: (params: { value: number }) => {
-        if (params.value === undefined || params.value === 0) return ""
+        if (
+          params.value === undefined ||
+          params.value === 0 ||
+          params.value === null
+        )
+          return ""
         return `${params.value.toFixed(3)} BD`
       },
     },
@@ -30,7 +35,6 @@ export default function TransactionTable({ table }: { table: Table }) {
         if (
           params.value === undefined ||
           params.value === 0 ||
-          params.value === 1 ||
           params.value === null
         )
           return ""
@@ -46,7 +50,11 @@ export default function TransactionTable({ table }: { table: Table }) {
   ])
 
   // Row Data: The data to be displayed.
-  const [rowData, setRowData] = useState([{ desc: "", price: 0, qty: null }])
+  const [rowData, setRowData] = useState([
+    { desc: "", price: 0, qty: 1 },
+    { desc: "", price: 0, qty: 1 },
+    { desc: "", price: 0, qty: 1 },
+  ])
 
   // Calculate the total of all totals
   // const Sum = rowData.reduce((acc, row) => acc + row.price * row.qty, 0)
