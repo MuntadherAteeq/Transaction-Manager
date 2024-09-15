@@ -3,7 +3,7 @@ import { Handle } from "../errorHandler"
 import { ErrorResponse, JsonResponse } from "../../Utils/response"
 
 import { Activities } from "../../Utils/common"
-// return all archive records
+import { getUser } from "@/app/Library/lucia"
 
 export const GET = Handle(async (req: NextRequest) => {
   if (req.method !== "GET") {
@@ -11,10 +11,12 @@ export const GET = Handle(async (req: NextRequest) => {
   }
 
   const Activity = req.nextUrl.searchParams.get("activity")
+  const user = await getUser()
+  console.log(user)
 
   if (Activity !== null && Activities.includes(Activity)) {
     const records = await prisma.record.findMany({
-      where: { category: Activity },
+      where: { userId: user?.id, category: Activity },
     })
     return JsonResponse(records, 200)
   }
