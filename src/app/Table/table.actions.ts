@@ -1,4 +1,5 @@
 "use server"
+import { Decimal } from "@prisma/client/runtime/library"
 import { Transaction } from "@prisma/client"
 
 export const getTransactions = async (tableId: number) => {
@@ -45,6 +46,39 @@ export const clearTransactions = async (tableId: number) => {
     })
     return { error: "", status: 200 }
   } catch (error) {
+    return { error: "Process Failed", status: 500 }
+  }
+}
+
+export const updatePrice = async (transactionId: number, price: number) => {
+  try {
+    await prisma.transaction.update({
+      where: {
+        id: transactionId,
+      },
+      data: {
+        amount: new Decimal(price), // Ensure price is converted to Decimal if needed
+      },
+    })
+    return { error: "", status: 200 }
+  } catch (error) {
+    console.error("Error updating price:", error)
+    return { error: "Process Failed", status: 500 }
+  }
+}
+export const updateDesc = async (transactionId: number, newDesc: string) => {
+  try {
+    await prisma.transaction.update({
+      where: {
+        id: transactionId,
+      },
+      data: {
+        description: newDesc, // Ensure price is converted to Decimal if needed
+      },
+    })
+    return { error: "", status: 200 }
+  } catch (error) {
+    console.error("Error updating price:", error)
     return { error: "Process Failed", status: 500 }
   }
 }

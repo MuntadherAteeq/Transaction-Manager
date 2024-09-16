@@ -1,78 +1,86 @@
 "use client"
 
 import { AgGridReact } from "ag-grid-react"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState, useCallback } from "react"
 import { ColDef } from "ag-grid-community"
 import { Table, Transaction } from "@prisma/client"
-import { getTransactions } from "./table.actions"
+import { getTransactions, updateDesc, updatePrice } from "./table.actions"
 import AddTransactionButton from "./AddTransactionButton"
 
 export default function TransactionTable({ table }: { table: Table }) {
-  const [data, setData] = useState<Transaction[]>([])
+  const [rowData, setRowData] = useState<Transaction[]>([])
+
+  const fetchData = useCallback(async () => {
+    const result = await getTransactions(table.id)
+    setRowData(result.data)
+  }, [table.id])
 
   useEffect(() => {
-    async function fetchData() {
-      const result = await (await getTransactions(table.id)).data
-      setData(result)
-    }
     fetchData()
-  }, [])
+  }, [fetchData])
 
-  const defaultColDef = useMemo(() => {
-    return {
+  const defaultColDef = useMemo(
+    () => ({
       sortable: true,
       flex: 1,
-    }
-  }, [])
+    }),
+    []
+  )
 
-  const [colDefs, setColDefs] = useState<ColDef[]>([
-    { field: "desc", editable: true },
-    {
-      field: "price",
-      editable: true,
-      cellRenderer: (params: { value: number }) => {
-        if (
-          params.value === undefined ||
-          params.value === 0 ||
-          params.value === null
-        )
-          return ""
-        return `${params.value.toFixed(3)} BD`
+  const colDefs = useMemo<ColDef[]>(
+    () => [
+      {
+        field: "description",
+        editable: true,
+        onCellValueChanged: async (params) => {
+          if (params.oldValue !== params.newValue) {
+            const res = await updateDesc(params.data.id, params.newValue)
+            res.status !== 200 ? alert("Failed to update price") : null
+          }
+        },
       },
-    },
-    {
-      field: "qty",
-      editable: true,
-      cellRenderer: (params: { value: number }) => {
-        if (
-          params.value === undefined ||
-          params.value === 0 ||
-          params.value === null
-        )
-          return ""
-        return `${params.value}`
+      {
+        field: "amount",
+        editable: true,
+        onCellValueChanged: async (params) => {
+          if (params.oldValue !== params.newValue) {
+            const res = await updatePrice(
+              params.data.id,
+              Number(params.newValue)
+            )
+            res.status !== 200 ? alert("Failed to update price") : null
+            return Number(params.newValue)
+          }
+        },
+        cellRenderer: (params: { value: number }) => {
+          if (!params.value) return ""
+          return `${Number(params.value).toFixed(3)} BD`
+        },
       },
-    },
-    {
-      field: "total",
-      valueGetter: (params: { data: { price: number; qty: number } }) => {
-        return params.data.price * params.data.qty
+      {
+        field: "qty",
+        editable: true,
+        cellRenderer: (params: { value: number }) => {
+          if (!params.value) return ""
+          return `${params.value}`
+        },
       },
-    },
-  ])
-
-  // Row Data: The data to be displayed.
-  const [rowData, setRowData] = useState([
-    { desc: "", price: 0, qty: 1 },
-    { desc: "", price: 0, qty: 1 },
-    { desc: "", price: 0, qty: 1 },
-  ])
+      {
+        field: "total",
+        valueGetter: (params: { data: { amount: number; qty: number } }) => {
+          return `${(params.data.amount * params.data.qty).toFixed(3)} BD`
+        },
+      },
+    ],
+    []
+  )
 
   // Calculate the total of all totals
   // const Sum = rowData.reduce((acc, row) => acc + row.price * row.qty, 0)
 
   return (
     <div className="flex flex-col w-full h-full">
+      <AddTransactionButton tableId={table.id} />
       <AgGridReact
         className="ag-theme-quartz-dark w-full h-full"
         rowData={rowData}
@@ -80,7 +88,6 @@ export default function TransactionTable({ table }: { table: Table }) {
         domLayout="autoHeight"
         defaultColDef={defaultColDef}
       />
-      <AddTransactionButton tableId={table.id} />
     </div>
   )
 }
