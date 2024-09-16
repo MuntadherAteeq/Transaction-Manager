@@ -4,13 +4,13 @@ import { ErrorResponse, JsonResponse } from "../../Utils/response"
 
 export const GET = Handle(async (req: NextRequest) => {
   if (req.method !== "GET") return ErrorResponse("Method Not Allowed", 405)
-
   const recordId = req.nextUrl.searchParams.get("recordId")
 
   if (recordId === null) return ErrorResponse("Invalid Record ID", 400)
 
   const records = await prisma.table.findMany({
     where: { recordId: Number(recordId) },
+    orderBy: { id: "desc" },
   })
   return JsonResponse(records, 200)
 })

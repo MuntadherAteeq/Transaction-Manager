@@ -82,3 +82,19 @@ export const updateDesc = async (transactionId: number, newDesc: string) => {
     return { error: "Process Failed", status: 500 }
   }
 }
+export const updateQuantity = async (transactionId: number, qty: number) => {
+  try {
+    await prisma.transaction.update({
+      where: {
+        id: transactionId,
+      },
+      data: {
+        qty: qty,
+      },
+    })
+    return { error: "", status: 200 }
+  } catch (error) {
+    console.error("Error updating quantity:", error)
+    return { error: "Process Failed", status: 500 }
+  }
+}

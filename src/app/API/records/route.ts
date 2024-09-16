@@ -16,6 +16,7 @@ export const GET = Handle(async (req: NextRequest) => {
   if (Activity !== null && Activities.includes(Activity)) {
     const records = await prisma.record.findMany({
       where: { userId: user?.id, category: Activity },
+      orderBy: { id: "desc" },
     })
     return JsonResponse(records, 200)
   }

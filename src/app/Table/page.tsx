@@ -4,7 +4,12 @@ import { AgGridReact } from "ag-grid-react"
 import { useEffect, useMemo, useState, useCallback } from "react"
 import { ColDef } from "ag-grid-community"
 import { Table, Transaction } from "@prisma/client"
-import { getTransactions, updateDesc, updatePrice } from "./table.actions"
+import {
+  getTransactions,
+  updateDesc,
+  updatePrice,
+  updateQuantity,
+} from "./table.actions"
 import AddTransactionButton from "./AddTransactionButton"
 
 export default function TransactionTable({ table }: { table: Table }) {
@@ -27,41 +32,59 @@ export default function TransactionTable({ table }: { table: Table }) {
     []
   )
 
-  const colDefs = useMemo<ColDef[]>(
+  const columnDefs = useMemo<ColDef[]>(
     () => [
       {
         field: "description",
         editable: true,
         onCellValueChanged: async (params) => {
           if (params.oldValue !== params.newValue) {
-            const res = await updateDesc(params.data.id, params.newValue)
-            res.status !== 200 ? alert("Failed to update price") : null
+            await updateDesc(params.data.id, params.newValue)
           }
         },
       },
       {
         field: "amount",
         editable: true,
+        cellEditor: "agNumericCellEditor",
+        cellEditorParams: {
+          precision: 2,
+          step: 0.25,
+          showStepperButtons: true,
+        },
         onCellValueChanged: async (params) => {
           if (params.oldValue !== params.newValue) {
             const res = await updatePrice(
               params.data.id,
               Number(params.newValue)
             )
-            res.status !== 200 ? alert("Failed to update price") : null
-            return Number(params.newValue)
+            return res.status === 200 ? params.newValue : params.oldValue
           }
+          return params.oldValue
         },
         cellRenderer: (params: { value: number }) => {
-          if (!params.value) return ""
-          return `${Number(params.value).toFixed(3)} BD`
+          const amount = Number(params.value)
+          if (amount === 0) return ""
+          return `${amount.toFixed(3)} BD`
         },
       },
       {
         field: "qty",
         editable: true,
+        cellEditor: "agNumericCellEditor",
+        cellEditorParams: {
+          precision: 0,
+          step: 1,
+          showStepperButtons: true,
+        },
+        onCellValueChanged: async (params) => {
+          if (params.oldValue !== params.newValue) {
+            await updateQuantity(params.data.id, params.newValue)
+          }
+        },
         cellRenderer: (params: { value: number }) => {
-          if (!params.value) return ""
+          const qty = Number(params.value)
+          if (qty === 0 || qty === null || qty === undefined) return ""
           return `${params.value}`
         },
       },
@@ -84,7 +107,7 @@ export default function TransactionTable({ table }: { table: Table }) {
       <AgGridReact
         className="ag-theme-quartz-dark w-full h-full"
         rowData={rowData}
-        columnDefs={colDefs}
+        columnDefs={columnDefs}
         domLayout="autoHeight"
         defaultColDef={defaultColDef}
       />
