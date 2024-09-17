@@ -5,6 +5,7 @@ import Wallet_Icon from "../Assets/Icons/Wallet"
 import { Box_Icon } from "../Assets/Icons/Box"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { DashboardIcon } from "@radix-ui/react-icons"
 
 interface ActivityBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 export default function ActivityBar(props: ActivityBarProps) {
@@ -14,6 +15,7 @@ export default function ActivityBar(props: ActivityBarProps) {
         <Activity id="Archive" svg={<Box_Icon />} />
         <Activity id="History" svg={<History_Icon />} />
         <Activity id="Wallet" svg={<Wallet_Icon />} />
+        <Activity id="Dashboard" svg={<DashboardIcon />} />
       </div>
       <div className="bottom">
         <Settings_Icon />

@@ -356,6 +356,9 @@ body {
     & path {
       opacity: 1;
     }
+    & rect {
+      opacity: 1;
+    }
   }
 
   .top,
@@ -373,9 +376,16 @@ body {
         fill: var(--text);
         opacity: 0.5;
       }
+      rect {
+        color: var(--text);
+        opacity: 0.5;
+      }
     }
     & svg:hover {
       path {
+        opacity: 1;
+      }
+      rect {
         opacity: 1;
       }
     }
