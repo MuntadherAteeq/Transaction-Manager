@@ -46,64 +46,58 @@ export default function TransactionTable({ table }: { table: Table }) {
       {
         field: "amount",
         editable: true,
-        cellEditor: "agNumericCellEditor",
-        cellEditorParams: {
-          precision: 2,
-          step: 0.25,
-          showStepperButtons: true,
+        cellEditor: "agNumberCellEditor",
+        cellEditorParams: { showStepperButtons: false },
+        valueGetter: (params: { data: { amount: number } }) => {
+          return params.data.amount / 1000
         },
+        valueSetter: (params: {
+          data: { amount: number }
+          newValue: number
+        }) => {
+          params.data.amount = Number((params.newValue * 1000).toFixed(0))
+          return true
+        },
+
         onCellValueChanged: async (params) => {
-          if (params.oldValue !== params.newValue) {
-            const res = await updatePrice(
-              params.data.id,
-              Number(params.newValue)
-            )
-            return res.status === 200 ? params.newValue : params.oldValue
-          }
-          return params.oldValue
+          const res = await updatePrice(params.data.id, params.data.amount)
+          res.status !== 200 ? fetchData() : null
         },
         cellRenderer: (params: { value: number }) => {
           const amount = Number(params.value)
-          if (amount === 0) return ""
-          return `${amount.toFixed(3)} BD`
+          console.log(amount)
+          if (amount === 0 || amount === null || amount === undefined) return ""
+          return `${params.value.toFixed(3)} BD`
         },
       },
       {
         field: "qty",
         editable: true,
-        cellEditor: "agNumericCellEditor",
-        cellEditorParams: {
-          precision: 0,
-          step: 1,
-          showStepperButtons: true,
-        },
+        cellEditor: "agNumberCellEditor",
+        cellEditorParams: { showStepperButtons: false },
         onCellValueChanged: async (params) => {
-          if (params.oldValue !== params.newValue) {
-            await updateQuantity(params.data.id, params.newValue)
-          }
+          await updateQuantity(params.data.id, params.newValue)
         },
         cellRenderer: (params: { value: number }) => {
           const qty = Number(params.value)
           if (qty === 0 || qty === null || qty === undefined) return ""
-          return `${params.value}`
+          return params.value
         },
       },
       {
         field: "total",
         valueGetter: (params: { data: { amount: number; qty: number } }) => {
-          return `${(params.data.amount * params.data.qty).toFixed(3)} BD`
+          return `${((params.data.amount / 1000) * params.data.qty).toFixed(
+            3
+          )} BD`
         },
       },
     ],
     []
   )
-
-  // Calculate the total of all totals
-  // const Sum = rowData.reduce((acc, row) => acc + row.price * row.qty, 0)
-
   return (
     <div className="flex flex-col w-full h-full">
-      <AddTransactionButton tableId={table.id} />
+      <AddTransactionButton tableId={table.id} onClick={fetchData} />
       <AgGridReact
         className="ag-theme-quartz-dark w-full h-full"
         rowData={rowData}

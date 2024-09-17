@@ -52,7 +52,7 @@ model Table {
   recordId     Int
   name         String?       @default("Untitled")
   description  String?
-  total        Decimal       @default(0)
+  total        Int           @default(0)
   transactions Transaction[]
   record       Record        @relation(fields: [recordId], references: [id])
   createdAt    DateTime      @default(now())
@@ -62,7 +62,7 @@ model Table {
 model Transaction {
   id          Int      @id @default(autoincrement())
   tableId     Int
-  amount      Decimal  @default(0)
+  amount      Int      @default(0)
   type        String
   description String?
   date        DateTime

@@ -3,7 +3,13 @@ import { useState } from "react"
 import { addTransaction, clearTransactions } from "./table.actions"
 import { PlusIcon } from "@radix-ui/react-icons"
 
-export default function AddTransactionButton({ tableId }: { tableId: number }) {
+export default function AddTransactionButton({
+  tableId,
+  onClick,
+}: {
+  tableId: number
+  onClick: () => void
+}) {
   const [count, setCount] = useState(0)
 
   async function add() {
@@ -21,12 +27,21 @@ export default function AddTransactionButton({ tableId }: { tableId: number }) {
     <div className="flex flex-row gap-2">
       <button
         className="flex items-center inline-button !bg-background"
-        onClick={add}
+        onClick={() => {
+          add()
+          onClick()
+        }}
       >
         <PlusIcon className="m-1" />
-        New 
+        New
       </button>
-      <button className="inline-button !bg-background" onClick={clear}>
+      <button
+        className="inline-button !bg-background"
+        onClick={() => {
+          clear()
+          onClick()
+        }}
+      >
         Clear
       </button>
     </div>
