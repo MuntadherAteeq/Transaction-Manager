@@ -25,10 +25,8 @@ export default function AddButton({ activity }: { activity: string }) {
     if (response.ok) {
       setIsLoading(false)
       const list = await mutate(`/API/records?activity=${activity}`)
-      if (list && Array.isArray(list)) {
-        const record = list[list.length - 1]
-        route.push(`/${activity}/${record.id}`)
-      }
+      if (list && Array.isArray(list))
+        route.replace(`/${activity}/${list[0].id}`)
     }
   }
 
