@@ -15,7 +15,7 @@ import Avatar from "./Avatar"
 export default function Profile({ record }: { record: Record }) {
   const [name, setName] = useState(record.name)
   const keys = useMemo(
-    () => ["phone", "total", "email", "desc", "address", "category"],
+    () => ["phone", "balance", "email", "desc", "address", "category"],
     []
   )
 

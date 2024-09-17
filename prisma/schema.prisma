@@ -35,7 +35,7 @@ model Record {
   id        Int      @id @default(autoincrement())
   category  String?
   name      String?  @default("Untitled")
-  total     Float    @default(0)
+  balance   Float    @default(0)
   email     String?
   phone     String?
   address   String?

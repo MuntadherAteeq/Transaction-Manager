@@ -5,7 +5,8 @@ import { ErrorResponse, JsonResponse } from "../../Utils/response"
 export const POST = Handle(async (req: NextRequest) => {
   if (req.method !== "POST") return ErrorResponse("Invalid request method", 405)
 
-  // Clear all tables
+  // Clear all Data
+  await prisma.transaction.deleteMany({})
   await prisma.table.deleteMany({})
   await prisma.record.deleteMany({})
 
