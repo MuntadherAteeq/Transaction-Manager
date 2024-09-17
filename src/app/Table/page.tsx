@@ -10,7 +10,7 @@ import {
   updatePrice,
   updateQuantity,
 } from "./table.actions"
-import AddTransactionButton from "./AddTransactionButton"
+import AddTransactionButton from "./TableOptions"
 
 export default function TransactionTable({ table }: { table: Table }) {
   const [rowData, setRowData] = useState<Transaction[]>([])
@@ -104,6 +104,7 @@ export default function TransactionTable({ table }: { table: Table }) {
         columnDefs={columnDefs}
         domLayout="autoHeight"
         defaultColDef={defaultColDef}
+        // selection={selection}
       />
     </div>
   )

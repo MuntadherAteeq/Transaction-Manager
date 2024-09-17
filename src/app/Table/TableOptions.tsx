@@ -3,7 +3,7 @@ import { useState } from "react"
 import { addTransaction, clearTransactions } from "./table.actions"
 import { PlusIcon } from "@radix-ui/react-icons"
 
-export default function AddTransactionButton({
+export default function TableOptions({
   tableId,
   onClick,
 }: {
