@@ -6,18 +6,20 @@ import { redirect } from "next/navigation"
 import Link from "next/link"
 import Logo_Icon from "../Assets/Icons/Logo"
 import { GitHubLogoIcon } from "@radix-ui/react-icons"
+import { ImageSlider } from "../Components/ImageSlider"
 
 export default async function Auth() {
   ;(await getUser()) ? redirect("/") : null
   return (
     <div className=" flex relative  h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-      <div className=" relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
-        <div className=" absolute inset-0 bg-card" />
+      <div className=" flex justify-between relative h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r sm:hidden">
+        <div className="  absolute inset-0 bg-card " />
         <div className=" relative z-20 flex items-center text-3xl font-medium gap-2">
           <Logo_Icon className="w-12 h-12" />
           <span>Transaction Manager</span>
         </div>
-        <div className="relative z-20 mt-auto">
+        <ImageSlider />
+        <div className="relative z-20">
           <blockquote className="space-y-2">
             <p className="text-lg">
               &ldquo;Transaction Manager is a powerful tool designed to help you

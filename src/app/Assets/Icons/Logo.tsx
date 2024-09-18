@@ -65,9 +65,9 @@ export default function Logo_Icon(props: React.SVGProps<SVGSVGElement>) {
           width="357.436"
           height="131.12"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -99,9 +99,9 @@ export default function Logo_Icon(props: React.SVGProps<SVGSVGElement>) {
           width="199.6"
           height="303.839"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -133,9 +133,9 @@ export default function Logo_Icon(props: React.SVGProps<SVGSVGElement>) {
           width="81.9661"
           height="204.922"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -168,9 +168,9 @@ export default function Logo_Icon(props: React.SVGProps<SVGSVGElement>) {
           y2="119.72"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#342DF7" />
-          <stop offset="0.475" stop-color="#3986F9" />
-          <stop offset="1" stop-color="white" />
+          <stop stopColor="#342DF7" />
+          <stop offset="0.475" stopColor="#3986F9" />
+          <stop offset="1" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_1439_84"
@@ -180,8 +180,8 @@ export default function Logo_Icon(props: React.SVGProps<SVGSVGElement>) {
           y2="60.7608"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#4C5CE9" />
-          <stop offset="1" stop-color="#7DB0FB" />
+          <stop stopColor="#4C5CE9" />
+          <stop offset="1" stopColor="#7DB0FB" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_1439_84"
@@ -191,8 +191,8 @@ export default function Logo_Icon(props: React.SVGProps<SVGSVGElement>) {
           y2="286.294"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#70A7FB" />
-          <stop offset="1" stop-color="#3981F9" />
+          <stop stopColor="#70A7FB" />
+          <stop offset="1" stopColor="#3981F9" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_1439_84"
@@ -202,9 +202,9 @@ export default function Logo_Icon(props: React.SVGProps<SVGSVGElement>) {
           y2="509.894"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#342DF7" />
-          <stop offset="0.55" stop-color="#3986F9" />
-          <stop offset="1" stop-color="white" />
+          <stop stopColor="#342DF7" />
+          <stop offset="0.55" stopColor="#3986F9" />
+          <stop offset="1" stopColor="white" />
         </linearGradient>
       </defs>
     </svg>

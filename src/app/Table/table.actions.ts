@@ -1,5 +1,4 @@
 "use server"
-import { Decimal } from "@prisma/client/runtime/library"
 import { Transaction } from "@prisma/client"
 
 export const getTransactions = async (tableId: number) => {
@@ -57,7 +56,7 @@ export const updatePrice = async (transactionId: number, price: number) => {
         id: transactionId,
       },
       data: {
-        amount: new Decimal(price), // Ensure price is converted to Decimal if needed
+        amount: price, // Ensure price is converted to Decimal if needed
       },
     })
     return { error: "", status: 200 }

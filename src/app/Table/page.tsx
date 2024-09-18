@@ -65,7 +65,6 @@ export default function TransactionTable({ table }: { table: Table }) {
         },
         cellRenderer: (params: { value: number }) => {
           const amount = Number(params.value)
-          console.log(amount)
           if (amount === 0 || amount === null || amount === undefined) return ""
           return `${params.value.toFixed(3)} BD`
         },
