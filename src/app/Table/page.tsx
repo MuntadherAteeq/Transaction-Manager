@@ -49,19 +49,24 @@ export default function TransactionTable({ table }: { table: Table }) {
         cellEditor: "agNumberCellEditor",
         cellEditorParams: { showStepperButtons: false },
         valueGetter: (params: { data: { amount: number } }) => {
-          return params.data.amount / 1000
+          return params.data?.amount ? params.data.amount / 1000 : 0
         },
         valueSetter: (params: {
           data: { amount: number }
           newValue: number
         }) => {
-          params.data.amount = Number((params.newValue * 1000).toFixed(0))
-          return true
+          if (params.data) {
+            params.data.amount = Number((params.newValue * 1000).toFixed(0))
+            return true
+          }
+          return false
         },
 
         onCellValueChanged: async (params) => {
-          const res = await updatePrice(params.data.id, params.data.amount)
-          res.status !== 200 ? fetchData() : null
+          if (params.data) {
+            const res = await updatePrice(params.data.id, params.data.amount)
+            res.status !== 200 ? fetchData() : null
+          }
         },
         cellRenderer: (params: { value: number }) => {
           const amount = Number(params.value)
@@ -75,7 +80,9 @@ export default function TransactionTable({ table }: { table: Table }) {
         cellEditor: "agNumberCellEditor",
         cellEditorParams: { showStepperButtons: false },
         onCellValueChanged: async (params) => {
-          await updateQuantity(params.data.id, params.newValue)
+          if (params.data) {
+            await updateQuantity(params.data.id, params.newValue)
+          }
         },
         cellRenderer: (params: { value: number }) => {
           const qty = Number(params.value)
@@ -86,9 +93,12 @@ export default function TransactionTable({ table }: { table: Table }) {
       {
         field: "total",
         valueGetter: (params: { data: { amount: number; qty: number } }) => {
-          return `${((params.data.amount / 1000) * params.data.qty).toFixed(
-            3
-          )} BD`
+          if (params.data?.amount && params.data?.qty) {
+            return `${((params.data.amount / 1000) * params.data.qty).toFixed(
+              3
+            )} BD`
+          }
+          return "0.000 BD"
         },
       },
     ],
@@ -103,7 +113,7 @@ export default function TransactionTable({ table }: { table: Table }) {
         columnDefs={columnDefs}
         domLayout="autoHeight"
         defaultColDef={defaultColDef}
-        // selection={selection}
+        // grandTotalRow="bottom"
       />
     </div>
   )
