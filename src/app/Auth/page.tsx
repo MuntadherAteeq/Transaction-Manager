@@ -5,6 +5,7 @@ import { getUser } from "../Library/lucia"
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import Logo_Icon from "../Assets/Icons/Logo"
+import { GitHubLogoIcon } from "@radix-ui/react-icons"
 
 export default async function Auth() {
   ;(await getUser()) ? redirect("/") : null
@@ -26,12 +27,21 @@ export default async function Auth() {
             </p>
             <footer className="text-sm">
               Developed by
-              <Link
-                className=" inline-button hover:!bg-transparent"
-                href={"https://github.com/MuntadherAteeq"}
-              >
-                @MuntadherAteeq
-              </Link>
+              <span>
+                <Link
+                  passHref
+                  legacyBehavior
+                  href={"https://github.com/MuntadherAteeq"}
+                >
+                  <a
+                    className="inline-block items-center  text-gray-300 hover:text-gray-100 ml-2"
+                    target="_blank"
+                  >
+                    <GitHubLogoIcon className="w-4 h-4 inline " />
+                    <span className="ml-1">MuntadherAteeq</span>
+                  </a>
+                </Link>
+              </span>
             </footer>
           </blockquote>
         </div>

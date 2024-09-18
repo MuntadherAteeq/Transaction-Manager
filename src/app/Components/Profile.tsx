@@ -11,6 +11,7 @@ import Done_Icon from "../Assets/Icons/Done"
 import { Settings_Icon } from "../Assets/Icons/Settings"
 import Export_Icon from "../Assets/Icons/Export"
 import Avatar from "./Avatar"
+import { HomeIcon } from "@radix-ui/react-icons"
 
 export default function Profile({ record }: { record: Record }) {
   const [name, setName] = useState(record.name)
@@ -24,6 +25,7 @@ export default function Profile({ record }: { record: Record }) {
     date: <Calender_Icon />,
     email: <Email_Icon />,
     desc: <Info_Icon />,
+    address: <HomeIcon />,
   }
 
   const GetIcon = (type: string): ReactNode => {
