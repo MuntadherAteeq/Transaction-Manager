@@ -27,7 +27,7 @@ export function GlassTooltip({
           <TooltipContent side={position}>
             <div
               role="tooltip"
-              className=" px-3 py-2 text-sm font-medium   rounded-lg shadow-sm tooltip backdrop-blur-sm border-[1px] bg-transparent "
+              className=" px-3 py-2 text-sm font-medium rounded-lg shadow-sm backdrop-blur-sm border-[1px] bg-transparent "
             >
               {content}
             </div>

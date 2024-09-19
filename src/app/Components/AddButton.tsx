@@ -43,10 +43,9 @@ export default function AddButton({ activity }: { activity: string }) {
         <TooltipContent side="top">
           <div
             role="tooltip"
-            className="m-2 px-2 py-1 text-sm font-medium   rounded-lg shadow-sm tooltip backdrop-blur-sm border-[1px] bg-[var(--hover)]"
+            className="animate-fadeIn m-2 px-2 py-1 text-sm font-medium rounded-lg shadow-sm tooltip backdrop-blur-sm border-[1px] bg-transparent]"
           >
-            Create new Record
-            <div className="tooltip-arrow" data-popper-arrow></div>
+            Add New Record
           </div>
         </TooltipContent>
       </Tooltip>
