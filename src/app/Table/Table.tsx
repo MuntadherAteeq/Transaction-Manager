@@ -11,9 +11,12 @@ import {
   updateQuantity,
 } from "./table.actions"
 import AddTransactionButton from "./TableOptions"
+import TableFooter from "./TableFooter"
 
 export default function TransactionTable({ table }: { table: Table }) {
   const [rowData, setRowData] = useState<Transaction[]>([])
+  const [updatedTransaction, setUpdatedTransaction] =
+    useState<Transaction | null>(null)
 
   const fetchData = useCallback(async () => {
     const result = await getTransactions(table.id)
@@ -61,11 +64,13 @@ export default function TransactionTable({ table }: { table: Table }) {
           }
           return false
         },
-
         onCellValueChanged: async (params) => {
           if (params.data) {
             const res = await updatePrice(params.data.id, params.data.amount)
-            res.status !== 200 ? fetchData() : null
+            if (res.status !== 200) {
+              fetchData()
+            }
+            setUpdatedTransaction(params.data)
           }
         },
         cellRenderer: (params: { value: number }) => {
@@ -82,7 +87,10 @@ export default function TransactionTable({ table }: { table: Table }) {
         onCellValueChanged: async (params) => {
           if (params.data) {
             const res = await updateQuantity(params.data.id, params.newValue)
-            res.status !== 200 ? fetchData() : null
+            if (res.status !== 200) {
+              fetchData()
+            }
+            setUpdatedTransaction(params.data)
           }
         },
         cellRenderer: (params: { value: number }) => {
@@ -116,12 +124,17 @@ export default function TransactionTable({ table }: { table: Table }) {
         domLayout="autoHeight"
         defaultColDef={defaultColDef}
       />
-      <tfoot className="w-full bg-table_primary border-solid border-[1px] border-background rounded-b-[7px] p-1">
+      <tfoot className="w-full  border-solid  rounded-b-[7px] p-1">
         <tr className="grid grid-cols-4 ">
           <td></td>
           <td></td>
           <td>Total : </td>
-          <td className="px-[15px]">{table.total ? "BD" : ""}</td>
+          <td className="px-[15px]">
+            <TableFooter
+              rowData={rowData}
+              updatedTransaction={updatedTransaction}
+            />
+          </td>
         </tr>
       </tfoot>
     </div>

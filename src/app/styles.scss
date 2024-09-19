@@ -711,15 +711,12 @@ body {
   --ag-header-background-color: var(--background-color) !important;
   --ag-row-hover-color: rgba(9, 124, 195, 0.15) !important;
   --ag-active-color: var(--primary-color) !important;
-  --ag-border-color: var(--background-color) !important;
   height: auto !important;
 
   .ag-header-viewport {
     background-color: hsla(203, 91%, 40%, 0.45) !important;
-    border-bottom: 2px solid var(--outline) !important;
   }
   .ag-root-wrapper {
-    margin-bottom: 0px !important;
     border-radius: 7px 7px 0 0 !important;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15) !important;
   }
@@ -729,6 +726,7 @@ body {
   }
 }
 tfoot {
-  background-color: var(--background-color);
+  z-index: 2;
   border-top: 1px solid var(--outline);
+  background-color: #114565 !important;
 }
