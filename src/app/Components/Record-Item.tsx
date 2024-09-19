@@ -1,10 +1,16 @@
 import type { Record } from "@prisma/client"
 import Avatar from "./Avatar"
 
-export default function Record_item({ record }: { record: Record }) {
+export default function Record_item({
+  record,
+  animation,
+}: {
+  record: Record
+  animation: string
+}) {
   const data = record
   return (
-    <div className="Deal-Item">
+    <div className={`Record-Item ${animation}`}>
       <div className="avatar-container">
         <Avatar id="avatar" draggable="false" />
       </div>

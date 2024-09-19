@@ -6,12 +6,14 @@ import Link from "next/link"
 import Record_item from "./Record-Item"
 import useSWR from "swr"
 import { fetcher } from "../Utils/common"
+import { Record } from "@prisma/client"
 
 export default function Record_List({ activity }: { activity: string }) {
-  const { data: records, error } = useSWR(
+  const { data: records, error } = useSWR<Record[]>(
     `/API/records?activity=${activity}`,
     fetcher
   )
+
   return (
     <>
       {error ? (
@@ -32,9 +34,9 @@ export default function Record_List({ activity }: { activity: string }) {
                 <p className="text-2xl text-stone-500">Empty</p>
               </div>
             ) : (
-              records.map((record: any) => (
+              records.map((record) => (
                 <Link href={`/${activity}/${record.id}`} key={record.id}>
-                  <Record_item record={record} />
+                  <Record_item record={record} animation={""} />
                 </Link>
               ))
             )}

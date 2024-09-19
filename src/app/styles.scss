@@ -394,13 +394,14 @@ body {
 }
 
 // Deal Item List
-.Deal-Item {
+.Record-Item {
   display: flex;
   flex-direction: row;
   min-height: 80px;
   user-select: none;
   position: relative;
   scrollbar-gutter: stable;
+  animation: showDown 0.5s ease forwards;
 
   // Deal Item hover Effect
 
@@ -729,4 +730,29 @@ tfoot {
   z-index: 2;
   border-top: 1px solid var(--outline);
   background-color: #114565 !important;
+}
+
+@keyframes showDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.scaleUp {
+  animation: scaleUp 0.5s ease forwards;
+}
+
+@keyframes scaleUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
