@@ -37,7 +37,7 @@ export default function Profile({ record }: { record: Record }) {
   }, [keys, record])
 
   return (
-    <div className="Profile">
+    <div className="Profile ">
       <div className="top">
         <div className="header">
           <Avatar />

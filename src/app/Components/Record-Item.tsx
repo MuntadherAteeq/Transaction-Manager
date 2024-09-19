@@ -3,14 +3,13 @@ import Avatar from "./Avatar"
 
 export default function Record_item({
   record,
-  animation,
 }: {
   record: Record
   animation: string
 }) {
   const data = record
   return (
-    <div className={`Record-Item ${animation}`}>
+    <div className="Record-Item animate-show-down">
       <div className="avatar-container">
         <Avatar id="avatar" draggable="false" />
       </div>

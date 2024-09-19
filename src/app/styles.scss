@@ -401,7 +401,6 @@ body {
   user-select: none;
   position: relative;
   scrollbar-gutter: stable;
-  animation: showDown 0.5s ease forwards;
 
   // Deal Item hover Effect
 
@@ -730,15 +729,4 @@ tfoot {
   z-index: 2;
   border-top: 1px solid var(--outline);
   background-color: #114565 !important;
-}
-
-@keyframes showDown {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }

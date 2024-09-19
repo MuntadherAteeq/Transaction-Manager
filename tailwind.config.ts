@@ -81,11 +81,22 @@ const config: Config = {
             opacity: "1",
           },
         },
+        showDown: {
+          from: {
+            opacity: "0",
+            transform: "translateY(-20px)",
+          },
+          to: {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
       },
       animation: {
-        fadeIn: "fadeIn 0.2s ease-out",
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        fadeIn: "fadeIn 0.5s ease-out forwards",
+        "accordion-down": "accordion-down 0.5s ease-out",
+        "accordion-up": "accordion-up 0.5s ease-out",
+        "show-down": "showDown 0.5s ease forwards",
       },
     },
   },

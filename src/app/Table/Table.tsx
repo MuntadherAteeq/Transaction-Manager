@@ -116,7 +116,7 @@ export default function TransactionTable({ table }: { table: Table }) {
   )
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full h-full animate-show-down delay-200 opacity-0">
       <AddTransactionButton tableId={table.id} onClick={fetchData} />
       <AgGridReact
         className="ag-theme-quartz-dark w-full h-full"
