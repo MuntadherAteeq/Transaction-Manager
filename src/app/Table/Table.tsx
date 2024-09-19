@@ -50,7 +50,6 @@ export default function TransactionTable({ table }: { table: Table }) {
         field: "amount",
         editable: true,
         cellEditor: "agNumberCellEditor",
-        cellEditorParams: { showStepperButtons: false },
         valueGetter: (params: { data: { amount: number } }) => {
           return params.data?.amount ? params.data.amount / 1000 : 0
         },
@@ -70,7 +69,10 @@ export default function TransactionTable({ table }: { table: Table }) {
             if (res.status !== 200) {
               fetchData()
             }
-            setUpdatedTransaction(params.data)
+            setUpdatedTransaction({
+              ...params.data,
+              amount: params.data.amount,
+            })
           }
         },
         cellRenderer: (params: { value: number }) => {
@@ -83,14 +85,13 @@ export default function TransactionTable({ table }: { table: Table }) {
         field: "qty",
         editable: true,
         cellEditor: "agNumberCellEditor",
-        cellEditorParams: { showStepperButtons: false },
         onCellValueChanged: async (params) => {
           if (params.data) {
             const res = await updateQuantity(params.data.id, params.newValue)
             if (res.status !== 200) {
               fetchData()
             }
-            setUpdatedTransaction(params.data)
+            setUpdatedTransaction({ ...params.data, qty: params.newValue })
           }
         },
         cellRenderer: (params: { value: number }) => {

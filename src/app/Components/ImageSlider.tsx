@@ -19,7 +19,7 @@ export function ImageSlider() {
   return (
     <Carousel
       plugins={[plugin.current]}
-      className="w-full  relative"
+      className="w-full  relative select-none"
       onMouseEnter={plugin.current.stop}
       onMouseLeave={plugin.current.reset}
     >
@@ -32,7 +32,7 @@ export function ImageSlider() {
                   <Image
                     src={wallpaper}
                     alt="app showcase"
-                    className="aspect-[16/9]  font-semibold rounded-md"
+                    className="font-semibold rounded-md"
                   />
                 </CardContent>
               </Card>

@@ -40,10 +40,10 @@ export default function AddButton({ activity }: { activity: string }) {
         >
           <Plus_Icon />
         </TooltipTrigger>
-        <TooltipContent side="right">
+        <TooltipContent side="top">
           <div
             role="tooltip"
-            className=" px-3 py-2 text-sm font-medium   rounded-lg shadow-sm tooltip bg-background"
+            className="m-2 px-2 py-1 text-sm font-medium   rounded-lg shadow-sm tooltip backdrop-blur-sm border-[1px] bg-[var(--hover)]"
           >
             Create new Record
             <div className="tooltip-arrow" data-popper-arrow></div>

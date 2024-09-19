@@ -36,7 +36,7 @@ export default async function Auth() {
                   href={"https://github.com/MuntadherAteeq"}
                 >
                   <a
-                    className="inline-block items-center  text-gray-300 hover:text-gray-100 ml-2"
+                    className="inline-block items-center select-none  text-gray-300 hover:text-gray-100 ml-2"
                     target="_blank"
                   >
                     <GitHubLogoIcon className="w-4 h-4 inline " />
