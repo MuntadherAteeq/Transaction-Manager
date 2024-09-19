@@ -254,7 +254,12 @@ body {
       align-items: center;
       background-color: hsl(0, 0%, 15%);
       outline: 3px solid hsla(0, 0%, 45%, 0.3);
+      transition: all 0.3s ease;
+      &:hover {
+        background-color: hsla(0, 0%, 45%, 0.5);
+      }
     }
+
     .icon {
       display: flex;
       justify-content: center;
@@ -268,26 +273,11 @@ body {
         width: 100%;
         height: 100%;
         opacity: 0.8;
+        padding: 0.1rem;
         path {
           fill: var(--text);
         }
       }
-    }
-    .green {
-      background-color: hsl(150, 100%, 15%);
-      outline: 3px solid hsla(150, 100%, 45%, 0.3);
-    }
-    .red {
-      background-color: hsl(0, 100%, 15%);
-      outline: 3px solid hsla(0, 100%, 45%, 0.3);
-    }
-    .blue {
-      background-color: hsl(200, 100%, 15%);
-      outline: 3px solid hsla(200, 100%, 45%, 0.3);
-    }
-    .yellow {
-      background-color: hsl(50, 100%, 15%);
-      outline: 3px solid hsla(50, 100%, 45%, 0.3);
     }
   }
 }

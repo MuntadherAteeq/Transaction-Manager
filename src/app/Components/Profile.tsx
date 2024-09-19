@@ -59,26 +59,16 @@ export default function Profile({ record }: { record: Record }) {
         ))}
       </div>
       <div id="options">
-        <Option icon={<Done_Icon />} color="blue">
-          Finish
-        </Option>
-        <Option icon={<Settings_Icon />} color="gray">
-          Edit
-        </Option>
-        {/* // TODO: Develop I Export function  */}
-        <Option icon={<Export_Icon />} color="green">
-          Export
-        </Option>
-        <Option icon={<Trash_Icon />} color="red">
-          Delete
-        </Option>
+        <Option icon={<Done_Icon />}>Finish</Option>
+        <Option icon={<Settings_Icon />}>Edit</Option>
+        <Option icon={<Export_Icon />}>Export</Option>
+        <Option icon={<Trash_Icon />}>Delete</Option>
       </div>
     </div>
   )
 }
 
 export function Option({
-  color,
   children,
   icon,
 }: {
@@ -87,7 +77,7 @@ export function Option({
   icon?: ReactNode
 }) {
   return (
-    <button className={`option ${color}`}>
+    <button className="option">
       <span className="icon">{icon}</span>
       <span>{children}</span>
     </button>
