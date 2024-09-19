@@ -81,7 +81,8 @@ export default function TransactionTable({ table }: { table: Table }) {
         cellEditorParams: { showStepperButtons: false },
         onCellValueChanged: async (params) => {
           if (params.data) {
-            await updateQuantity(params.data.id, params.newValue)
+            const res = await updateQuantity(params.data.id, params.newValue)
+            res.status !== 200 ? fetchData() : null
           }
         },
         cellRenderer: (params: { value: number }) => {
@@ -104,6 +105,7 @@ export default function TransactionTable({ table }: { table: Table }) {
     ],
     []
   )
+
   return (
     <div className="flex flex-col w-full h-full">
       <AddTransactionButton tableId={table.id} onClick={fetchData} />
@@ -113,8 +115,15 @@ export default function TransactionTable({ table }: { table: Table }) {
         columnDefs={columnDefs}
         domLayout="autoHeight"
         defaultColDef={defaultColDef}
-        // grandTotalRow="bottom"
       />
+      <tfoot className="w-full bg-table_primary border-solid border-[1px] border-background rounded-b-[7px] p-1">
+        <tr className="grid grid-cols-4 ">
+          <td></td>
+          <td></td>
+          <td>Total : </td>
+          <td className="px-[15px]">{table.total ? "BD" : ""}</td>
+        </tr>
+      </tfoot>
     </div>
   )
 }

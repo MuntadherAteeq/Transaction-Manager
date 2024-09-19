@@ -43,6 +43,7 @@ label {
   --primary: 0, 0%, 9%;
   --primary-foreground: 0, 0%, 80%;
   --destructive: 350, 96%, 35%;
+  --table-primary: 203, 91%, 40%, 0.45;
 }
 
 body {
@@ -711,15 +712,23 @@ body {
   --ag-row-hover-color: rgba(9, 124, 195, 0.15) !important;
   --ag-active-color: var(--primary-color) !important;
   --ag-border-color: var(--background-color) !important;
-  --ag-row-border-width: 2px;
+  height: auto !important;
+
   .ag-header-viewport {
-    background-color: rgba(9, 124, 195, 0.45) !important;
+    background-color: hsla(203, 91%, 40%, 0.45) !important;
     border-bottom: 2px solid var(--outline) !important;
   }
   .ag-root-wrapper {
+    margin-bottom: 0px !important;
+    border-radius: 7px 7px 0 0 !important;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15) !important;
   }
+
   .ag-center-cols-viewport {
     background-color: var(--background-color) !important;
   }
+}
+tfoot {
+  background-color: var(--background-color);
+  border-top: 1px solid var(--outline);
 }
