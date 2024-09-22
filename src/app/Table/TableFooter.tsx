@@ -17,5 +17,5 @@ export default function TableFooter({
     }, 0)
   }, [rowData, updatedTransaction])
 
-  return <span>{(total / 1000).toFixed(3)} BD</span>
+  return <span>{Math.abs(total / 1000).toFixed(3)} BD</span>
 }

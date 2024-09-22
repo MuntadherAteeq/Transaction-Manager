@@ -9,6 +9,7 @@ import {
   updateDesc,
   updatePrice,
   updateQuantity,
+  updateType,
 } from "./table.actions"
 import AddTransactionButton from "./TableOptions"
 import TableFooter from "./TableFooter"
@@ -39,6 +40,7 @@ export default function TransactionTable({ table }: { table: Table }) {
     () => [
       {
         field: "description",
+        filter: "agTextColumnFilter",
         editable: true,
         onCellValueChanged: async (params) => {
           if (params.oldValue !== params.newValue) {
@@ -48,6 +50,7 @@ export default function TransactionTable({ table }: { table: Table }) {
       },
       {
         field: "amount",
+        filter: "agNumberColumnFilter",
         editable: true,
         cellEditor: "agNumberCellEditor",
         valueGetter: (params: { data: { amount: number } }) => {
@@ -82,7 +85,23 @@ export default function TransactionTable({ table }: { table: Table }) {
         },
       },
       {
+        field: "type",
+        cellEditor: "agSelectCellEditor",
+        editable: true,
+        cellEditorParams: {
+          values: ["expense", "income"],
+        },
+        onCellValueChanged: async (params) => {
+          if (params.data) {
+            const res = await updateType(params.data.id, params.newValue)
+            if (res.status !== 200) fetchData()
+            setUpdatedTransaction({ ...params.data, type: params.newValue })
+          }
+        },
+      },
+      {
         field: "qty",
+        filter: "agNumberColumnFilter",
         editable: true,
         cellEditor: "agNumberCellEditor",
         onCellValueChanged: async (params) => {
@@ -114,6 +133,14 @@ export default function TransactionTable({ table }: { table: Table }) {
     ],
     []
   )
+  // const selection = useMemo(() => {
+  //   return {
+  //     mode: "multiRow",
+  //     // checkboxes: false,
+  //     headerCheckbox: false,
+  //     // enableClickSelection: true,
+  //   }
+  // }, [])
 
   return (
     <div className="flex flex-col w-full h-full animate-show-down opacity-0">
