@@ -6,6 +6,7 @@ import { Box_Icon } from "../Assets/Icons/Box"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { DashboardIcon } from "@radix-ui/react-icons"
+import { DropdownMenu_Provider } from "../Components/DropDownMenu/SetteingsMenu"
 
 interface ActivityBarProps extends React.HTMLAttributes<HTMLDivElement> {}
 export default function ActivityBar(props: ActivityBarProps) {
@@ -18,7 +19,9 @@ export default function ActivityBar(props: ActivityBarProps) {
         <Activity id="Dashboard" svg={<DashboardIcon />} />
       </div>
       <div className="bottom">
-        <Settings_Icon />
+        <DropdownMenu_Provider>
+          <Settings_Icon />
+        </DropdownMenu_Provider>
       </div>
     </div>
   )

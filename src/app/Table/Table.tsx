@@ -84,21 +84,21 @@ export default function TransactionTable({ table }: { table: Table }) {
           return `${params.value.toFixed(3)} BD`
         },
       },
-      {
-        field: "type",
-        cellEditor: "agSelectCellEditor",
-        editable: true,
-        cellEditorParams: {
-          values: ["expense", "income"],
-        },
-        onCellValueChanged: async (params) => {
-          if (params.data) {
-            const res = await updateType(params.data.id, params.newValue)
-            if (res.status !== 200) fetchData()
-            setUpdatedTransaction({ ...params.data, type: params.newValue })
-          }
-        },
-      },
+      // {
+      //   field: "type",
+      //   cellEditor: "agSelectCellEditor",
+      //   editable: true,
+      //   cellEditorParams: {
+      //     values: ["expense", "income"],
+      //   },
+      //   onCellValueChanged: async (params) => {
+      //     if (params.data) {
+      //       const res = await updateType(params.data.id, params.newValue)
+      //       if (res.status !== 200) fetchData()
+      //       setUpdatedTransaction({ ...params.data, type: params.newValue })
+      //     }
+      //   },
+      // },
       {
         field: "qty",
         filter: "agNumberColumnFilter",
