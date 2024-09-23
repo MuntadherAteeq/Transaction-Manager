@@ -17,6 +17,7 @@ const config: Config = {
         hover: "var(--hover)",
         textColor: "var(--text)",
         outlineColor: "var(--outline)",
+        primaryColor: "var(--primary)",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
