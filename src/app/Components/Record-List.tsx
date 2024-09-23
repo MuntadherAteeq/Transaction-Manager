@@ -7,6 +7,7 @@ import Record_item from "./Record-Item"
 import useSWR from "swr"
 import { fetcher } from "../Utils/common"
 import { Record } from "@prisma/client"
+import { Record_DropdownMenu } from "./DropDownMenu/RecordMenu"
 
 export default function Record_List({ activity }: { activity: string }) {
   const { data: records, error } = useSWR<Record[]>(
@@ -36,7 +37,9 @@ export default function Record_List({ activity }: { activity: string }) {
             ) : (
               records.map((record) => (
                 <Link href={`/${activity}/${record.id}`} key={record.id}>
-                  <Record_item record={record} animation={""} />
+                  <Record_DropdownMenu>
+                    <Record_item record={record} animation={""} />
+                  </Record_DropdownMenu>
                 </Link>
               ))
             )}

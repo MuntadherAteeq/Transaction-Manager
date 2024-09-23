@@ -29,7 +29,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-export function DropdownMenu_Provider({
+export function Settings_DropdownMenu({
   children,
 }: {
   children: React.ReactNode
