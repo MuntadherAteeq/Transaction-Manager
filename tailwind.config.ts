@@ -12,6 +12,11 @@ const config: Config = {
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        negative: "var(--negative)",
+        positive: "var(--positive)",
+        hover: "var(--hover)",
+        textColor: "var(--text)",
+        outlineColor: "var(--outline)",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
