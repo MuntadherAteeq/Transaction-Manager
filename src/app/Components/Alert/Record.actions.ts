@@ -12,25 +12,23 @@ export const deleteRecord = async (recordId: number) => {
 
     const tableIds = tables.map((table) => table.id)
 
-    await Promise.all([
-      prisma.transaction.deleteMany({
-        where: {
-          tableId: {
-            in: tableIds,
-          },
+    await prisma.transaction.deleteMany({
+      where: {
+        tableId: {
+          in: tableIds,
         },
-      }),
-      prisma.table.deleteMany({
-        where: {
-          recordId: recordId,
-        },
-      }),
-      prisma.record.deleteMany({
-        where: {
-          id: recordId,
-        },
-      }),
-    ])
+      },
+    })
+    await prisma.table.deleteMany({
+      where: {
+        recordId: recordId,
+      },
+    })
+    await prisma.record.deleteMany({
+      where: {
+        id: recordId,
+      },
+    })
 
     return { error: "", status: 200 }
   } catch (error) {
