@@ -1,7 +1,7 @@
 import L_Sidebar from "../Layouts/L-Sidebar"
 import ActivityBar from "../Layouts/ActivityBar"
 import TitleBar from "../Layouts/Title-Bar"
-import Record_List from "../Components/Record-List"
+import Record_List from "../Components/Record/Record-List"
 import { redirect } from "next/navigation"
 import { getUser } from "../Library/lucia"
 import { Activities } from "../Utils/common"

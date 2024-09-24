@@ -1,6 +1,6 @@
 "use client"
 import type { Record } from "@prisma/client"
-import { Record_Property } from "../Record-Property"
+import { Record_Property } from "../Record/Record-Property"
 import Phone_Icon from "../../Assets/Icons/Phone"
 import Calender_Icon from "../../Assets/Icons/Calender"
 import Email_Icon from "../../Assets/Icons/Email"
@@ -12,7 +12,7 @@ import { Settings_Icon } from "../../Assets/Icons/Settings"
 import Export_Icon from "../../Assets/Icons/Export"
 import Avatar from "../Avatar"
 import { HomeIcon } from "@radix-ui/react-icons"
-import { DeleteRecordAlert } from "../Alert/DeleteRecordAlert"
+import { DeleteRecordAlert } from "../Record/DeleteRecordAlert"
 import { Button } from "@/components/ui/button"
 
 export default function Profile({ record }: { record: Record }) {

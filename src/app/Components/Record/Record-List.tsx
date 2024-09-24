@@ -1,13 +1,13 @@
 "use client"
-import { SearchField } from "../Layouts/L-Sidebar"
-import AddButton from "./AddButton"
-import Spinner from "./Spinner"
+import { SearchField } from "../../Layouts/L-Sidebar"
+import AddButton from "../AddButton"
+import Spinner from "../Spinner"
 import Link from "next/link"
 import Record_item from "./Record-Item"
 import useSWR from "swr"
-import { fetcher } from "../Utils/common"
+import { fetcher } from "../../Utils/common"
 import { Record } from "@prisma/client"
-import { Record_DropdownMenu } from "./DropDownMenu/RecordMenu"
+import { Record_DropdownMenu } from ".././DropDownMenu/RecordMenu"
 
 export default function Record_List({ activity }: { activity: string }) {
   const { data: records, error } = useSWR<Record[]>(
