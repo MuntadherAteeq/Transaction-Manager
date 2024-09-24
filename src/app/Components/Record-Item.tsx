@@ -1,12 +1,7 @@
 import type { Record } from "@prisma/client"
 import Avatar from "./Avatar"
 
-export default function Record_item({
-  record,
-}: {
-  record: Record
-  animation: string
-}) {
+export default function Record_item({ record }: { record: Record }) {
   const data = record
   return (
     <div className="Record-Item animate-show-down">

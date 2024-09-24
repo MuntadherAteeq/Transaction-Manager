@@ -1,3 +1,4 @@
+"use client"
 import {
   ContextMenu,
   ContextMenuContent,
@@ -17,27 +18,27 @@ export function Record_DropdownMenu({
     <ContextMenu>
       <ContextMenuTrigger>{children}</ContextMenuTrigger>
       <ContextMenuContent className="w-64 bg-background ">
-        <ContextMenuItem inset>
+        <ContextMenuItem>
           Done
           <ContextMenuShortcut>
             <CircleCheck className="p-1" />
           </ContextMenuShortcut>
         </ContextMenuItem>
-        <ContextMenuItem inset>
+        <ContextMenuItem>
           Export
           <ContextMenuShortcut>
             <ShareIcon className="p-1" />
           </ContextMenuShortcut>
         </ContextMenuItem>
         <ContextMenuSeparator />
-        <ContextMenuItem inset>
+        <ContextMenuItem>
           Edit
           <ContextMenuShortcut>
             <Settings className="p-1" />
           </ContextMenuShortcut>
         </ContextMenuItem>
         <ContextMenuSeparator />
-        <ContextMenuItem inset className="hover:!bg-destructive">
+        <ContextMenuItem className="hover:!bg-destructive w-full h-full">
           Delete
           <ContextMenuShortcut>
             <Trash2 className="p-1 hover:!text-foreground" />

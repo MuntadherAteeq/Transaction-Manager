@@ -38,7 +38,7 @@ export default function Record_List({ activity }: { activity: string }) {
               records.map((record) => (
                 <Link href={`/${activity}/${record.id}`} key={record.id}>
                   <Record_DropdownMenu>
-                    <Record_item record={record} animation={""} />
+                    <Record_item record={record} />
                   </Record_DropdownMenu>
                 </Link>
               ))

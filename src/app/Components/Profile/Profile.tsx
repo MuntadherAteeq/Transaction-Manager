@@ -12,6 +12,8 @@ import { Settings_Icon } from "../../Assets/Icons/Settings"
 import Export_Icon from "../../Assets/Icons/Export"
 import Avatar from "../Avatar"
 import { HomeIcon } from "@radix-ui/react-icons"
+import { DeleteRecordAlert } from "../Alert/DeleteRecordAlert"
+import { Button } from "@/components/ui/button"
 
 export default function Profile({ record }: { record: Record }) {
   const [name, setName] = useState(record.name)
@@ -59,10 +61,20 @@ export default function Profile({ record }: { record: Record }) {
         ))}
       </div>
       <div id="options">
-        <Option icon={<Done_Icon />}>Finish</Option>
-        <Option icon={<Settings_Icon />}>Edit</Option>
-        <Option icon={<Export_Icon />}>Export</Option>
-        <Option icon={<Trash_Icon />}>Delete</Option>
+        <Button>
+          <Option icon={<Done_Icon />}>Finish</Option>
+        </Button>
+        <Button>
+          <Option icon={<Settings_Icon />}>Edit</Option>
+        </Button>
+        <Button>
+          <Option icon={<Export_Icon />}>Export</Option>
+        </Button>
+        <DeleteRecordAlert record={record}>
+          <Button>
+            <Option icon={<Trash_Icon />}>Delete</Option>
+          </Button>
+        </DeleteRecordAlert>
       </div>
     </div>
   )
@@ -77,9 +89,9 @@ export function Option({
   icon?: ReactNode
 }) {
   return (
-    <button className="option">
+    <>
       <span className="icon">{icon}</span>
       <span>{children}</span>
-    </button>
+    </>
   )
 }
