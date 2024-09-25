@@ -21,17 +21,16 @@ import {
   FormMessage,
 } from "./ui/form"
 import { useForm } from "react-hook-form"
-import { useState } from "react"
-import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
 import { useRouter } from "next/navigation"
 import { signIn } from "@/app/Auth/auth.actions"
+import { useToast } from "@/hooks/use-toast"
 export const SignInSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
 })
 
 export default function SignInTab() {
-  const [error, setError] = useState("")
+  const { toast } = useToast()
   const router = useRouter()
 
   const form = useForm<z.infer<typeof SignInSchema>>({
@@ -44,23 +43,20 @@ export default function SignInTab() {
 
   async function onSubmit(data: z.infer<typeof SignInSchema>) {
     const res = await signIn(data)
-    setError(res.error)
     if (res.success) router.push("/")
+    if (res.error) {
+      toast({
+        title: "Error",
+        description: res.error,
+        variant: "destructive",
+        duration: 2000,
+      })
+    }
   }
 
   return (
     <>
       <Card>
-        {error && (
-          <div className="p-6 pb-0">
-            <Alert variant="destructive">
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>
-                {error || "An error occurred"}
-              </AlertDescription>
-            </Alert>
-          </div>
-        )}
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
           <CardDescription>

@@ -7,6 +7,7 @@ export interface RecordPropertyProps {
   type: string
   icon: React.ReactNode
   value?: string | number | Decimal | Date | null
+  readOnly?: boolean
 }
 
 export function Record_Property({
@@ -14,6 +15,7 @@ export function Record_Property({
   type,
   icon,
   value,
+  readOnly,
 }: RecordPropertyProps) {
   const id = crypto.getRandomValues(new Uint32Array(1))[0].toString()
   const [data, setData] = useState(value?.toString())
@@ -29,7 +31,7 @@ export function Record_Property({
         id={id}
         onChange={(e) => setData(e.target.value)}
         value={data}
-        readOnly
+        readOnly={readOnly}
       />
     </label>
   )

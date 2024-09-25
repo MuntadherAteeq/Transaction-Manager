@@ -275,7 +275,8 @@ body {
         opacity: 0.8;
         padding: 0.1rem;
         path {
-          fill: var(--text);
+          
+          // fill: var(--text);
         }
       }
     }
@@ -320,7 +321,8 @@ body {
       height: 100%;
       opacity: 0.9;
       path {
-        fill: var(--text);
+        color: var(--text);
+        // fill: var(--text);
       }
     }
   }

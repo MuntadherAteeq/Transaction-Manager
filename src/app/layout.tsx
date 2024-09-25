@@ -4,6 +4,7 @@ import "./styles.scss"
 import { ThemeProvider } from "@/components/ui/theme-provider"
 import { GeistSans } from "geist/font/sans"
 import favicon from "./favicon.ico"
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
   title: "Transaction Manager",
@@ -28,6 +29,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
