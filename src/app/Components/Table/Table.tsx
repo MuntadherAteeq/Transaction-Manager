@@ -9,7 +9,7 @@ import {
   updateDesc,
   updatePrice,
   updateQuantity,
-  updateType,
+  // updateType,
 } from "./table.actions"
 import AddTransactionButton from "./TableOptions"
 import TableFooter from "./TableFooter"

@@ -1,6 +1,6 @@
 "use client"
 import { SearchField } from "../../Layouts/L-Sidebar"
-import AddButton from "../AddButton"
+import AddButton from "../AddRecord"
 import Spinner from "../Spinner"
 import Link from "next/link"
 import Record_item from "./Record-Item"
