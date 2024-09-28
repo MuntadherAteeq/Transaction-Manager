@@ -11,6 +11,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import SignOutButton from "@/components/SignOutButton"
 
 export function Settings_DropdownMenu({
   children,
@@ -48,11 +49,13 @@ export function Settings_DropdownMenu({
           <span>Feedback</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-rose-500 hover:!bg-rose-800 hover:text-foreground">
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-        </DropdownMenuItem>
+        <SignOutButton className="p-0 flex justify-evenly w-full text-rose-500 hover:!bg-rose-800 hover:text-foreground">
+          <DropdownMenuItem className="w-full">
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>Log out</span>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </SignOutButton>
       </DropdownMenuContent>
     </DropdownMenu>
   )
