@@ -1,17 +1,19 @@
 "use server"
 
-export const changeProperty = async (
-  id: number,
-  property: string,
-  value: number | string | Date | boolean | null 
-) => {
+import { Record } from "@prisma/client"
+
+export const changeProperties = async (record: Record) => {
   try {
-    prisma.record.update({
-      where: {
-        id,
-      },
+    console.log(record)
+    await prisma.record.update({
+      where: { id: record.id },
       data: {
-        [property]: value,
+        phone: record.phone,
+        balance: Number(record.balance),
+        email: record.email,
+        desc: record.desc,
+        address: record.address,
+        category: record.category,
       },
     })
     return { error: "", status: 200 }

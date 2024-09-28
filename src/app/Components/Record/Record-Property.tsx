@@ -1,6 +1,6 @@
 "use client"
+import { Input } from "@/components/ui/input"
 import { Decimal } from "@prisma/client/runtime/library"
-import { useState } from "react"
 
 export interface RecordPropertyProps {
   title: string
@@ -8,6 +8,8 @@ export interface RecordPropertyProps {
   icon: React.ReactNode
   value?: string | number | Decimal | Date | null
   readOnly?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  register?: any
 }
 
 export function Record_Property({
@@ -16,22 +18,20 @@ export function Record_Property({
   icon,
   value,
   readOnly,
+  register,
 }: RecordPropertyProps) {
-  const id = crypto.getRandomValues(new Uint32Array(1))[0].toString()
-  const [data, setData] = useState(value?.toString())
-
   return (
-    <label htmlFor={id} className="Record_Property">
+    <label htmlFor={title} className="Record_Property">
       <span className="icon">{icon}</span>
       <span className="tag">{title}</span>
-      <input
+      <Input
+        id={title}
         className="value"
         type={type}
         autoComplete="off"
-        id={id}
-        onChange={(e) => setData(e.target.value)}
-        value={data}
         readOnly={readOnly}
+        defaultValue={value !== null || value === 0 ? value : ""}
+        {...register}
       />
     </label>
   )

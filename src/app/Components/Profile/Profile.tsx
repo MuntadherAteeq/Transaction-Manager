@@ -5,7 +5,7 @@ import Phone_Icon from "../../Assets/Icons/Phone"
 import Calender_Icon from "../../Assets/Icons/Calender"
 import Email_Icon from "../../Assets/Icons/Email"
 import Info_Icon from "../../Assets/Icons/info"
-import { MouseEventHandler, ReactNode, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { Trash_Icon } from "../../Assets/Icons/Trash"
 import Done_Icon from "../../Assets/Icons/Done"
 import { Settings_Icon } from "../../Assets/Icons/Settings"
@@ -16,9 +16,10 @@ import { DeleteRecordAlert } from "../Record/DeleteRecordAlert"
 import { Button } from "@/components/ui/button"
 import { AlignJustify, Check, DollarSign, X } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { useForm } from "react-hook-form"
+import { changeProperties } from "./profile.actions"
 
 export default function Profile({ record }: { record: Record }) {
-  const [name, setName] = useState(record.name)
   const [editable, setEditable] = useState(false)
   const keys = useMemo(
     () => ["phone", "balance", "email", "desc", "address", "category"],
@@ -35,11 +36,11 @@ export default function Profile({ record }: { record: Record }) {
     balance: <DollarSign />,
   }
 
-  const GetIcon = (type: string): ReactNode => {
+  const GetIcon = (type: string): React.ReactNode => {
     return iconMap[type] || <></>
   }
 
-  const handleEdit: MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleEdit: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault()
     setEditable(!editable)
   }
@@ -49,74 +50,85 @@ export default function Profile({ record }: { record: Record }) {
   }, [keys, record])
 
   const { toast } = useToast()
+  const { register, handleSubmit } = useForm()
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = async (data: any) => {
+    const newRecord = { ...record, ...data }
+    await changeProperties(newRecord)
+  }
 
   return (
-    <div className="Profile">
-      <div className="top">
-        <div className="header">
-          <Avatar />
-          <input
-            id="Name"
-            autoComplete="off"
-            onChange={(e) => setName(e.target.value)}
-            value={name?.toString()}
-            readOnly={!editable}
-          />
+    <>
+      <form className="h-full" onSubmit={handleSubmit(onSubmit)}>
+        <div className="Profile">
+          <div className="top">
+            <div className="header">
+              <Avatar />
+              <input
+                id="Name"
+                autoComplete="off"
+                readOnly={!editable}
+                defaultValue={record.name ?? ""}
+                {...register("name")}
+              />
+            </div>
+
+            {recordEntries.map(([key, value]) => (
+              <Record_Property
+                icon={GetIcon(key)}
+                key={key}
+                title={key}
+                type="text"
+                readOnly={!editable}
+                value={value}
+                register={{ ...register(key) }}
+              />
+            ))}
+          </div>
+          <div id="options">
+            {editable ? (
+              <>
+                <span></span>
+                <span></span>
+                <Button onClick={() => setEditable(!editable)}>
+                  <Option icon={<Check />}>Done</Option>
+                </Button>
+                <Button onClick={() => setEditable(!editable)}>
+                  <Option icon={<X />}>Cancel</Option>
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button>
+                  <Option icon={<Done_Icon />}>Finish</Option>
+                </Button>
+                <Button onClick={handleEdit}>
+                  <Option icon={<Settings_Icon />}>Edit</Option>
+                </Button>
+                <Button
+                  onClick={() => {
+                    toast({
+                      variant: "destructive",
+                      title: "Coming Soon",
+                      description:
+                        "This feature is under development and will be available soon.",
+                    })
+                  }}
+                >
+                  <Option icon={<Export_Icon />}>Export</Option>
+                </Button>
+                <DeleteRecordAlert record={record}>
+                  <Button>
+                    <Option icon={<Trash_Icon />}>Delete</Option>
+                  </Button>
+                </DeleteRecordAlert>
+              </>
+            )}
+          </div>
         </div>
-        <form action="POST">
-          {recordEntries.map(([key, value]) => (
-            <Record_Property
-              icon={GetIcon(key)}
-              key={key}
-              title={key}
-              type="text"
-              value={value}
-              readOnly={!editable}
-            />
-          ))}
-        </form>
-      </div>
-      <div id="options">
-        {editable ? (
-          <>
-            <span></span>
-            <span></span>
-            <Button type="submit" onClick={() => setEditable(!editable)}>
-              <Option icon={<Check />}>Done</Option>
-            </Button>
-            <Button onClick={() => setEditable(!editable)}>
-              <Option icon={<X />}>Cancel</Option>
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button>
-              <Option icon={<Done_Icon />}>Finish</Option>
-            </Button>
-            <Button onClick={handleEdit}>
-              <Option icon={<Settings_Icon />}>Edit</Option>
-            </Button>
-            <Button
-              onClick={() => {
-                toast({
-                  variant: "destructive",
-                  title: "Coming Soon",
-                  description:
-                    "This feature is under development and will be available soon.",
-                })
-              }}
-            >
-              <Option icon={<Export_Icon />}>Export</Option>
-            </Button>
-            <DeleteRecordAlert record={record}>
-              <Button>
-                <Option icon={<Trash_Icon />}>Delete</Option>
-              </Button>
-            </DeleteRecordAlert>
-          </>
-        )}
-      </div>
-    </div>
+      </form>
+    </>
   )
 }
 
@@ -125,8 +137,8 @@ export function Option({
   icon,
 }: {
   color?: string
-  children?: ReactNode
-  icon?: ReactNode
+  children?: React.ReactNode
+  icon?: React.ReactNode
 }) {
   return (
     <>
