@@ -35,12 +35,12 @@ export function Settings_DropdownMenu({
           <DropdownMenuItem>
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
-            <DropdownMenuShortcut>Ctrl + P</DropdownMenuShortcut>
+            <DropdownMenuShortcut></DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Settings className="mr-2 h-4 w-4" />
             <span>Settings</span>
-            <DropdownMenuShortcut>Ctrl + I</DropdownMenuShortcut>
+            <DropdownMenuShortcut></DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
@@ -49,11 +49,11 @@ export function Settings_DropdownMenu({
           <span>Feedback</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <SignOutButton className="p-0 flex justify-evenly w-full text-rose-500 hover:!bg-rose-800 hover:text-foreground">
-          <DropdownMenuItem className="w-full">
+        <SignOutButton className="w-full">
+          <DropdownMenuItem className="w-full flex justify-evenly text-rose-500 hover:!bg-rose-800 hover:text-foreground">
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>
-            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuShortcut></DropdownMenuShortcut>
           </DropdownMenuItem>
         </SignOutButton>
       </DropdownMenuContent>
