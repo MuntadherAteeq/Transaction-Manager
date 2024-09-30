@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from "@radix-ui/react-tooltip"
 
-export default function AddButton({ activity }: { activity: string }) {
+export default function AddRecord({ activity }: { activity: string }) {
   const [isLoading, setIsLoading] = useState(false)
   const route = useRouter()
   const handleClick = async () => {

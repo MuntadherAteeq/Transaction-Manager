@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useForm } from "react-hook-form"
 import { editRecord } from "./Record.actions"
 import { mutate } from "swr"
+import React from "react"
 
 export default function Profile({ record }: { record: Record }) {
   const [editable, setEditable] = useState(false)
@@ -61,76 +62,74 @@ export default function Profile({ record }: { record: Record }) {
   }
 
   return (
-    <>
-      <form className="h-full" onSubmit={handleSubmit(onSubmit)}>
-        <div className="Profile">
-          <div className="top">
-            <div className="header">
-              <Avatar />
-              <input
-                id="Name"
-                autoComplete="off"
-                readOnly={!editable}
-                defaultValue={record.name ?? ""}
-                {...register("name")}
-              />
-            </div>
+    <form className="h-full" onSubmit={handleSubmit(onSubmit)}>
+      <div className="Profile">
+        <div className="top">
+          <div className="header">
+            <Avatar />
+            <input
+              id="Name"
+              autoComplete="off"
+              readOnly={!editable}
+              defaultValue={record.name ?? ""}
+              {...register("name")}
+            />
+          </div>
 
-            {recordEntries.map(([key, value]) => (
-              <Record_Property
-                icon={GetIcon(key)}
-                key={key}
-                title={key}
-                type="text"
-                readOnly={!editable}
-                value={value}
-                register={{ ...register(key) }}
-              />
-            ))}
-          </div>
-          <div id="options">
-            {editable ? (
-              <>
-                <span></span>
-                <span></span>
-                <Button onClick={() => setEditable(!editable)}>
-                  <Option icon={<Check />}>Done</Option>
-                </Button>
-                <Button onClick={() => setEditable(!editable)}>
-                  <Option icon={<X />}>Cancel</Option>
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button>
-                  <Option icon={<Done_Icon />}>Finish</Option>
-                </Button>
-                <Button onClick={handleEdit}>
-                  <Option icon={<Settings_Icon />}>Edit</Option>
-                </Button>
-                <Button
-                  onClick={() => {
-                    toast({
-                      variant: "destructive",
-                      title: "Coming Soon",
-                      description:
-                        "This feature is under development and will be available soon.",
-                    })
-                  }}
-                >
-                  <Option icon={<Export_Icon />}>Export</Option>
-                </Button>
-                <DeleteRecordAlert record={record}>
-                  <Button>
-                    <Option icon={<Trash_Icon />}>Delete</Option>
-                  </Button>
-                </DeleteRecordAlert>
-              </>
-            )}
-          </div>
+          {recordEntries.map(([key, value]) => (
+            <Record_Property
+              icon={GetIcon(key)}
+              key={key}
+              title={key}
+              type="text"
+              readOnly={!editable}
+              value={value}
+              register={{ ...register(key) }}
+            />
+          ))}
         </div>
-      </form>
-    </>
+        <div id="options">
+          {editable ? (
+            <>
+              <span></span>
+              <span></span>
+              <Button onClick={() => setEditable(!editable)}>
+                <Option icon={<Check />}>Done</Option>
+              </Button>
+              <Button onClick={() => setEditable(!editable)}>
+                <Option icon={<X />}>Cancel</Option>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button>
+                <Option icon={<Done_Icon />}>Finish</Option>
+              </Button>
+              <Button onClick={handleEdit}>
+                <Option icon={<Settings_Icon />}>Edit</Option>
+              </Button>
+              <Button
+                onClick={() => {
+                  toast({
+                    variant: "destructive",
+                    title: "Coming Soon",
+                    description:
+                      "This feature is under development and will be available soon.",
+                  })
+                }}
+              >
+                <Option icon={<Export_Icon />}>Export</Option>
+              </Button>
+              <DeleteRecordAlert record={record}>
+                <Button>
+                  <Option icon={<Trash_Icon />}>Delete</Option>
+                </Button>
+              </DeleteRecordAlert>
+            </>
+          )}
+        </div>
+      </div>
+    </form>
   )
 }
 
