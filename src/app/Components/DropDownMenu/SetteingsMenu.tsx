@@ -50,7 +50,7 @@ export function Settings_DropdownMenu({
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <SignOutButton className="w-full p-0">
-          <DropdownMenuItem className="w-full  text-rose-500 hover:!bg-rose-800 hover:text-foreground">
+          <DropdownMenuItem className="w-full text-rose-500 hover:!bg-rose-800 hover:text-foreground">
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>
             <DropdownMenuShortcut></DropdownMenuShortcut>

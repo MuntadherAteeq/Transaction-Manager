@@ -8,9 +8,63 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { DoubleArrowDownIcon, DoubleArrowUpIcon } from "@radix-ui/react-icons"
-import LineChart from "../Components/Chart"
+import { LineChart } from "../Components/Chart"
 
-export default function page() {
+export default async function Dashboard() {
+  const getTotalIncomes = async () => {
+    // return completed Tables
+    const competedTables = await prisma.table.findMany({
+      where: {
+        isCompleted: true,
+      },
+    })
+    // return completed Transactions
+    const completedTransactions = await prisma.transaction.findMany({
+      where: {
+        tableId: {
+          in: competedTables.map((table) => table.id),
+        },
+      },
+    })
+    // return total incomes
+    const total = completedTransactions.reduce(
+      (acc, transaction) =>
+        transaction.type.toLowerCase() === "income"
+          ? acc + transaction.amount
+          : acc,
+      0
+    )
+    return total / 1000
+  }
+  const getTotalExpenses = async () => {
+    // return completed Tables
+    const competedTables = await prisma.table.findMany({
+      where: {
+        isCompleted: true,
+      },
+    })
+    // return completed Transactions
+    const completedTransactions = await prisma.transaction.findMany({
+      where: {
+        tableId: {
+          in: competedTables.map((table) => table.id),
+        },
+      },
+    })
+    // return total expenses
+    const total = completedTransactions.reduce(
+      (acc, transaction) =>
+        transaction.type.toLowerCase() === "expense"
+          ? acc + transaction.amount
+          : acc,
+      0
+    )
+    return total / 1000
+  }
+  const totalIncomes = await getTotalIncomes()
+  const totalExpenses = await getTotalExpenses()
+  const getBalance = totalIncomes - totalExpenses
+
   return (
     <ScrollArea className="w-full h-full">
       <div className="p-8">
@@ -37,7 +91,9 @@ export default function page() {
                   </svg>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl text-blue-500">231.890 DB</div>
+                  <div className="text-2xl text-blue-500">
+                    {getBalance.toFixed(3)} DB
+                  </div>
                   <p className="text-xs text-muted-foreground"></p>
                 </CardContent>
               </Card>
@@ -49,7 +105,9 @@ export default function page() {
                   <DoubleArrowUpIcon className="h-5 w-5 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl text-green-600">+ 512.234 BD</div>
+                  <div className="text-2xl text-green-600">
+                    + {totalIncomes.toFixed(3)} BD
+                  </div>
                   <CardDescription className="mt-2 text-xs text-muted-foreground">
                     + 600.354 BD Considering the uncompleted transactions
                   </CardDescription>
@@ -63,7 +121,9 @@ export default function page() {
                   <DoubleArrowDownIcon className="h-5 w-5 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl  text-red-600">- 350.326</div>
+                  <div className="text-2xl  text-red-600">
+                    - {totalExpenses.toFixed(3)} BD
+                  </div>
                   <CardDescription className="mt-2 text-xs text-muted-foreground">
                     - 200.354 BD Considering the uncompleted transactions
                   </CardDescription>
