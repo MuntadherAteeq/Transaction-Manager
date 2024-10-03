@@ -42,6 +42,12 @@ export default function TableOptions({
           >
             New
           </Button>
+          <Button
+            className="bg-[#114565] hover:bg-background shadow-none"
+            onClick={onPrint}
+          >
+            Export
+          </Button>
           {selected && selected.length > 0 && (
             <Button
               className="bg-[#114565] hover:bg-background shadow-none"

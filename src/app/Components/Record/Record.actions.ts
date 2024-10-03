@@ -40,7 +40,7 @@ export const deleteRecord = async (recordId: number) => {
 
 export const editRecord = async (record: Record) => {
   try {
-    console.log(record)
+    console.log("Record Submitted")
     await prisma.record.update({
       where: { id: record.id },
       data: {
