@@ -87,6 +87,14 @@ const config: Config = {
             opacity: "1",
           },
         },
+        fadeOut: {
+          from: {
+            opacity: "1",
+          },
+          to: {
+            opacity: "0",
+          },
+        },
         showDown: {
           from: {
             opacity: "0",
@@ -100,6 +108,7 @@ const config: Config = {
       },
       animation: {
         fadeIn: "fadeIn 0.5s ease-out forwards",
+        fadeOut: "fadeOut 0.8s ease-out forwards",
         "accordion-down": "accordion-down 0.5s ease-out",
         "accordion-up": "accordion-up 0.5s ease-out",
         "show-down": "showDown 0.5s ease forwards",

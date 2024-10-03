@@ -5,6 +5,7 @@ import useSWR from "swr"
 import { usePathname } from "next/navigation"
 import Spinner from "../Components/Spinner"
 import { fetcher } from "../Utils/common"
+import React from "react"
 
 export default function TableList() {
   const id = usePathname().split("/")[2]

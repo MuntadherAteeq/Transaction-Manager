@@ -2,7 +2,7 @@
 
 import { AgGridReact } from "ag-grid-react"
 import { useEffect, useMemo, useState, useCallback, useRef } from "react"
-import { ColDef, GridApi, SelectionChangedEvent } from "ag-grid-community"
+import { ColDef, SelectionChangedEvent } from "ag-grid-community"
 import { Table, Transaction } from "@prisma/client"
 import {
   getTransactions,
@@ -172,6 +172,8 @@ export default function TransactionTable({ table }: { table: Table }) {
           domLayout="autoHeight"
           defaultColDef={defaultColDef}
           overlayNoRowsTemplate="No Transactions Found"
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
           selection={rowSelection}
           onSelectionChanged={handleSelectedRows}
           ref={gridRef}

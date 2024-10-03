@@ -1,13 +1,19 @@
 "use client"
 
-import { useState } from "react"
-import { addTransaction, deleteTransaction } from "./table.actions"
-import React from "react"
+import { addTransaction, deleteTransaction, dropTable } from "./table.actions"
+import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { CardContent } from "@/components/ui/card"
 import { Table, Transaction } from "@prisma/client"
 import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { mutate } from "swr"
 
 export default function TableOptions({
   table,
@@ -60,21 +66,41 @@ export default function TableOptions({
               Delete
             </Button>
           )}
+          <Button
+            className="bg-[#114565] hover:bg-background shadow-none"
+            onClick={async () => {
+              await dropTable(table.id)
+              mutate(`/API/tables?recordId=${table.recordId}`)
+            }}
+          >
+            Drop
+          </Button>
         </CardContent>
 
-        <CardContent className="flex p-3  gap-2 items-center select-none">
-          {inProgress ? (
-            <Badge className="bg-foreground text-background">Completed</Badge>
-          ) : (
-            <Badge variant={"default"}>In Progress</Badge>
-          )}
-
-          <Switch
-            onClick={() => {
-              onPrint && onPrint()
-              setInProgress(!inProgress)
-            }}
-          />
+        <CardContent className="flex p-3 gap-2 items-center select-none">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Switch
+                  onClick={() => {
+                    onPrint && onPrint()
+                    setInProgress(!inProgress)
+                  }}
+                />
+              </TooltipTrigger>
+              <TooltipContent side="top" className="p-0 bg-transparent">
+                {inProgress ? (
+                  <Badge className="bg-foreground hover:bg-foreground text-background ">
+                    Completed
+                  </Badge>
+                ) : (
+                  <Badge className="bg-background hover:bg-background">
+                    In Progress
+                  </Badge>
+                )}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </CardContent>
       </div>
     </>

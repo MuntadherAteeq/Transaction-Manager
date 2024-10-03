@@ -117,3 +117,22 @@ export const deleteTransaction = async (transaction: Transaction[]) => {
     return { error: "Process Failed", status: 500 }
   }
 }
+
+export const dropTable = async (tableId: number) => {
+  try {
+    await prisma.transaction.deleteMany({
+      where: {
+        tableId: tableId,
+      },
+    })
+    await prisma.table.delete({
+      where: {
+        id: tableId,
+      },
+    })
+    return { error: "", status: 200 }
+  } catch (error) {
+    console.error("Error deleting table:", error)
+    return { error: "Process Failed", status: 500 }
+  }
+}
