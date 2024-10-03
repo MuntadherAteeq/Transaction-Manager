@@ -1,70 +1,69 @@
 "use client"
 
 import { useState } from "react"
-import { addTransaction, clearTransactions } from "./table.actions"
+import { addTransaction, deleteTransaction } from "./table.actions"
 import React from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Transaction } from "@prisma/client"
+import { CardContent } from "@/components/ui/card"
+import { Table, Transaction } from "@prisma/client"
+import { Switch } from "@/components/ui/switch"
 
 export default function TableOptions({
-  tableId,
+  table,
   onClick,
   selected,
+  onPrint,
 }: {
-  tableId: number
+  table: Table
   onClick: () => void
   selected?: Transaction[]
+  onPrint?: () => void
 }) {
   const [count, setCount] = useState(0)
+  const [inProgress, setInProgress] = useState(false)
 
   async function add() {
-    const res = await addTransaction(tableId)
+    const res = await addTransaction(table.id)
     if (res.status === 200) {
       setCount(count + 1)
     }
   }
 
-  async function clear() {
-    await clearTransactions(tableId)
-  }
-  async function deleteSelected() {
-    await clearTransactions(tableId)
-  }
-
   return (
     <>
-      <div className="bg-background rounded-t-xl rounded-b-none ">
-        <CardContent className="p-3">
-          <Card className="bg-background border-card p-1">
+      <div className="bg-[#114565] rounded-t-xl rounded-b-none flex flex-row justify-between">
+        <CardContent className="w-full p-3 flex-1">
+          <Button
+            className="bg-[#114565] hover:bg-background shadow-none"
+            onClick={() => {
+              add()
+              onClick()
+            }}
+          >
+            New
+          </Button>
+          {selected && selected.length > 0 && (
             <Button
-              onClick={() => {
-                add()
+              className="bg-[#114565] hover:bg-background shadow-none"
+              onClick={async () => {
+                await deleteTransaction(selected)
                 onClick()
               }}
             >
-              New
+              Delete
             </Button>
-            <Button
-              onClick={() => {
-                clear()
-                onClick()
-              }}
-            >
-              Clear
-            </Button>
-            {selected && selected.length > 0 && (
-              <Button
-                onClick={() => {
-                  deleteSelected()
-                  onClick()
-                }}
-              >
-                Delete
-              </Button>
-            )}
-            <Button>Search</Button>
-          </Card>
+          )}
+        </CardContent>
+
+        <CardContent className="flex p-3  gap-2 items-center select-none">
+          {inProgress ? <span>Completed</span> : <span>In Progress</span>}
+
+          <Switch
+            onClick={() => {
+              onPrint && onPrint()
+              setInProgress(!inProgress)
+            }}
+          />
         </CardContent>
       </div>
     </>

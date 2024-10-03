@@ -36,19 +36,6 @@ export const addTransaction = async (tableId: number) => {
   }
 }
 
-export const clearTransactions = async (tableId: number) => {
-  try {
-    await prisma.transaction.deleteMany({
-      where: {
-        tableId: tableId,
-      },
-    })
-    return { error: "", status: 200 }
-  } catch (error) {
-    return { error: "Process Failed", status: 500 }
-  }
-}
-
 export const updatePrice = async (transactionId: number, price: number) => {
   try {
     await prisma.transaction.update({
@@ -111,6 +98,22 @@ export const updateType = async (transactionId: number, type: string) => {
     return { error: "", status: 200 }
   } catch (error) {
     console.error("Error updating type:", error)
+    return { error: "Process Failed", status: 500 }
+  }
+}
+
+export const deleteTransaction = async (transaction: Transaction[]) => {
+  try {
+    await prisma.transaction.deleteMany({
+      where: {
+        id: {
+          in: transaction.map((t) => t.id),
+        },
+      },
+    })
+    return { error: "", status: 200 }
+  } catch (error) {
+    console.error("Error deleting transaction:", error)
     return { error: "Process Failed", status: 500 }
   }
 }

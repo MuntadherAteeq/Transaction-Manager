@@ -1,8 +1,8 @@
 "use client"
 
 import { AgGridReact } from "ag-grid-react"
-import { useEffect, useMemo, useState, useCallback } from "react"
-import { ColDef } from "ag-grid-community"
+import { useEffect, useMemo, useState, useCallback, useRef } from "react"
+import { ColDef, GridApi, SelectionChangedEvent } from "ag-grid-community"
 import { Table, Transaction } from "@prisma/client"
 import {
   getTransactions,
@@ -15,6 +15,7 @@ import AddTransactionButton from "./TableOptions"
 import TableFooter from "./TableFooter"
 
 export default function TransactionTable({ table }: { table: Table }) {
+  const [selected, setSelected] = useState<Transaction[]>([])
   const [rowData, setRowData] = useState<Transaction[]>([])
   const [updatedTransaction, setUpdatedTransaction] =
     useState<Transaction | null>(null)
@@ -133,18 +134,34 @@ export default function TransactionTable({ table }: { table: Table }) {
     ],
     []
   )
-  // const selection = useMemo(() => {
-  //   return {
-  //     mode: "multiRow",
-  //     // checkboxes: false,
-  //     headerCheckbox: false,
-  //     // enableClickSelection: true,
-  //   }
-  // }, [])
+  const rowSelection = useMemo(() => {
+    return {
+      mode: "multiRow",
+    }
+  }, [])
+
+  const handleSelectedRows = (event: SelectionChangedEvent) => {
+    setSelected(event.api.getSelectedRows())
+  }
+
+  const gridRef = useRef<AgGridReact>(null)
+
+  const onPrint = useCallback(() => {
+    // Print selected transactions
+    if (gridRef.current) {
+      const gridApi: GridApi = gridRef.current.api
+      const csv = gridApi.getDataAsCsv()
+    }
+  }, [])
 
   return (
     <div className="flex flex-col w-full h-full animate-show-down opacity-0 mb-9">
-      <AddTransactionButton tableId={table.id} onClick={fetchData} />
+      <AddTransactionButton
+        table={table}
+        onClick={fetchData}
+        selected={selected}
+        onPrint={onPrint}
+      />
       <div className="table-container">
         {" "}
         {/* Add this div */}
@@ -155,6 +172,9 @@ export default function TransactionTable({ table }: { table: Table }) {
           domLayout="autoHeight"
           defaultColDef={defaultColDef}
           overlayNoRowsTemplate="No Transactions Found"
+          selection={rowSelection}
+          onSelectionChanged={handleSelectedRows}
+          ref={gridRef}
         />
       </div>
       <tfoot className="w-full  border-solid  rounded-b-[7px] p-1">
