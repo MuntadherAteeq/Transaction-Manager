@@ -149,8 +149,8 @@ export default function TransactionTable({ table }: { table: Table }) {
   const onPrint = useCallback(() => {
     // Print selected transactions
     if (gridRef.current) {
-      const gridApi: GridApi = gridRef.current.api
-      const csv = gridApi.getDataAsCsv()
+      // const gridApi: GridApi = gridRef.current.api
+      // const csv = gridApi.getDataAsCsv()
     }
   }, [])
 
@@ -177,7 +177,7 @@ export default function TransactionTable({ table }: { table: Table }) {
           ref={gridRef}
         />
       </div>
-      <tfoot className="w-full  border-solid  rounded-b-[7px] p-1">
+      <tfoot className="w-full  border-solid  rounded-b-[7px] p-1 bg-[#114565] z-10">
         <tr className="grid grid-cols-4 ">
           <td></td>
           <td></td>

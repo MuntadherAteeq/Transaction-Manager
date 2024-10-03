@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { CardContent } from "@/components/ui/card"
 import { Table, Transaction } from "@prisma/client"
 import { Switch } from "@/components/ui/switch"
+import { Badge } from "@/components/ui/badge"
 
 export default function TableOptions({
   table,
@@ -62,7 +63,11 @@ export default function TableOptions({
         </CardContent>
 
         <CardContent className="flex p-3  gap-2 items-center select-none">
-          {inProgress ? <span>Completed</span> : <span>In Progress</span>}
+          {inProgress ? (
+            <Badge className="bg-foreground text-background">Completed</Badge>
+          ) : (
+            <Badge variant={"default"}>In Progress</Badge>
+          )}
 
           <Switch
             onClick={() => {
