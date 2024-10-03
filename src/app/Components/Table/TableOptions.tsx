@@ -1,7 +1,11 @@
 "use client"
+
 import { useState } from "react"
 import { addTransaction, clearTransactions } from "./table.actions"
-import { PlusIcon } from "@radix-ui/react-icons"
+import React from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 
 export default function TableOptions({
   tableId,
@@ -24,26 +28,29 @@ export default function TableOptions({
   }
 
   return (
-    <div className="flex flex-row gap-2">
-      <button
-        className="flex items-center inline-button !bg-background"
-        onClick={() => {
-          add()
-          onClick()
-        }}
-      >
-        <PlusIcon className="m-1" />
-        New
-      </button>
-      <button
-        className="inline-button !bg-background"
-        onClick={() => {
-          clear()
-          onClick()
-        }}
-      >
-        Clear
-      </button>
-    </div>
+    <>
+      <div className="bg-background rounded-t-xl rounded-b-none ">
+        <CardContent className="p-3">
+          <Card className="bg-background p-1">
+            <Button
+              onClick={() => {
+                add()
+                onClick()
+              }}
+            >
+              New
+            </Button>
+            <Button
+              onClick={() => {
+                clear()
+                onClick()
+              }}
+            >
+              Clear
+            </Button>
+          </Card>
+        </CardContent>
+      </div>
+    </>
   )
 }

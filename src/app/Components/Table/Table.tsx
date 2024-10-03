@@ -143,16 +143,20 @@ export default function TransactionTable({ table }: { table: Table }) {
   // }, [])
 
   return (
-    <div className="flex flex-col w-full h-full animate-show-down opacity-0">
+    <div className="flex flex-col w-full h-full animate-show-down opacity-0 mb-9">
       <AddTransactionButton tableId={table.id} onClick={fetchData} />
-      <AgGridReact
-        className="ag-theme-quartz-dark w-full h-full"
-        rowData={rowData}
-        columnDefs={columnDefs}
-        domLayout="autoHeight"
-        defaultColDef={defaultColDef}
-        overlayNoRowsTemplate="No Transactions Found"
-      />
+      <div className="table-container">
+        {" "}
+        {/* Add this div */}
+        <AgGridReact
+          className="ag-theme-quartz-dark w-full"
+          rowData={rowData}
+          columnDefs={columnDefs}
+          domLayout="autoHeight"
+          defaultColDef={defaultColDef}
+          overlayNoRowsTemplate="No Transactions Found"
+        />
+      </div>
       <tfoot className="w-full  border-solid  rounded-b-[7px] p-1">
         <tr className="grid grid-cols-4 ">
           <td></td>
