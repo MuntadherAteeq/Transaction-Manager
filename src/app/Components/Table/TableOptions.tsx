@@ -5,14 +5,7 @@ import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { CardContent } from "@/components/ui/card"
 import { Table, Transaction } from "@prisma/client"
-import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 import { mutate } from "swr"
 
 export default function TableHeader({
