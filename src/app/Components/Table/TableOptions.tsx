@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/tooltip"
 import { mutate } from "swr"
 
-export default function TableOptions({
+export default function TableHeader({
   table,
   onClick,
   selected,
@@ -41,7 +41,7 @@ export default function TableOptions({
       <div className="bg-[#114565] rounded-t-xl rounded-b-none flex flex-row justify-between">
         <CardContent className="w-full p-3 flex-1">
           <Button
-            className="bg-[#114565] hover:bg-background shadow-none"
+            className="bg-transparent hover:bg-background shadow-none"
             onClick={() => {
               add()
               onClick()
@@ -50,14 +50,14 @@ export default function TableOptions({
             New
           </Button>
           <Button
-            className="bg-[#114565] hover:bg-background shadow-none"
+            className="bg-transparent hover:bg-background shadow-none"
             onClick={onPrint}
           >
             Export
           </Button>
           {selected && selected.length > 0 && (
             <Button
-              className="bg-[#114565] hover:bg-background shadow-none"
+              className="bg-transparent hover:bg-background shadow-none hover:text-red-500"
               onClick={async () => {
                 await deleteTransaction(selected)
                 onClick()
@@ -67,7 +67,7 @@ export default function TableOptions({
             </Button>
           )}
           <Button
-            className="bg-[#114565] hover:bg-background shadow-none"
+            className="bg-transparent hover:bg-background shadow-none hover:text-red-500"
             onClick={async () => {
               await dropTable(table.id)
               mutate(`/API/tables?recordId=${table.recordId}`)
@@ -78,29 +78,21 @@ export default function TableOptions({
         </CardContent>
 
         <CardContent className="flex p-3 gap-2 items-center select-none">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Switch
-                  onClick={() => {
-                    onPrint && onPrint()
-                    setInProgress(!inProgress)
-                  }}
-                />
-              </TooltipTrigger>
-              <TooltipContent side="top" className="p-0 bg-transparent">
-                {inProgress ? (
-                  <Badge className="bg-foreground hover:bg-foreground text-background ">
-                    Completed
-                  </Badge>
-                ) : (
-                  <Badge className="bg-background hover:bg-background">
-                    In Progress
-                  </Badge>
-                )}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          {inProgress ? (
+            <Badge
+              onClick={() => setInProgress(!inProgress)}
+              className="bg-foreground hover:bg-foreground text-background text-sm cursor-pointer transition-all"
+            >
+              Completed
+            </Badge>
+          ) : (
+            <Badge
+              onClick={() => setInProgress(!inProgress)}
+              className="bg-background hover:bg-background text-sm cursor-pointer transition-all"
+            >
+              In Progress
+            </Badge>
+          )}
         </CardContent>
       </div>
     </>
