@@ -1,6 +1,6 @@
 "use client"
 import { Table } from "@prisma/client"
-import TransactionTable from "../Components/Table/ArchiveTable"
+import TransactionTable from "../Components/Table/Table"
 import useSWR from "swr"
 import { usePathname } from "next/navigation"
 import Spinner from "../Components/Spinner"

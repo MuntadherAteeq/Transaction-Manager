@@ -136,3 +136,20 @@ export const dropTable = async (tableId: number) => {
     return { error: "Process Failed", status: 500 }
   }
 }
+
+export const markTableAsCompleted = async (tableId: number) => {
+  try {
+    await prisma.table.update({
+      where: {
+        id: tableId,
+      },
+      data: {
+        isCompleted: true,
+      },
+    })
+    return { error: "", status: 200 }
+  } catch (error) {
+    console.error("Error marking table as complete:", error)
+    return { error: "Process Failed", status: 500 }
+  }
+}

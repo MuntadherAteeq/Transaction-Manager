@@ -11,12 +11,13 @@ import {
   updateQuantity,
   updateType,
 } from "./table.actions"
-import AddTransactionButton from "./TableOptions"
+import AddTransactionButton from "./TableHeader"
 import TableFooter from "./TableFooter"
 
 export default function TransactionTable({ table }: { table: Table }) {
   const [selected, setSelected] = useState<Transaction[]>([])
   const [rowData, setRowData] = useState<Transaction[]>([])
+  const [isComplete, setIsComplete] = useState(table.isCompleted)
   const [updatedTransaction, setUpdatedTransaction] =
     useState<Transaction | null>(null)
 
@@ -42,7 +43,7 @@ export default function TransactionTable({ table }: { table: Table }) {
       {
         field: "description",
         filter: "agTextColumnFilter",
-        editable: true,
+        editable: !isComplete,
         onCellValueChanged: async (params) => {
           if (params.oldValue !== params.newValue) {
             await updateDesc(params.data.id, params.newValue)
@@ -52,7 +53,7 @@ export default function TransactionTable({ table }: { table: Table }) {
       {
         field: "amount",
         filter: "agNumberColumnFilter",
-        editable: true,
+        editable: !isComplete,
         cellEditor: "agNumberCellEditor",
         valueGetter: (params: { data: { amount: number } }) => {
           return params.data?.amount ? params.data.amount / 1000 : 0
@@ -88,7 +89,7 @@ export default function TransactionTable({ table }: { table: Table }) {
       {
         field: "type",
         cellEditor: "agSelectCellEditor",
-        editable: true,
+        editable: !isComplete,
         cellEditorParams: {
           values: ["expense", "income"],
         },
@@ -103,7 +104,7 @@ export default function TransactionTable({ table }: { table: Table }) {
       {
         field: "qty",
         filter: "agNumberColumnFilter",
-        editable: true,
+        editable: !isComplete,
         cellEditor: "agNumberCellEditor",
         onCellValueChanged: async (params) => {
           if (params.data) {
@@ -132,7 +133,7 @@ export default function TransactionTable({ table }: { table: Table }) {
         },
       },
     ],
-    []
+    [isComplete]
   )
   const rowSelection = useMemo(() => {
     return {
@@ -161,6 +162,7 @@ export default function TransactionTable({ table }: { table: Table }) {
         onClick={fetchData}
         selected={selected}
         onPrint={onPrint}
+        setIsComplete={setIsComplete}
       />
       <div className="table-container">
         {" "}
@@ -174,7 +176,7 @@ export default function TransactionTable({ table }: { table: Table }) {
           overlayNoRowsTemplate="No Transactions Found"
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
-          selection={rowSelection}
+          selection={!isComplete ? rowSelection : undefined}
           onSelectionChanged={handleSelectedRows}
           ref={gridRef}
         />
