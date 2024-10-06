@@ -41,7 +41,10 @@ export default function Record_List({ activity }: { activity: string }) {
       ) : (
         <>
           <div className="tools">
-            <SearchField onChange={handleSearch} />
+            <SearchField
+              onChange={handleSearch}
+              autoFocus={activity === "History"}
+            />
             {(activity === "Archive" || activity === "Wallet") && (
               <AddRecord activity={activity} />
             )}

@@ -137,6 +137,8 @@ export function LineChart() {
                 />
               }
             />
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            {/* @ts-expect-error */}
             <Bar dataKey="amount" fill={chartConfig[activeChart].color} />
           </BarChart>
         </ChartContainer>
