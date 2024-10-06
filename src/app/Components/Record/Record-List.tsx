@@ -7,7 +7,6 @@ import Record_item from "./Record-Item"
 import useSWR from "swr"
 import { fetcher } from "../../Utils/common"
 import { Record } from "@prisma/client"
-import { Record_DropdownMenu } from ".././DropDownMenu/RecordMenu"
 import React from "react"
 
 export default function Record_List({ activity }: { activity: string }) {
@@ -26,7 +25,9 @@ export default function Record_List({ activity }: { activity: string }) {
         <>
           <div className="tools">
             <SearchField />
-            <AddRecord activity={activity} />
+            {(activity === "Archive" || activity === "Wallet") && (
+              <AddRecord activity={activity} />
+            )}
           </div>
           <ul>
             {!records ? (
@@ -38,9 +39,7 @@ export default function Record_List({ activity }: { activity: string }) {
             ) : (
               records.map((record) => (
                 <Link href={`/${activity}/${record.id}`} key={record.id}>
-                  <Record_DropdownMenu>
-                    <Record_item record={record} />
-                  </Record_DropdownMenu>
+                  <Record_item record={record} />
                 </Link>
               ))
             )}

@@ -58,3 +58,28 @@ export const editRecord = async (record: Record) => {
     return { error: error, status: 500 }
   }
 }
+
+export const markRecordAsFinished = async (record: Record) => {
+  try {
+    const tables = await prisma.table.findFirst({
+      where: {
+        recordId: record.id,
+        isCompleted: false,
+      },
+      orderBy: { id: "desc" },
+    })
+    if (tables === null) {
+      await prisma.record.update({
+        where: { id: record.id },
+        data: {
+          category: "History",
+        },
+      })
+      return { error: "", status: 200 }
+    } else {
+      return { error: "All tables must be completed", status: 400 }
+    }
+  } catch (error) {
+    return { error: error, status: 500 }
+  }
+}

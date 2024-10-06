@@ -6,7 +6,6 @@ import { redirect } from "next/navigation"
 import { getUser } from "../Library/lucia"
 import { Activities } from "../Utils/common"
 import Dashboard from "../Layouts/Dashboard"
-import { Record_DropdownMenu } from "../Components/DropDownMenu/RecordMenu"
 
 export default async function RecordList({
   children,
@@ -35,9 +34,7 @@ export default async function RecordList({
         ) : (
           <>
             <L_Sidebar>
-              <Record_DropdownMenu>
-                <Record_List activity={activity} />
-              </Record_DropdownMenu>
+              <Record_List activity={activity} />
             </L_Sidebar>
             {children}
           </>

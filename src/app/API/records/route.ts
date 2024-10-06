@@ -14,18 +14,23 @@ export const GET = Handle(async (req: NextRequest) => {
   const user = await getUser()
 
   if (Activity !== null && Activities.includes(Activity)) {
-    if (Activity === "Archive") {
-      // Write a prisma query to get all records where the tables are completed
-      const records = await prisma.record.findMany({
-        where: { userId: user?.id, tables: { some: { isCompleted: false } } },
-        orderBy: { id: "desc" },
-      })
-      return JsonResponse(records, 200)
-    }
     if (Activity === "History") {
       // Write a prisma query to get all records where the tables are completed
       const records = await prisma.record.findMany({
         where: { userId: user?.id, tables: { some: { isCompleted: true } } },
+        orderBy: { id: "desc" },
+      })
+      return JsonResponse(records, 200)
+    }
+    if (Activity === "Archive") {
+      const records = await prisma.record.findMany({
+        where: {
+          userId: user?.id,
+          OR: [
+            { category: Activity },
+            { tables: { some: { isCompleted: false } } },
+          ],
+        },
         orderBy: { id: "desc" },
       })
       return JsonResponse(records, 200)

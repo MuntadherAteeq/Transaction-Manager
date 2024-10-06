@@ -17,12 +17,14 @@ import { Button } from "@/components/ui/button"
 import { AlignJustify, Check, DollarSign, X } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { useForm } from "react-hook-form"
-import { editRecord } from "./Record.actions"
+import { editRecord, markRecordAsFinished } from "./Record.actions"
 import { mutate } from "swr"
 import React from "react"
+import { useRouter } from "next/navigation"
 
 export default function Profile({ record }: { record: Record }) {
   const [editable, setEditable] = useState(false)
+  const route = useRouter()
   const keys = useMemo(
     () => ["phone", "balance", "email", "desc", "address", "category"],
     []
@@ -102,8 +104,26 @@ export default function Profile({ record }: { record: Record }) {
             </>
           ) : (
             <>
-              <Button>
+              <Button
+                onClick={async (e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  const res = await markRecordAsFinished(record)
+                  if (res.status === 200) {
+                    route.push("/Archive")
+                    await mutate(`/API/records?activity=${record.category}`)
+                  } else
+                    toast({
+                      variant: "destructive",
+                      title: "Failed to mark as finished",
+                      description: `${res.error}`,
+                    })
+                }}
+              >
                 <Option icon={<Done_Icon />}>Finish</Option>
+              </Button>
+              <Button>
+                <Option>Not Finish</Option>
               </Button>
               <Button onClick={handleEdit}>
                 <Option icon={<Settings_Icon />}>Edit</Option>
