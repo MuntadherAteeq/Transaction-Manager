@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation"
 import useSidebarResizer from "../Hooks/useSidebarResizer"
 import Search_Icon from "../Assets/Icons/Search"
-import { ChangeEvent, useState } from "react"
+import React, { ChangeEvent, useState } from "react"
 
 export default function L_Sidebar(props: React.HTMLAttributes<HTMLDivElement>) {
   const [sideBarRef] = useSidebarResizer()
@@ -13,13 +13,12 @@ export default function L_Sidebar(props: React.HTMLAttributes<HTMLDivElement>) {
       <div className="tab-title">
         <span>{path.split("/")[1]}</span>
       </div>
-
       <div className="content">{props.children}</div>
     </div>
   )
 }
 
-export function SearchField() {
+export function SearchField(props: React.HTMLAttributes<HTMLInputElement>) {
   const [search, setSearch] = useState("")
 
   function handleSearchBox(e: ChangeEvent<HTMLInputElement>): void {
@@ -38,6 +37,7 @@ export function SearchField() {
         id="RecordSearch"
         onChange={(e) => handleSearchBox(e)}
         {...(search !== "" ? { value: search } : {})}
+        {...props}
       />
     </label>
   )
