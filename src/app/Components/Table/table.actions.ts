@@ -156,3 +156,9 @@ export const markTableAsCompleted = async (
     return { error: "Process Failed", status: 500 }
   }
 }
+
+export async function fetchCompletedTransactions() {
+  return prisma.transaction.findMany({
+    where: { table: { isCompleted: true } },
+  })
+}
