@@ -98,20 +98,22 @@ export function LineChart() {
         </div>
       </CardHeader>
       <CardContent className="px-2 sm:p-6">
-        {activeChart === "income" ? (
-          <IncomeBarChart data={chartData} />
-        ) : (
-          <ExpenseBarChart data={chartData} />
-        )}
+        <DynamicBarChart data={chartData} type={activeChart} />
       </CardContent>
     </Card>
   )
 }
 
-function ExpenseBarChart({ data }: { data: Transaction[] }) {
-  const expenseData = data.filter(
-    (transaction) => transaction.type === "expense"
-  )
+function DynamicBarChart({
+  data,
+  type,
+}: {
+  data: Transaction[]
+  type: keyof typeof chartConfig
+}) {
+  const filteredData = data.filter((transaction) => transaction.type === type)
+  const color =
+    type === "income" ? chartConfig.income.color : chartConfig.expense.color
 
   return (
     <ChartContainer
@@ -120,7 +122,7 @@ function ExpenseBarChart({ data }: { data: Transaction[] }) {
     >
       <BarChart
         accessibilityLayer
-        data={expenseData}
+        data={filteredData}
         margin={{
           left: 12,
           right: 12,
@@ -156,59 +158,7 @@ function ExpenseBarChart({ data }: { data: Transaction[] }) {
             />
           }
         />
-        <Bar dataKey="amount" fill={chartConfig.expense.color} />
-      </BarChart>
-    </ChartContainer>
-  )
-}
-
-function IncomeBarChart({ data }: { data: Transaction[] }) {
-  const incomeData = data.filter((transaction) => transaction.type === "income")
-
-  return (
-    <ChartContainer
-      config={chartConfig}
-      className="aspect-auto h-[250px] w-full"
-    >
-      <BarChart
-        accessibilityLayer
-        data={incomeData}
-        margin={{
-          left: 12,
-          right: 12,
-        }}
-      >
-        <CartesianGrid vertical={false} />
-        <XAxis
-          dataKey="date"
-          tickLine={false}
-          axisLine={false}
-          tickMargin={8}
-          minTickGap={32}
-          tickFormatter={(value) => {
-            const date = new Date(value)
-            return date.toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-            })
-          }}
-        />
-        <ChartTooltip
-          content={
-            <ChartTooltipContent
-              className="w-[150px]"
-              nameKey="views"
-              labelFormatter={(value) => {
-                return new Date(value).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })
-              }}
-            />
-          }
-        />
-        <Bar dataKey="amount" fill={chartConfig.income.color} />
+        <Bar dataKey="amount" fill={color} />
       </BarChart>
     </ChartContainer>
   )
