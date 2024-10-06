@@ -21,7 +21,7 @@ import { fetchCompletedTransactions } from "./Table/table.actions"
 
 export const description = "An interactive bar chart"
 
-const chartConfig = {
+const chartConfig: ChartConfig = {
   views: {
     label: "Amount",
     icon: DollarSign,
@@ -137,8 +137,6 @@ export function LineChart() {
                 />
               }
             />
-            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-            {/* @ts-expect-error */}
             <Bar dataKey="amount" fill={chartConfig[activeChart].color} />
           </BarChart>
         </ChartContainer>
