@@ -8,6 +8,7 @@ import { Table, Transaction } from "@prisma/client"
 import { Badge } from "@/components/ui/badge"
 import { mutate } from "swr"
 import { markTableAsCompleted } from "./table.actions"
+import { usePathname } from "next/navigation"
 
 export default function TableHeader({
   table,
@@ -20,10 +21,11 @@ export default function TableHeader({
   onClick: () => void
   selected?: Transaction[]
   onPrint?: () => void
-  setIsComplete: (isComplete: boolean) => void
+  setIsComplete: (isComplete: boolean | ((e: boolean) => boolean)) => void
 }) {
   const [count, setCount] = useState(0)
   const [inProgress, setInProgress] = useState(table.isCompleted)
+  const activity = usePathname().split("/")[1]
 
   async function add() {
     const res = await addTransaction(table.id)
@@ -68,7 +70,9 @@ export default function TableHeader({
                 className="bg-transparent hover:bg-background shadow-none hover:text-red-500"
                 onClick={async () => {
                   await dropTable(table.id)
-                  mutate(`/API/tables?recordId=${table.recordId}`)
+                  mutate(
+                    `/API/tables?recordId=${table.recordId}&activity=${activity}`
+                  )
                 }}
               >
                 Drop
@@ -81,7 +85,7 @@ export default function TableHeader({
           {inProgress ? (
             <Badge
               onClick={async () => {
-                await markTableAsCompleted(table.id)
+                await markTableAsCompleted(table.id, !inProgress)
                 setInProgress(!inProgress)
                 setIsComplete((e) => !e)
               }}
@@ -92,7 +96,7 @@ export default function TableHeader({
           ) : (
             <Badge
               onClick={async () => {
-                await markTableAsCompleted(table.id)
+                await markTableAsCompleted(table.id, !inProgress)
                 setInProgress(!inProgress)
                 setIsComplete((e) => !e)
               }}

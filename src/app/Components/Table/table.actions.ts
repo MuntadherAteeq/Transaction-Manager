@@ -137,14 +137,17 @@ export const dropTable = async (tableId: number) => {
   }
 }
 
-export const markTableAsCompleted = async (tableId: number) => {
+export const markTableAsCompleted = async (
+  tableId: number,
+  isCompleted: boolean
+) => {
   try {
     await prisma.table.update({
       where: {
         id: tableId,
       },
       data: {
-        isCompleted: true,
+        isCompleted: isCompleted,
       },
     })
     return { error: "", status: 200 }

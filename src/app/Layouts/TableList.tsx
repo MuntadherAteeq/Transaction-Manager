@@ -9,7 +9,8 @@ import React from "react"
 
 export default function TableList() {
   const id = usePathname().split("/")[2]
-  const api = `/API/tables?recordId=${id}`
+  const activity = usePathname().split("/")[1]
+  const api = `/API/tables?recordId=${id}&activity=${activity}`
   const { data: tables, error } = useSWR(api, fetcher)
   return (
     <>

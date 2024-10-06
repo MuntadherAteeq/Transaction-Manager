@@ -17,7 +17,7 @@ export default function CreateTableButton({
       body: JSON.stringify({ recordId }),
     })
     if (response.ok) {
-      mutate(`/API/tables?recordId=${recordId}`)
+      mutate(`/API/tables?recordId=${recordId}&activity=Archive`)
     }
   }
   return (
