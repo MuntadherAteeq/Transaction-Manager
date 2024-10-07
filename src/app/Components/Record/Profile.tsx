@@ -1,5 +1,4 @@
 "use client"
-import type { Record } from "@prisma/client"
 import { Record_Property } from "./Record-Property"
 import Phone_Icon from "../../Assets/Icons/Phone"
 import Calender_Icon from "../../Assets/Icons/Calender"
@@ -21,6 +20,7 @@ import { editRecord, markRecordAsFinished } from "./Record.actions"
 import { mutate } from "swr"
 import React from "react"
 import { useRouter } from "next/navigation"
+import { Record } from "@prisma/client"
 
 export default function Profile({ record }: { record: Record }) {
   const [editable, setEditable] = useState(false)

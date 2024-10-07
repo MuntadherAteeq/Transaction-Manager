@@ -46,7 +46,6 @@ export const editRecord = async (record: Record) => {
       data: {
         name: record.name,
         phone: record.phone,
-        balance: Number(record.balance),
         email: record.email,
         desc: record.desc,
         address: record.address,
