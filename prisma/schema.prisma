@@ -14,14 +14,11 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  name      String?
-  email     String    @unique
-  password  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  sessions  Session[]
-  records   Record[]
+  id       String    @id @default(cuid())
+  email    String    @unique
+  password String
+  sessions Session[]
+  records  Record[]
 }
 
 model Session {
@@ -32,32 +29,26 @@ model Session {
 }
 
 model Record {
-  id        Int      @id @default(autoincrement())
-  category  String?
-  name      String?  @default("Untitled")
-  balance   Float    @default(0)
-  email     String?
-  phone     String?
-  address   String?
-  tables    Table[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  desc      String?
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
+  id       Int      @id @default(autoincrement())
+  category String?
+  name     String?  @default("Untitled")
+  date     DateTime @default(now())
+  email    String?
+  phone    String?
+  address  String?
+  tables   Table[]
+  desc     String?
+  User     User?    @relation(fields: [userId], references: [id])
+  userId   String?
 }
 
 model Table {
   id           Int           @id @default(autoincrement())
   recordId     Int
-  name         String?       @default("Untitled")
-  description  String?
   isCompleted  Boolean       @default(false)
   total        Int           @default(0)
   transactions Transaction[]
   record       Record        @relation(fields: [recordId], references: [id])
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @default(now())
 }
 
 model Transaction {
@@ -66,9 +57,7 @@ model Transaction {
   amount      Int      @default(0)
   type        String
   description String?
-  date        DateTime
+  date        DateTime @default(now())
   qty         Int      @default(1)
   table       Table    @relation(fields: [tableId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
 }

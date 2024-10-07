@@ -14,7 +14,7 @@ export default function Record_item({ record }: { record: Record }) {
         </div>
         <div className="bottom">
           <div className="date">{`${new Date(
-            data.createdAt
+            data.date
           ).toLocaleDateString()}`}</div>
         </div>
       </div>

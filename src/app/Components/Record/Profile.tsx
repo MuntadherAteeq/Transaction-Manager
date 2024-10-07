@@ -122,9 +122,6 @@ export default function Profile({ record }: { record: Record }) {
               >
                 <Option icon={<Done_Icon />}>Finish</Option>
               </Button>
-              <Button>
-                <Option>Not Finish</Option>
-              </Button>
               <Button onClick={handleEdit}>
                 <Option icon={<Settings_Icon />}>Edit</Option>
               </Button>
