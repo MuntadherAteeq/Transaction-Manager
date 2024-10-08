@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { mutate } from "swr"
 import { markTableAsCompleted } from "./table.actions"
 import { usePathname } from "next/navigation"
+import ComingSoon from "../CommingSoon"
 
 export default function TableHeader({
   table,
@@ -38,7 +39,7 @@ export default function TableHeader({
     <>
       <div className="bg-[#114565] rounded-t-xl rounded-b-none flex flex-row justify-between">
         <CardContent className="w-full p-3 flex-1">
-          {!inProgress && (
+          {!inProgress ? (
             <>
               <Button
                 className="bg-transparent hover:bg-background shadow-none"
@@ -49,12 +50,7 @@ export default function TableHeader({
               >
                 New
               </Button>
-              <Button
-                className="bg-transparent hover:bg-background shadow-none"
-                onClick={onPrint}
-              >
-                Export
-              </Button>
+
               {selected && selected.length > 0 && (
                 <Button
                   className="bg-transparent hover:bg-background shadow-none hover:text-red-500"
@@ -77,7 +73,21 @@ export default function TableHeader({
               >
                 Drop
               </Button>
+              <ComingSoon>
+                <Button className="bg-transparent hover:bg-background shadow-none">
+                  Invoice
+                </Button>
+              </ComingSoon>
             </>
+          ) : (
+            <ComingSoon>
+              <Button
+                className="bg-transparent hover:bg-background shadow-none"
+                onClick={onPrint}
+              >
+                Export
+              </Button>
+            </ComingSoon>
           )}
         </CardContent>
 
