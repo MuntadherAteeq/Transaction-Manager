@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation"
 import Spinner from "../Components/Spinner"
 import { fetcher } from "../Utils/common"
 import React from "react"
+import Tracker from "../Components/Table/Tracker"
 
 export default function TableList() {
   const id = usePathname().split("/")[2]
@@ -26,6 +27,10 @@ export default function TableList() {
             <div className="w-full flex relative items-center justify-center mt-8">
               <p className="text-2xl text-stone-500">Empty</p>
             </div>
+          ) : activity === "Wallet" ? (
+            tables.map((table: Table) => (
+              <Tracker key={table.id} table={table} />
+            ))
           ) : (
             tables.map((table: Table) => (
               <TransactionTable key={table.id} table={table} />

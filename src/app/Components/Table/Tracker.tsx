@@ -9,16 +9,16 @@ import {
   updateDesc,
   updatePrice,
   updateQuantity,
+  updateType,
 } from "./table.actions"
 import AddTransactionButton from "./TableHeader"
-import TableFooter from "./TableFooter"
 
-export default function TransactionTable({ table }: { table: Table }) {
+export default function Tracker({ table }: { table: Table }) {
   const [selected, setSelected] = useState<Transaction[]>([])
   const [rowData, setRowData] = useState<Transaction[]>([])
   const [isComplete, setIsComplete] = useState(table.isCompleted)
-  const [updatedTransaction, setUpdatedTransaction] =
-    useState<Transaction | null>(null)
+
+  useEffect(() => {}, [])
 
   const fetchData = useCallback(async () => {
     const result = await getTransactions(table.id)
@@ -69,14 +69,8 @@ export default function TransactionTable({ table }: { table: Table }) {
         },
         onCellValueChanged: async (params) => {
           if (params.data) {
-            const res = await updatePrice(params.data.id, params.data.amount)
-            if (res.status !== 200) {
-              fetchData()
-            }
-            setUpdatedTransaction({
-              ...params.data,
-              amount: params.data.amount,
-            })
+            await updatePrice(params.data.id, params.data.amount)
+            fetchData()
           }
         },
         cellRenderer: (params: { value: number }) => {
@@ -86,17 +80,28 @@ export default function TransactionTable({ table }: { table: Table }) {
         },
       },
       {
+        field: "type",
+        cellEditor: "agSelectCellEditor",
+        editable: !isComplete,
+        cellEditorParams: {
+          values: ["expense", "income"],
+        },
+        onCellValueChanged: async (params) => {
+          if (params.data) {
+            const res = await updateType(params.data.id, params.newValue)
+            if (res.status !== 200) fetchData()
+          }
+        },
+      },
+      {
         field: "qty",
         filter: "agNumberColumnFilter",
         editable: !isComplete,
         cellEditor: "agNumberCellEditor",
         onCellValueChanged: async (params) => {
           if (params.data) {
-            const res = await updateQuantity(params.data.id, params.newValue)
-            if (res.status !== 200) {
-              fetchData()
-            }
-            setUpdatedTransaction({ ...params.data, qty: params.newValue })
+            await updateQuantity(params.data.id, params.newValue)
+            fetchData()
           }
         },
         cellRenderer: (params: { value: number }) => {
@@ -165,11 +170,32 @@ export default function TransactionTable({ table }: { table: Table }) {
           ref={gridRef}
         />
       </div>
-      <TableFooter
-        table={table}
-        rowData={rowData}
-        updatedTransaction={updatedTransaction}
-      />
+      <tfoot className="w-full  border-solid  rounded-b-[7px] p-1 bg-[#114565] z-10">
+        <tr className="grid grid-cols-4 ">
+          <td className="flex justify-center">Total income:</td>
+          <td className="text-green-500">
+            {(
+              rowData.reduce((acc, { amount, qty, type }) => {
+                if (type === "income") {
+                  return acc + amount * qty
+                }
+                return acc
+              }, 0) / 1000
+            ).toFixed(3) + " BD"}
+          </td>
+          <td className="flex justify-center">Total Expenses: </td>
+          <td className=" text-red-500">
+            {(
+              rowData.reduce((acc, { amount, qty, type }) => {
+                if (type === "expense") {
+                  return acc + amount * qty
+                }
+                return acc
+              }, 0) / 1000
+            ).toFixed(3) + " BD"}
+          </td>
+        </tr>
+      </tfoot>
     </div>
   )
 }

@@ -21,7 +21,7 @@ export const GET = Handle(async (req: NextRequest) => {
           userId: user?.id,
           OR: [
             { category: Activity },
-            { tables: { every: { isCompleted: true } } },
+            { tables: { some: { isCompleted: true } } },
           ],
         },
         orderBy: { id: "desc" },

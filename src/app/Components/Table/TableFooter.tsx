@@ -1,7 +1,5 @@
-import { Input } from "@/components/ui/input"
-import { toast } from "@/hooks/use-toast"
 import { Table, Transaction } from "@prisma/client"
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import AmountInput from "../AmountInput"
 
 export default function TableFooter({
@@ -27,24 +25,6 @@ export default function TableFooter({
       return acc + transactionAmount
     }, 0)
   }, [rowData, updatedTransaction])
-
-  const handleKeyPressed = (e) => {
-    if (e?.keyCode === 13) {
-      e.target.blur()
-      setPaid(Number(e.target.value))
-    }
-  }
-  const setPaidAmount = async (price: string) => {
-    if (Number.isNaN(Number(price))) {
-      toast({
-        title: "Invalid Amount",
-        description: "Please enter a valid amount",
-        duration: 2000,
-      })
-      return false
-    }
-    return true
-  }
 
   return (
     <tfoot className="w-full  border-solid  rounded-b-[7px] p-1 bg-[#114565] z-10">
