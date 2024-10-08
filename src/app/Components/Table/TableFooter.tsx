@@ -2,6 +2,7 @@ import { Input } from "@/components/ui/input"
 import { toast } from "@/hooks/use-toast"
 import { Table, Transaction } from "@prisma/client"
 import { useMemo, useState } from "react"
+import AmountInput from "../AmountInput"
 
 export default function TableFooter({
   rowData,
@@ -11,7 +12,6 @@ export default function TableFooter({
   updatedTransaction: Transaction | null
   table?: Table
 }) {
-  const [paid, setPaid] = useState<string>("")
   const total = useMemo(() => {
     return rowData.reduce((acc, { id, amount, qty, type }) => {
       let transactionAmount = amount * qty
@@ -31,26 +31,29 @@ export default function TableFooter({
   const handleKeyPressed = (e) => {
     if (e?.keyCode === 13) {
       e.target.blur()
-      alert("Enter Pressed")
+      setPaid(Number(e.target.value))
     }
   }
   const setPaidAmount = async (price: string) => {
-    if (Number.isNaN(Number(price)))
+    if (Number.isNaN(Number(price))) {
       toast({
         title: "Invalid Amount",
         description: "Please enter a valid amount",
         duration: 2000,
       })
+      return false
+    }
+    return true
   }
 
   return (
     <tfoot className="w-full  border-solid  rounded-b-[7px] p-1 bg-[#114565] z-10">
-      <tr className="grid grid-cols-4">
-        <td></td>
-        <td></td>
-        <td className="text-right">Total : </td>
+      <tr className="grid grid-cols-4 ">
+        <td className=""></td>
+        <td className=""></td>
+        <td className="y-center-end">Total Expenses: </td>
         <td className="px-[15px]">
-          <span>
+          <span className="text-red-500">
             {total > 0 ? "+" : "-"} {Math.abs(total / 1000).toFixed(3)} BD
           </span>
         </td>
@@ -58,19 +61,10 @@ export default function TableFooter({
       <tr className="grid grid-cols-4 ">
         <td></td>
         <td></td>
-        <td className="text-right">Paid : </td>
+        <td className="y-center-end">Paid : </td>
         <td className="px-[15px]">
           <span>
-            <Input
-              type="number"
-              className="bg-background [&::-webkit-inner-spin-button]:appearance-none"
-              onKeyDown={handleKeyPressed}
-              onBlur={(e) => setPaidAmount(e.target.value)}
-              onChange={(e) =>
-                setPaid((price) => (price == "0" ? "" : e.target.value))
-              }
-              value={paid}
-            />
+            <AmountInput className="bg-background [&::-webkit-inner-spin-button]:appearance-none" />
           </span>
         </td>
       </tr>
