@@ -181,19 +181,11 @@ export default function TransactionTable({ table }: { table: Table }) {
           ref={gridRef}
         />
       </div>
-      <tfoot className="w-full  border-solid  rounded-b-[7px] p-1 bg-[#114565] z-10">
-        <tr className="grid grid-cols-4 ">
-          <td></td>
-          <td></td>
-          <td>Total : </td>
-          <td className="px-[15px]">
-            <TableFooter
-              rowData={rowData}
-              updatedTransaction={updatedTransaction}
-            />
-          </td>
-        </tr>
-      </tfoot>
+      <TableFooter
+        table={table}
+        rowData={rowData}
+        updatedTransaction={updatedTransaction}
+      />
     </div>
   )
 }
