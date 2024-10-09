@@ -5,13 +5,20 @@ import { useEffect, useMemo, useState, useCallback, useRef } from "react"
 import { ColDef, SelectionChangedEvent } from "ag-grid-community"
 import { Table, Transaction } from "@prisma/client"
 import {
+  addTransaction,
+  deleteTransaction,
+  dropTable,
   getTransactions,
   updateDesc,
   updatePrice,
   updateQuantity,
   updateType,
-} from "./table.actions"
-import AddTransactionButton from "./TableHeader"
+} from "../Table/table.actions"
+import { CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { usePathname } from "next/navigation"
+import { mutate } from "swr"
+import ComingSoon from "../CommingSoon"
 
 export default function Tracker({ table }: { table: Table }) {
   const [selected, setSelected] = useState<Transaction[]>([])
@@ -41,7 +48,7 @@ export default function Tracker({ table }: { table: Table }) {
     () => [
       {
         field: "description",
-        filter: "agTextColumnFilter",
+        filter: "agTextCellEditor",
         editable: !isComplete,
         onCellValueChanged: async (params) => {
           if (params.oldValue !== params.newValue) {
@@ -88,8 +95,8 @@ export default function Tracker({ table }: { table: Table }) {
         },
         onCellValueChanged: async (params) => {
           if (params.data) {
-            const res = await updateType(params.data.id, params.newValue)
-            if (res.status !== 200) fetchData()
+            await updateType(params.data.id, params.newValue)
+            fetchData()
           }
         },
       },
@@ -146,7 +153,7 @@ export default function Tracker({ table }: { table: Table }) {
 
   return (
     <div className="flex flex-col w-full h-full animate-show-down opacity-0 mb-9">
-      <AddTransactionButton
+      <TrackerHeader
         table={table}
         onClick={fetchData}
         selected={selected}
@@ -197,5 +204,82 @@ export default function Tracker({ table }: { table: Table }) {
         </tr>
       </tfoot>
     </div>
+  )
+}
+
+function TrackerHeader({
+  table,
+  onClick,
+  selected,
+  onPrint,
+}: {
+  table: Table
+  onClick: () => void
+  selected?: Transaction[]
+  onPrint?: () => void
+  setIsComplete: (isComplete: boolean | ((e: boolean) => boolean)) => void
+}) {
+  const [count, setCount] = useState(0)
+  const activity = usePathname().split("/")[1]
+
+  async function add() {
+    const res = await addTransaction(table.id)
+    if (res.status === 200) {
+      setCount(count + 1)
+    }
+  }
+  return (
+    <>
+      <div className="bg-[#114565] rounded-t-xl rounded-b-none flex flex-row justify-between">
+        <CardContent className="w-full p-3 flex-1">
+          <Button
+            className="bg-transparent hover:bg-background shadow-none"
+            onClick={() => {
+              add()
+              onClick()
+            }}
+          >
+            New
+          </Button>
+
+          {selected && selected.length > 0 && (
+            <Button
+              className="bg-transparent hover:bg-background shadow-none hover:text-red-500"
+              onClick={async () => {
+                await deleteTransaction(selected)
+                onClick()
+              }}
+            >
+              Delete
+            </Button>
+          )}
+          <Button
+            className="bg-transparent hover:bg-background shadow-none hover:text-red-500"
+            onClick={async () => {
+              await dropTable(table.id)
+              mutate(
+                `/API/tables?recordId=${table.recordId}&activity=${activity}`
+              )
+            }}
+          >
+            Drop
+          </Button>
+          <ComingSoon>
+            <Button className="bg-transparent hover:bg-background shadow-none">
+              Export
+            </Button>
+          </ComingSoon>
+          <ComingSoon>
+            <Button
+              className="bg-transparent hover:bg-background shadow-none"
+              onClick={onPrint}
+            >
+              Export
+            </Button>
+          </ComingSoon>
+        </CardContent>
+        <CardContent className="flex p-3 gap-2 items-center select-none"></CardContent>
+      </div>
+    </>
   )
 }

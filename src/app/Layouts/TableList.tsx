@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 import Spinner from "../Components/Spinner"
 import { fetcher } from "../Utils/common"
 import React from "react"
-import Tracker from "../Components/Table/Tracker"
+import Tracker from "../Components/Tracker/Tracker"
 
 export default function TableList() {
   const id = usePathname().split("/")[2]

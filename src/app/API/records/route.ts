@@ -15,7 +15,6 @@ export const GET = Handle(async (req: NextRequest) => {
 
   if (Activity !== null && Activities.includes(Activity)) {
     if (Activity === "History") {
-      // Write a prisma query to get all records where the tables are completed
       const records = await prisma.record.findMany({
         where: {
           userId: user?.id,
