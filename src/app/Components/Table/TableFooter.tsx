@@ -5,10 +5,11 @@ import AmountInput from "../AmountInput"
 export default function TableFooter({
   rowData,
   updatedTransaction,
+  table,
 }: {
   rowData: Transaction[]
   updatedTransaction: Transaction | null
-  table?: Table
+  table: Table
 }) {
   const total = useMemo(() => {
     return rowData.reduce((acc, { id, amount, qty, type }) => {
@@ -44,7 +45,7 @@ export default function TableFooter({
         <td className="y-center-end">Paid : </td>
         <td className="px-[15px]">
           <span>
-            <AmountInput className="bg-background [&::-webkit-inner-spin-button]:appearance-none" />
+            <AmountInput table={table} className="bg-background [&::-webkit-inner-spin-button]:appearance-none" />
           </span>
         </td>
       </tr>
