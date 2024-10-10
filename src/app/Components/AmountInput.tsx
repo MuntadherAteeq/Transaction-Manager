@@ -1,27 +1,28 @@
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { Table } from "@prisma/client"
-import React from "react"
+import React, { useRef } from "react"
 import { useState } from "react"
 
 export default function AmountInput({
   className,
-  disabled,
   // table,
   ...props
 }: {
   table: Table
   className?: string
-  disabled?: boolean
   props?: React.InputHTMLAttributes<HTMLInputElement>
 }) {
-  const [isFocused, setIsFocused] = useState(!disabled)
+  const [isFocused, setIsFocused] = useState(false)
   const [amount, setAmount] = useState<string>("")
   const [price, setPrice] = useState<number>(0)
+  const ref = useRef<HTMLInputElement>(null)
 
   const handleBlur = () => {
     setIsFocused(false)
-    setAmount((amount) => Number(amount).toFixed(3))
+    price === 0
+      ? setAmount("")
+      : setAmount((amount) => Number(amount).toFixed(3))
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,11 +31,12 @@ export default function AmountInput({
   }
 
   React.useLayoutEffect(() => {
-    if (price === 0) setAmount("")
+    isFocused && ref.current?.select()
   }, [isFocused])
 
   return (
     <Input
+      ref={ref}
       type="number"
       autoFocus={isFocused}
       onDoubleClick={() => {
@@ -43,7 +45,13 @@ export default function AmountInput({
       onBlur={handleBlur}
       readOnly={!isFocused}
       onChange={handleChange}
-      onKeyDown={(e) => (e.key === "Enter" || e.key === "Tab") && handleBlur()}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === "Tab") {
+          handleBlur()
+        } else {
+          setIsFocused(true)
+        }
+      }}
       value={isFocused ? price.toString() : amount}
       className={cn(
         `${!isFocused && "cursor-default select-none"} `,
