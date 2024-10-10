@@ -5,8 +5,10 @@ import { mutate } from "swr"
 
 export default function CreateTableButton({
   recordId,
+  activity,
 }: {
   recordId: number | undefined
+  activity: string
 }) {
   const createNewTable = async () => {
     const response = await fetch("/API/create-table", {
@@ -14,10 +16,10 @@ export default function CreateTableButton({
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ recordId }),
+      body: JSON.stringify({ recordId, activity }),
     })
     if (response.ok) {
-      mutate(`/API/tables?recordId=${recordId}&activity=Archive`)
+      mutate(`/API/tables?recordId=${recordId}&activity=${activity}`)
     }
   }
   return (

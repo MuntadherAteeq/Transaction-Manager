@@ -169,6 +169,7 @@ export default function TransactionTable({ table }: { table: Table }) {
         table={table}
         rowData={rowData}
         updatedTransaction={updatedTransaction}
+        isComplete={isComplete}
       />
     </div>
   )

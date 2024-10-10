@@ -8,8 +8,15 @@ export const POST = Handle(async (req: NextRequest) => {
     return ErrorResponse("Method Not Allowed", 405)
   }
 
-  const data = await req.json()
-  await prisma.table.create({ data: { recordId: data.recordId } })
+  const { recordId, activity } = await req.json()
+  console.log(activity)
+  const record = await prisma.record.findFirst({
+    where: {
+      id: recordId,
+    },
+  })
+  record?.category ===  "Wallet" ? "tracker" : ""
+  await prisma.table.create({ data: { recordId: recordId , type : "tracker" } })
 
   return JsonResponse("Record Created", 201)
 })

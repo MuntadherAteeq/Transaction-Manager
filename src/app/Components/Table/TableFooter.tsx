@@ -6,7 +6,9 @@ export default function TableFooter({
   rowData,
   updatedTransaction,
   table,
+  isComplete,
 }: {
+  isComplete: boolean
   rowData: Transaction[]
   updatedTransaction: Transaction | null
   table: Table
@@ -45,7 +47,11 @@ export default function TableFooter({
         <td className="y-center-end">Paid : </td>
         <td className="px-[15px]">
           <span>
-            <AmountInput table={table} className="bg-background [&::-webkit-inner-spin-button]:appearance-none" />
+            <AmountInput
+              table={table}
+              className="bg-background [&::-webkit-inner-spin-button]:appearance-none"
+              disabled={isComplete}
+            />
           </span>
         </td>
       </tr>

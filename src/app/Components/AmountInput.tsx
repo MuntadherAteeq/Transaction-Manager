@@ -7,8 +7,10 @@ import { useState } from "react"
 export default function AmountInput({
   className,
   // table,
+  disabled,
   ...props
 }: {
+  disabled: boolean
   table: Table
   className?: string
   props?: React.InputHTMLAttributes<HTMLInputElement>
@@ -57,6 +59,7 @@ export default function AmountInput({
         `${!isFocused && "cursor-default select-none"} `,
         className
       )}
+      disabled={disabled}
       {...props}
     />
   )

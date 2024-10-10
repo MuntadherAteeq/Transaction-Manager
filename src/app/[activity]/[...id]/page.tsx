@@ -25,8 +25,8 @@ export default async function Record_Page({
   return (
     <>
       <Editor>
-        {activity === "Archive" ? (
-          <CreateTableButton recordId={record?.id} />
+        {activity !== "History" ? (
+          <CreateTableButton recordId={record?.id} activity={activity} />
         ) : null}
         <TableList />
       </Editor>
