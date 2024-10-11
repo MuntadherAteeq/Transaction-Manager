@@ -265,11 +265,6 @@ function TrackerHeader({
             Drop
           </Button>
           <ComingSoon>
-            <Button className="bg-transparent hover:bg-background shadow-none">
-              Export
-            </Button>
-          </ComingSoon>
-          <ComingSoon>
             <Button
               className="bg-transparent hover:bg-background shadow-none"
               onClick={onPrint}

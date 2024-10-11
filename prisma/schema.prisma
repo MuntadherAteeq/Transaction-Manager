@@ -46,7 +46,6 @@ model Table {
   id           Int           @id @default(autoincrement())
   recordId     Int
   isCompleted  Boolean       @default(false)
-  type         String
   transactions Transaction[]
   record       Record        @relation(fields: [recordId], references: [id])
 }

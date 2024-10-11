@@ -73,11 +73,6 @@ export default function TableHeader({
               >
                 Drop
               </Button>
-              <ComingSoon>
-                <Button className="bg-transparent hover:bg-background shadow-none">
-                  Invoice
-                </Button>
-              </ComingSoon>
             </>
           ) : (
             <ComingSoon>

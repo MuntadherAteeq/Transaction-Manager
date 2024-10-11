@@ -1,6 +1,5 @@
 "use client"
 import { Table } from "@prisma/client"
-import TransactionTable from "../Components/Table/Table"
 import useSWR from "swr"
 import { usePathname } from "next/navigation"
 import Spinner from "../Components/Spinner"
@@ -27,13 +26,9 @@ export default function TableList() {
             <div className="w-full flex relative items-center justify-center mt-8">
               <p className="text-2xl text-stone-500">Empty</p>
             </div>
-          ) : activity === "Wallet" ? (
-            tables.map((table: Table) => (
-              <Tracker key={table.id} table={table} />
-            ))
           ) : (
             tables.map((table: Table) => (
-              <TransactionTable key={table.id} table={table} />
+              <Tracker key={table.id} table={table} />
             ))
           )}
         </>

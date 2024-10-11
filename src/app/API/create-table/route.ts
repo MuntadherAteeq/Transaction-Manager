@@ -10,13 +10,13 @@ export const POST = Handle(async (req: NextRequest) => {
 
   const { recordId, activity } = await req.json()
   console.log(activity)
-  const record = await prisma.record.findFirst({
+  await prisma.record.findFirst({
     where: {
       id: recordId,
     },
   })
-  record?.category ===  "Wallet" ? "tracker" : ""
-  await prisma.table.create({ data: { recordId: recordId , type : "tracker" } })
+
+  await prisma.table.create({ data: { recordId: recordId } })
 
   return JsonResponse("Record Created", 201)
 })

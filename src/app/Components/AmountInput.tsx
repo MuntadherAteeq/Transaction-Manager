@@ -55,10 +55,7 @@ export default function AmountInput({
         }
       }}
       value={isFocused ? price.toString() : amount}
-      className={cn(
-        `${!isFocused && "cursor-default select-none"} `,
-        className
-      )}
+      className={cn(`${!isFocused && "cursor-default select-none"}`, className)}
       disabled={disabled}
       {...props}
     />

@@ -1,7 +1,6 @@
 "use server"
 import { Transaction } from "@prisma/client"
 
-
 export const getTransactions = async (tableId: number) => {
   try {
     const transactions = await prisma.transaction.findMany({
