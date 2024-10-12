@@ -10,7 +10,7 @@ import {
   updatePrice,
   updateQuantity,
 } from "./table.actions"
-import AddTransactionButton from "./TableHeader"
+import TableHeader from "./TableHeader"
 import TableFooter from "./TableFooter"
 
 export default function TransactionTable({ table }: { table: Table }) {
@@ -141,7 +141,7 @@ export default function TransactionTable({ table }: { table: Table }) {
 
   return (
     <div className="flex flex-col w-full h-full animate-show-down opacity-0 mb-9">
-      <AddTransactionButton
+      <TableHeader
         table={table}
         onClick={fetchData}
         selected={selected}
@@ -149,8 +149,6 @@ export default function TransactionTable({ table }: { table: Table }) {
         setIsComplete={setIsComplete}
       />
       <div className="table-container">
-        {" "}
-        {/* Add this div */}
         <AgGridReact
           className="ag-theme-quartz-dark w-full"
           rowData={rowData}
