@@ -20,11 +20,14 @@ import {
 // import { mutate } from "swr"
 // import ComingSoon from "../CommingSoon"
 import TableHeader from "../Table/TableHeader"
+import { usePathname, useRouter } from "next/navigation"
 
 export default function Tracker({ table }: { table: Table }) {
   const [selected, setSelected] = useState<Transaction[]>([])
   const [rowData, setRowData] = useState<Transaction[]>([])
   const [isComplete, setIsComplete] = useState(table.isCompleted)
+  const path = usePathname()
+  const route = useRouter()
 
   useEffect(() => {}, [])
 
@@ -145,6 +148,7 @@ export default function Tracker({ table }: { table: Table }) {
   const gridRef = useRef<AgGridReact>(null)
 
   const onPrint = useCallback(() => {
+    route.push(`${path}/${table.id}`)
     // Print selected transactions
     if (gridRef.current) {
       // const gridApi: GridApi = gridRef.current.api

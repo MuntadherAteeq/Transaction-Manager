@@ -1,6 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media print {
+  body *:not(.printable *) {
+    display: none;
+  }
+}
+
 @layer base {
   :root {
     /* --background: 0 0% 100%;

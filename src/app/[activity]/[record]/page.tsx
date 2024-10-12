@@ -12,7 +12,7 @@ export default async function Record_Page({
   params,
 }: {
   children: React.ReactNode
-  params: { activity: string; id: string[] }
+  params: { activity: string; record: string }
 }) {
   const session = await getUser()
   if (session === null) redirect("/Auth")
@@ -20,7 +20,7 @@ export default async function Record_Page({
   const activity = params.activity
 
   const record = await prisma.record.findFirst({
-    where: { id: Number.parseInt(params.id[0]) },
+    where: { id: Number.parseInt(params.record) },
   })
   return (
     <>
