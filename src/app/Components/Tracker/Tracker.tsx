@@ -2,7 +2,7 @@
 
 import { AgGridReact } from "ag-grid-react"
 import { useEffect, useMemo, useState, useCallback, useRef } from "react"
-import { ColDef, SelectionChangedEvent } from "ag-grid-community"
+import { ColDef, GridApi, SelectionChangedEvent } from "ag-grid-community"
 import { Table, Transaction } from "@prisma/client"
 import {
   // addTransaction,
@@ -20,14 +20,12 @@ import {
 // import { mutate } from "swr"
 // import ComingSoon from "../CommingSoon"
 import TableHeader from "../Table/TableHeader"
-import { usePathname, useRouter } from "next/navigation"
+import { toast } from "@/hooks/use-toast"
 
 export default function Tracker({ table }: { table: Table }) {
   const [selected, setSelected] = useState<Transaction[]>([])
   const [rowData, setRowData] = useState<Transaction[]>([])
   const [isComplete, setIsComplete] = useState(table.isCompleted)
-  const path = usePathname()
-  const route = useRouter()
 
   useEffect(() => {}, [])
 
@@ -80,8 +78,14 @@ export default function Tracker({ table }: { table: Table }) {
         },
         onCellValueChanged: async (params) => {
           if (params.data) {
-            await updatePrice(params.data.id, params.data.amount)
-            fetchData()
+            const res = await updatePrice(params.data.id, params.data.amount)
+            if (res.error) {
+              toast({
+                title: "Error Happened",
+                description: res.error,
+              })
+              fetchData()
+            }
           }
         },
         cellRenderer: (params: { value: number }) => {
@@ -99,8 +103,14 @@ export default function Tracker({ table }: { table: Table }) {
         },
         onCellValueChanged: async (params) => {
           if (params.data) {
-            await updateType(params.data.id, params.newValue)
-            fetchData()
+            const res = await updateType(params.data.id, params.newValue)
+            if (res.error) {
+              toast({
+                title: "Error Happened",
+                description: res.error,
+              })
+              fetchData()
+            }
           }
         },
       },
@@ -111,8 +121,14 @@ export default function Tracker({ table }: { table: Table }) {
         cellEditor: "agNumberCellEditor",
         onCellValueChanged: async (params) => {
           if (params.data) {
-            await updateQuantity(params.data.id, params.newValue)
-            fetchData()
+            const res = await updateQuantity(params.data.id, params.newValue)
+            if (res.error) {
+              toast({
+                title: "Error Happened",
+                description: res.error,
+              })
+              fetchData()
+            }
           }
         },
         cellRenderer: (params: { value: number }) => {
@@ -133,6 +149,7 @@ export default function Tracker({ table }: { table: Table }) {
         },
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [isComplete]
   )
   const rowSelection = useMemo(() => {
@@ -148,13 +165,15 @@ export default function Tracker({ table }: { table: Table }) {
   const gridRef = useRef<AgGridReact>(null)
 
   const onPrint = useCallback(() => {
-    route.push(`${path}/${table.id}`)
-    // Print selected transactions
     if (gridRef.current) {
-      // const gridApi: GridApi = gridRef.current.api
-      // const csv = gridApi.getDataAsCsv()
+      const gridApi: GridApi = gridRef.current.api
+      if (selected.length > 0) {
+        gridApi.exportDataAsCsv({
+          onlySelected: true,
+        })
+      } else gridApi.exportDataAsCsv()
     }
-  }, [])
+  }, [selected])
 
   return (
     <div className="flex flex-col w-full h-full animate-show-down opacity-0 mb-9">
