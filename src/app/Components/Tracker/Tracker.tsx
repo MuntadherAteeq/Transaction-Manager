@@ -210,7 +210,7 @@ export function TrackerFooter({ rowData }: { rowData: Transaction[] }) {
   return (
     <>
       <tfoot className="w-full  border-solid  rounded-b-[7px] p-1 bg-[#114565] z-10">
-        <tr className="grid grid-cols-4 ">
+        <tr className="grid grid-cols-4">
           <td className="flex justify-center">Total income:</td>
           <td className="text-green-500">
             {(
@@ -233,6 +233,21 @@ export function TrackerFooter({ rowData }: { rowData: Transaction[] }) {
               }, 0) / 1000
             ).toFixed(3) + " BD"}
           </td>
+        </tr>
+        <tr className="grid grid-cols-4">
+          <td className="flex justify-center">Balance :</td>
+          <td className="text-blue-500">
+            {(
+              rowData.reduce((acc, { amount, type, qty }) => {
+                if (type === "income") {
+                  return acc + amount * qty
+                }
+                return acc - amount * qty
+              }, 0) / 1000
+            ).toFixed(3) + " BD"}
+          </td>
+          <td className="flex justify-center"></td>
+          <td className=""></td>
         </tr>
       </tfoot>
     </>

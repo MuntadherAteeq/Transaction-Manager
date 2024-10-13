@@ -56,10 +56,10 @@ export function LineChart() {
     () => ({
       income: chartData
         .filter((transaction) => transaction.type === "income")
-        .reduce((acc, curr) => acc + curr.amount, 0),
+        .reduce((acc, curr) => acc + curr.amount * curr.qty, 0),
       expense: chartData
         .filter((transaction) => transaction.type === "expense")
-        .reduce((acc, curr) => acc + curr.amount, 0),
+        .reduce((acc, curr) => acc + curr.amount * curr.qty, 0),
     }),
     [chartData]
   )
