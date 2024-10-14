@@ -21,6 +21,7 @@ import { mutate } from "swr"
 import React from "react"
 import { useRouter } from "next/navigation"
 import { Record } from "@prisma/client"
+import { Input } from "@/components/ui/input"
 
 export default function Profile({ record }: { record: Record }) {
   const [editable, setEditable] = useState(false)
@@ -69,8 +70,7 @@ export default function Profile({ record }: { record: Record }) {
         <div className="top">
           <div className="header">
             <Avatar />
-            <input
-              id="Name"
+            <Input
               autoComplete="off"
               readOnly={!editable}
               defaultValue={record.name ?? ""}

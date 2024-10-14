@@ -1,6 +1,7 @@
 "use client"
 import { Input } from "@/components/ui/input"
 import { Decimal } from "@prisma/client/runtime/library"
+import { cn } from "@/lib/utils"
 
 export interface RecordPropertyProps {
   title: string
@@ -10,6 +11,7 @@ export interface RecordPropertyProps {
   readOnly?: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: any
+  className?: string
 }
 
 export function Record_Property({
@@ -19,6 +21,7 @@ export function Record_Property({
   value,
   readOnly,
   register,
+  className,
 }: RecordPropertyProps) {
   return (
     <label htmlFor={title} className="Record_Property">
@@ -26,10 +29,10 @@ export function Record_Property({
       <span className="tag">{title}</span>
       <Input
         id={title}
-        className="value"
         type={type}
         autoComplete="off"
         readOnly={readOnly}
+        className={cn("bg-background border-none rounded-l-none ", className)}
         defaultValue={value !== null || value === 0 ? value : ""}
         {...register}
       />
