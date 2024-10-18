@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { AgGridReact } from "ag-grid-react"
-import { useEffect, useMemo, useState, useCallback, useRef } from "react"
-import { ColDef, GridApi, SelectionChangedEvent } from "ag-grid-community"
-import { Table, Transaction } from "@prisma/client"
+import { AgGridReact } from "ag-grid-react";
+import { useEffect, useMemo, useState, useCallback, useRef } from "react";
+import { ColDef, GridApi, SelectionChangedEvent } from "ag-grid-community";
+import { Table, Transaction } from "@prisma/client";
 import {
   // addTransaction,
   // deleteTransaction,
@@ -13,30 +13,32 @@ import {
   updatePrice,
   updateQuantity,
   updateType,
-} from "../Table/table.actions"
+} from "../Table/table.actions";
 // import { CardContent } from "@/components/ui/card"
 // import { Button } from "@/components/ui/button"
 // import { usePathname } from "next/navigation"
 // import { mutate } from "swr"
 // import ComingSoon from "../CommingSoon"
-import TableHeader from "../Table/TableHeader"
-import { toast } from "@/hooks/use-toast"
+import TableHeader from "../Table/TableHeader";
+import { toast } from "@/hooks/use-toast";
 
 export default function Tracker({ table }: { table: Table }) {
-  const [selected, setSelected] = useState<Transaction[]>([])
-  const [rowData, setRowData] = useState<Transaction[]>([])
-  const [isComplete, setIsComplete] = useState(table.isCompleted)
+  const [selected, setSelected] = useState<Transaction[]>([]);
+  const [rowData, setRowData] = useState<Transaction[]>([]);
+  const [isComplete, setIsComplete] = useState(table.isCompleted);
+  const [updatedTransaction, setUpdatedTransaction] =
+    useState<Transaction | null>(null);
 
-  useEffect(() => {}, [])
+  useEffect(() => {}, []);
 
   const fetchData = useCallback(async () => {
-    const result = await getTransactions(table.id)
-    setRowData(result.data)
-  }, [table.id])
+    const result = await getTransactions(table.id);
+    setRowData(result.data);
+  }, [table.id]);
 
   useEffect(() => {
-    fetchData()
-  }, [fetchData])
+    fetchData();
+  }, [fetchData]);
 
   const defaultColDef = useMemo(
     () => ({
@@ -44,7 +46,7 @@ export default function Tracker({ table }: { table: Table }) {
       flex: 1,
     }),
     []
-  )
+  );
 
   const columnDefs = useMemo<ColDef[]>(
     () => [
@@ -54,7 +56,7 @@ export default function Tracker({ table }: { table: Table }) {
         editable: !isComplete,
         onCellValueChanged: async (params) => {
           if (params.oldValue !== params.newValue) {
-            await updateDesc(params.data.id, params.newValue)
+            await updateDesc(params.data.id, params.newValue);
           }
         },
       },
@@ -64,34 +66,36 @@ export default function Tracker({ table }: { table: Table }) {
         editable: !isComplete,
         cellEditor: "agNumberCellEditor",
         valueGetter: (params: { data: { amount: number } }) => {
-          return params.data?.amount ? params.data.amount / 1000 : 0
+          return params.data?.amount ? params.data.amount / 1000 : 0;
         },
         valueSetter: (params: {
-          data: { amount: number }
-          newValue: number
+          data: { amount: number };
+          newValue: number;
         }) => {
           if (params.data) {
-            params.data.amount = Number((params.newValue * 1000).toFixed(0))
-            return true
+            params.data.amount = Number((params.newValue * 1000).toFixed(0));
+            return true;
           }
-          return false
+          return false;
         },
         onCellValueChanged: async (params) => {
           if (params.data) {
-            const res = await updatePrice(params.data.id, params.data.amount)
+            const res = await updatePrice(params.data.id, params.data.amount);
+            setUpdatedTransaction(params.data);
             if (res.error) {
               toast({
                 title: "Error Happened",
                 description: res.error,
-              })
-              fetchData()
+              });
+              fetchData();
             }
           }
         },
         cellRenderer: (params: { value: number }) => {
-          const amount = Number(params.value)
-          if (amount === 0 || amount === null || amount === undefined) return ""
-          return `${params.value.toFixed(3)} BD`
+          const amount = Number(params.value);
+          if (amount === 0 || amount === null || amount === undefined)
+            return "";
+          return `${params.value.toFixed(3)} BD`;
         },
       },
       {
@@ -103,13 +107,14 @@ export default function Tracker({ table }: { table: Table }) {
         },
         onCellValueChanged: async (params) => {
           if (params.data) {
-            const res = await updateType(params.data.id, params.newValue)
+            const res = await updateType(params.data.id, params.newValue);
+            setUpdatedTransaction(params.data);
             if (res.error) {
               toast({
                 title: "Error Happened",
                 description: res.error,
-              })
-              fetchData()
+              });
+              fetchData();
             }
           }
         },
@@ -121,20 +126,21 @@ export default function Tracker({ table }: { table: Table }) {
         cellEditor: "agNumberCellEditor",
         onCellValueChanged: async (params) => {
           if (params.data) {
-            const res = await updateQuantity(params.data.id, params.newValue)
+            const res = await updateQuantity(params.data.id, params.newValue);
+            setUpdatedTransaction(params.data);
             if (res.error) {
               toast({
                 title: "Error Happened",
                 description: res.error,
-              })
-              fetchData()
+              });
+              fetchData();
             }
           }
         },
         cellRenderer: (params: { value: number }) => {
-          const qty = Number(params.value)
-          if (qty === 0 || qty === null || qty === undefined) return ""
-          return params.value
+          const qty = Number(params.value);
+          if (qty === 0 || qty === null || qty === undefined) return "";
+          return params.value;
         },
       },
       {
@@ -143,37 +149,37 @@ export default function Tracker({ table }: { table: Table }) {
           if (params.data?.amount && params.data?.qty) {
             return `${((params.data.amount / 1000) * params.data.qty).toFixed(
               3
-            )} BD`
+            )} BD`;
           }
-          return "0.000 BD"
+          return "0.000 BD";
         },
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [isComplete]
-  )
+  );
   const rowSelection = useMemo(() => {
     return {
       mode: "multiRow",
-    }
-  }, [])
+    };
+  }, []);
 
   const handleSelectedRows = (event: SelectionChangedEvent) => {
-    setSelected(event.api.getSelectedRows())
-  }
+    setSelected(event.api.getSelectedRows());
+  };
 
-  const gridRef = useRef<AgGridReact>(null)
+  const gridRef = useRef<AgGridReact>(null);
 
   const onPrint = useCallback(() => {
     if (gridRef.current) {
-      const gridApi: GridApi = gridRef.current.api
+      const gridApi: GridApi = gridRef.current.api;
       if (selected.length > 0) {
         gridApi.exportDataAsCsv({
           onlySelected: true,
-        })
-      } else gridApi.exportDataAsCsv()
+        });
+      } else gridApi.exportDataAsCsv();
     }
-  }, [selected])
+  }, [selected]);
 
   return (
     <div className="flex flex-col w-full h-full animate-show-down opacity-0 mb-9">
@@ -201,58 +207,87 @@ export default function Tracker({ table }: { table: Table }) {
           ref={gridRef}
         />
       </div>
-      <TrackerFooter rowData={rowData} />
+
+      <TrackerFooter
+        table={table}
+        rowData={rowData}
+        updatedTransaction={updatedTransaction}
+        isComplete={isComplete}
+        selections={selected}
+      />
     </div>
-  )
+  );
 }
 
-export function TrackerFooter({ rowData }: { rowData: Transaction[] }) {
+const TrackerFooter = ({
+  rowData,
+  updatedTransaction,
+  selections,
+}: {
+  table: Table;
+  rowData: Transaction[];
+  updatedTransaction: Transaction | null;
+  isComplete: boolean;
+  selections: Transaction[];
+}) => {
+  const totalExpenses = useMemo(() => {
+    return rowData.reduce((acc, { amount, qty, type }) => {
+      if (type === "expense") {
+        return acc + amount * qty;
+      }
+      return acc;
+    }, 0);
+  }, [rowData, updatedTransaction]);
+
+  const totalIncome = useMemo(() => {
+    return rowData.reduce((acc, { amount, qty, type }) => {
+      if (type === "income") {
+        return acc + amount * qty;
+      }
+      return acc;
+    }, 0);
+  }, [rowData, updatedTransaction]);
+
+  const balance = useMemo(() => {
+    return totalIncome - totalExpenses;
+  }, [rowData, updatedTransaction]);
+
+  const selectionTotal = useMemo(
+    () =>
+      selections.reduce((acc, { amount, qty, type }) => {
+        if (type === "income") {
+          return acc + amount * qty;
+        }
+        return acc - amount * qty;
+      }, 0),
+    [selections]
+  );
+
   return (
-    <>
-      <tfoot className="w-full  border-solid  rounded-b-[7px] p-1 bg-[#114565] z-10">
-        <tr className="grid grid-cols-4">
-          <td className="flex justify-center">Total income:</td>
-          <td className="text-green-500">
-            {(
-              rowData.reduce((acc, { amount, qty, type }) => {
-                if (type === "income") {
-                  return acc + amount * qty
-                }
-                return acc
-              }, 0) / 1000
-            ).toFixed(3) + " BD"}
-          </td>
-          <td className="flex justify-center">Total Expenses: </td>
-          <td className=" text-red-500">
-            {(
-              rowData.reduce((acc, { amount, qty, type }) => {
-                if (type === "expense") {
-                  return acc + amount * qty
-                }
-                return acc
-              }, 0) / 1000
-            ).toFixed(3) + " BD"}
-          </td>
-        </tr>
-        <tr className="grid grid-cols-4">
-          <td className="flex justify-center">Balance :</td>
-          <td className="text-blue-500">
-            {(
-              rowData.reduce((acc, { amount, type, qty }) => {
-                if (type === "income") {
-                  return acc + amount * qty
-                }
-                return acc - amount * qty
-              }, 0) / 1000
-            ).toFixed(3) + " BD"}
-          </td>
-          <td className="flex justify-center"></td>
-          <td className=""></td>
-        </tr>
-      </tfoot>
-    </>
-  )
-}
+    <tfoot className="flex gap-1 flex-col w-full  border-solid  rounded-b-[7px] p-1 bg-[#114565] z-10 text-center">
+      <tr className="grid grid-cols-4">
+        <td className="flex justify-center">Total income:</td>
+        <td className="text-green-500 bg-background rounded-sm">
+          + {(totalIncome / 1000).toFixed(3)} BD
+        </td>
+        <td className="flex justify-center">Total Expenses: </td>
+        <td className=" text-red-500 bg-background rounded-sm ">
+          - {(totalExpenses / 1000).toFixed(3)} BD
+        </td>
+      </tr>
+      <tr className="grid grid-cols-4">
+        <td className="flex justify-center">Balance :</td>
+        <td className="text-yellow-600 bg-background rounded-sm ">
+          {(balance / 1000).toFixed(3)} BD
+        </td>
+        <td className="flex justify-center">Selection Total</td>
+        <td className=" bg-background rounded-sm ">
+          {(selectionTotal / 1000).toFixed(3)}
+        </td>
+      </tr>
+    </tfoot>
+  );
+};
 
 // function TrackerHeader({
 //   table,

@@ -31,6 +31,7 @@ export default function Profile({ recordData }: { recordData: Record }) {
     () => ["phone", "balance", "email", "desc", "address", "category"],
     []
   );
+  
 
   useEffect(() => {
     setRecord(recordData);
