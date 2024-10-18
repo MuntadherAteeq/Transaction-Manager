@@ -109,27 +109,6 @@ export default function Tracker({ table }: { table: Table }) {
         },
       },
       {
-        field: "type",
-        cellEditor: "agSelectCellEditor",
-        editable: !isComplete,
-        cellEditorParams: {
-          values: ["expense", "income"],
-        },
-        onCellValueChanged: async (params) => {
-          if (params.data) {
-            const res = await updateType(params.data.id, params.newValue);
-            setUpdatedTransaction({ ...params.data, type: params.newValue });
-            if (res.error) {
-              toast({
-                title: "Error Happened",
-                description: res.error,
-              });
-              fetchData();
-            }
-          }
-        },
-      },
-      {
         field: "qty",
         filter: "agNumberColumnFilter",
         editable: !isComplete,
@@ -151,6 +130,27 @@ export default function Tracker({ table }: { table: Table }) {
           const qty = Number(params.value);
           if (qty === 0 || qty === null || qty === undefined) return "";
           return params.value;
+        },
+      },
+      {
+        field: "type",
+        cellEditor: "agSelectCellEditor",
+        editable: !isComplete,
+        cellEditorParams: {
+          values: ["expense", "income"],
+        },
+        onCellValueChanged: async (params) => {
+          if (params.data) {
+            const res = await updateType(params.data.id, params.newValue);
+            setUpdatedTransaction({ ...params.data, type: params.newValue });
+            if (res.error) {
+              toast({
+                title: "Error Happened",
+                description: res.error,
+              });
+              fetchData();
+            }
+          }
         },
       },
       {
