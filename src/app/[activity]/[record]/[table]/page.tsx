@@ -11,7 +11,6 @@ export default async function Print({
 
   if (user === null) redirect("/Auth")
 
-  console.log(params)
 
   const table = await prisma.table.findFirst({
     where: { id: Number(params.table) },

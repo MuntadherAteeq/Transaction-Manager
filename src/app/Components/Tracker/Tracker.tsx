@@ -21,6 +21,8 @@ import {
 // import ComingSoon from "../CommingSoon"
 import TableHeader from "../Table/TableHeader";
 import { toast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
+import { TrackerFooter } from "./TrackerFooter";
 
 export default function Tracker({ table }: { table: Table }) {
   const [selected, setSelected] = useState<Transaction[]>([]);
@@ -91,11 +93,19 @@ export default function Tracker({ table }: { table: Table }) {
             }
           }
         },
-        cellRenderer: (params: { value: number }) => {
+        cellRenderer: (params: { value: number; data: Transaction }) => {
           const amount = Number(params.value);
           if (amount === 0 || amount === null || amount === undefined)
             return "";
-          return `${params.value.toFixed(3)} BD`;
+          return (
+            <span
+              className={
+                params.data.type === "income"
+                  ? "text-green-500"
+                  : "text-rose-500"
+              }
+            >{`${params.value.toFixed(3)} BD`}</span>
+          );
         },
       },
       {
@@ -108,7 +118,7 @@ export default function Tracker({ table }: { table: Table }) {
         onCellValueChanged: async (params) => {
           if (params.data) {
             const res = await updateType(params.data.id, params.newValue);
-            setUpdatedTransaction(params.data);
+            setUpdatedTransaction({ ...params.data, type: params.newValue });
             if (res.error) {
               toast({
                 title: "Error Happened",
@@ -145,18 +155,36 @@ export default function Tracker({ table }: { table: Table }) {
       },
       {
         field: "total",
-        valueGetter: (params: { data: { amount: number; qty: number } }) => {
+        valueGetter: (params: {
+          data: { amount: number; qty: number; type: string };
+        }) => {
           if (params.data?.amount && params.data?.qty) {
-            return `${((params.data.amount / 1000) * params.data.qty).toFixed(
-              3
-            )} BD`;
+            return (params.data.amount / 1000) * params.data.qty;
           }
-          return "0.000 BD";
+          return 0;
+        },
+        cellRenderer: (params: {
+          data: { amount: number; qty: number; type: string };
+        }) => {
+          if (params.data?.amount && params.data?.qty) {
+            return (
+              <span
+                className={cn(
+                  params.data.type === "income"
+                    ? "text-green-500"
+                    : "text-rose-500"
+                )}
+              >{`${((params.data.amount / 1000) * params.data.qty).toFixed(
+                3
+              )} BD`}</span>
+            );
+          }
+          return "";
         },
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isComplete]
+    [isComplete, updatedTransaction]
   );
   const rowSelection = useMemo(() => {
     return {
@@ -218,145 +246,3 @@ export default function Tracker({ table }: { table: Table }) {
     </div>
   );
 }
-
-const TrackerFooter = ({
-  rowData,
-  updatedTransaction,
-  selections,
-}: {
-  table: Table;
-  rowData: Transaction[];
-  updatedTransaction: Transaction | null;
-  isComplete: boolean;
-  selections: Transaction[];
-}) => {
-  const totalExpenses = useMemo(() => {
-    return rowData.reduce((acc, { amount, qty, type }) => {
-      if (type === "expense") {
-        return acc + amount * qty;
-      }
-      return acc;
-    }, 0);
-  }, [rowData, updatedTransaction]);
-
-  const totalIncome = useMemo(() => {
-    return rowData.reduce((acc, { amount, qty, type }) => {
-      if (type === "income") {
-        return acc + amount * qty;
-      }
-      return acc;
-    }, 0);
-  }, [rowData, updatedTransaction]);
-
-  const balance = useMemo(() => {
-    return totalIncome - totalExpenses;
-  }, [rowData, updatedTransaction]);
-
-  const selectionTotal = useMemo(
-    () =>
-      selections.reduce((acc, { amount, qty, type }) => {
-        if (type === "income") {
-          return acc + amount * qty;
-        }
-        return acc - amount * qty;
-      }, 0),
-    [selections]
-  );
-
-  return (
-    <tfoot className="flex gap-1 flex-col w-full  border-solid  rounded-b-[7px] p-1 bg-[#114565] z-10 text-center">
-      <tr className="grid grid-cols-4">
-        <td className="flex justify-center">Total income:</td>
-        <td className="text-green-500 bg-background rounded-sm">
-          + {(totalIncome / 1000).toFixed(3)} BD
-        </td>
-        <td className="flex justify-center">Total Expenses: </td>
-        <td className=" text-red-500 bg-background rounded-sm ">
-          - {(totalExpenses / 1000).toFixed(3)} BD
-        </td>
-      </tr>
-      <tr className="grid grid-cols-4">
-        <td className="flex justify-center">Balance :</td>
-        <td className="text-yellow-600 bg-background rounded-sm ">
-          {(balance / 1000).toFixed(3)} BD
-        </td>
-        <td className="flex justify-center">Selection Total</td>
-        <td className=" bg-background rounded-sm ">
-          {(selectionTotal / 1000).toFixed(3)}
-        </td>
-      </tr>
-    </tfoot>
-  );
-};
-
-// function TrackerHeader({
-//   table,
-//   onClick,
-//   selected,
-//   onPrint,
-// }: {
-//   table: Table
-//   onClick: () => void
-//   selected?: Transaction[]
-//   onPrint?: () => void
-//   setIsComplete: (isComplete: boolean | ((e: boolean) => boolean)) => void
-// }) {
-//   const [count, setCount] = useState(0)
-//   const activity = usePathname().split("/")[1]
-
-//   async function add() {
-//     const res = await addTransaction(table.id)
-//     if (res.status === 200) {
-//       setCount(count + 1)
-//     }
-//   }
-//   return (
-//     <>
-//       <div className="bg-[#114565] rounded-t-xl rounded-b-none flex flex-row justify-between">
-//         <CardContent className="w-full p-3 flex-1">
-//           <Button
-//             className="bg-transparent hover:bg-background shadow-none"
-//             onClick={() => {
-//               add()
-//               onClick()
-//             }}
-//           >
-//             New
-//           </Button>
-
-//           {selected && selected.length > 0 && (
-//             <Button
-//               className="bg-transparent hover:bg-background shadow-none hover:text-red-500"
-//               onClick={async () => {
-//                 await deleteTransaction(selected)
-//                 onClick()
-//               }}
-//             >
-//               Delete
-//             </Button>
-//           )}
-//           <Button
-//             className="bg-transparent hover:bg-background shadow-none hover:text-red-500"
-//             onClick={async () => {
-//               await dropTable(table.id)
-//               mutate(
-//                 `/API/tables?recordId=${table.recordId}&activity=${activity}`
-//               )
-//             }}
-//           >
-//             Drop
-//           </Button>
-//           <ComingSoon>
-//             <Button
-//               className="bg-transparent hover:bg-background shadow-none"
-//               onClick={onPrint}
-//             >
-//               Export
-//             </Button>
-//           </ComingSoon>
-//         </CardContent>
-//         <CardContent className="flex p-3 gap-2 items-center select-none"></CardContent>
-//       </div>
-//     </>
-//   )
-// }
