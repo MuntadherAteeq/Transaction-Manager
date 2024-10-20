@@ -1,14 +1,15 @@
-"use client"
+"use client";
 
-import { addTransaction, deleteTransaction, dropTable } from "./table.actions"
-import React, { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { CardContent } from "@/components/ui/card"
-import { Table, Transaction } from "@prisma/client"
-import { Badge } from "@/components/ui/badge"
-import { mutate } from "swr"
-import { markTableAsCompleted } from "./table.actions"
-import { usePathname } from "next/navigation"
+import { addTransaction, deleteTransaction, dropTable } from "./table.actions";
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { CardContent } from "@/components/ui/card";
+import { Table, Transaction } from "@prisma/client";
+import { Badge } from "@/components/ui/badge";
+import { mutate } from "swr";
+import { markTableAsCompleted } from "./table.actions";
+import { usePathname } from "next/navigation";
+import { Alert } from "../Alert";
 
 export default function TableHeader({
   table,
@@ -17,20 +18,20 @@ export default function TableHeader({
   onPrint,
   setIsComplete,
 }: {
-  table: Table
-  onClick: () => void
-  selected?: Transaction[]
-  onPrint?: () => void
-  setIsComplete: (isComplete: boolean | ((e: boolean) => boolean)) => void
+  table: Table;
+  onClick: () => void;
+  selected?: Transaction[];
+  onPrint?: () => void;
+  setIsComplete: (isComplete: boolean | ((e: boolean) => boolean)) => void;
 }) {
-  const [count, setCount] = useState(0)
-  const [inProgress, setInProgress] = useState(table.isCompleted)
-  const activity = usePathname().split("/")[1]
+  const [count, setCount] = useState(0);
+  const [inProgress, setInProgress] = useState(table.isCompleted);
+  const activity = usePathname().split("/")[1];
 
   async function add() {
-    const res = await addTransaction(table.id)
+    const res = await addTransaction(table.id);
     if (res.status === 200) {
-      setCount(count + 1)
+      setCount(count + 1);
     }
   }
 
@@ -43,8 +44,8 @@ export default function TableHeader({
               <Button
                 className="bg-transparent hover:bg-background shadow-none"
                 onClick={() => {
-                  add()
-                  onClick()
+                  add();
+                  onClick();
                 }}
               >
                 New
@@ -55,8 +56,8 @@ export default function TableHeader({
                   <Button
                     className="bg-transparent hover:bg-background shadow-none hover:text-red-500"
                     onClick={async () => {
-                      await deleteTransaction(selected)
-                      onClick()
+                      await deleteTransaction(selected);
+                      onClick();
                     }}
                   >
                     Delete
@@ -69,17 +70,27 @@ export default function TableHeader({
                   </Button>
                 </>
               )}
-              <Button
-                className="bg-transparent hover:bg-background shadow-none hover:text-red-500"
-                onClick={async () => {
-                  await dropTable(table.id)
+              <Alert
+                title="Are You Sure ?"
+                description={
+                  "This action will remove all the transactions in this table completely and will delete the table as well are you sure you want to conteineue "
+                }
+                callback={async () => {
+                  await dropTable(table.id);
                   mutate(
                     `/API/tables?recordId=${table.recordId}&activity=${activity}`
-                  )
+                  );
                 }}
+                action={
+                  <Button className="bg-red-800 hover:bg-red-700">
+                    Delete
+                  </Button>
+                }
               >
-                Drop
-              </Button>
+                <Button className="bg-transparent hover:bg-background shadow-none hover:text-red-500">
+                  Drop
+                </Button>
+              </Alert>
             </>
           )}
           {inProgress && (
@@ -96,9 +107,9 @@ export default function TableHeader({
           {inProgress ? (
             <Badge
               onClick={async () => {
-                await markTableAsCompleted(table.id, !inProgress)
-                setInProgress(!inProgress)
-                setIsComplete((e) => !e)
+                await markTableAsCompleted(table.id, !inProgress);
+                setInProgress(!inProgress);
+                setIsComplete((e) => !e);
               }}
               className="bg-foreground hover:bg-foreground text-background text-sm cursor-pointer transition-all"
             >
@@ -107,9 +118,9 @@ export default function TableHeader({
           ) : (
             <Badge
               onClick={async () => {
-                await markTableAsCompleted(table.id, !inProgress)
-                setInProgress(!inProgress)
-                setIsComplete((e) => !e)
+                await markTableAsCompleted(table.id, !inProgress);
+                setInProgress(!inProgress);
+                setIsComplete((e) => !e);
               }}
               className="bg-background hover:bg-background text-sm cursor-pointer transition-all"
             >
@@ -119,5 +130,5 @@ export default function TableHeader({
         </CardContent>
       </div>
     </>
-  )
+  );
 }
