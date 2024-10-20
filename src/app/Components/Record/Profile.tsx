@@ -11,27 +11,31 @@ import { Settings_Icon } from "../../Assets/Icons/Settings";
 import Export_Icon from "../../Assets/Icons/Export";
 import Avatar from "../Avatar";
 import { HomeIcon } from "@radix-ui/react-icons";
-import { DeleteRecordAlert } from "./DeleteRecordAlert";
 import { Button } from "@/components/ui/button";
 import { AlignJustify, Check, DollarSign, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
-import { editRecord, markRecordAsFinished } from "./Record.actions";
+import {
+  deleteRecord,
+  editRecord,
+  markRecordAsFinished,
+} from "./Record.actions";
 import { mutate } from "swr";
 import React from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Record } from "@prisma/client";
 import { Input } from "@/components/ui/input";
+import { Alert } from "../Alert";
 
 export default function Profile({ recordData }: { recordData: Record }) {
   const [record, setRecord] = useState(recordData);
   const [editable, setEditable] = useState(false);
+  const path = usePathname();
   const route = useRouter();
   const keys = useMemo(
     () => ["phone", "balance", "email", "desc", "address", "category"],
     []
   );
-  
 
   useEffect(() => {
     setRecord(recordData);
@@ -160,11 +164,26 @@ export default function Profile({ recordData }: { recordData: Record }) {
               >
                 <Option icon={<Export_Icon />}>Export</Option>
               </Button>
-              <DeleteRecordAlert record={record}>
+              <Alert
+                title="Are You Absolutely Sure?"
+                description="This action will remove all tables of this records and will remove all transactions as well , I
+                recommend you to make a back up before deleting this record"
+                callback={async function () {
+                  const activity = path.split("/")[1];
+                  await deleteRecord(record.id);
+                  await mutate(`/API/records?activity=${activity}`);
+                  route.push(`/${activity}`);
+                }}
+                action={
+                  <Button className="bg-red-800 hover:!bg-red-700">
+                    Delete
+                  </Button>
+                }
+              >
                 <Button>
                   <Option icon={<Trash_Icon />}>Delete</Option>
                 </Button>
-              </DeleteRecordAlert>
+              </Alert>
             </>
           )}
         </div>
