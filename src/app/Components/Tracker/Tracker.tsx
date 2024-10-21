@@ -77,10 +77,13 @@ export default function Tracker({ table }: { table: Table }) {
           }
           return false;
         },
-        onCellValueChanged: async (params) => {
+        onCellValueChanged: async (params: {
+          data: Transaction;
+          newValue: number;
+        }) => {
           if (params.data) {
             const res = await updatePrice(params.data.id, params.data.amount);
-            setUpdatedTransaction(params.data);
+            setUpdatedTransaction({ ...params.data, amount: params.newValue });
             if (res.error) {
               toast({
                 title: "Error Happened",
@@ -117,10 +120,13 @@ export default function Tracker({ table }: { table: Table }) {
           }
           return false;
         },
-        onCellValueChanged: async (params) => {
+        onCellValueChanged: async (params: {
+          data: Transaction;
+          newValue: number;
+        }) => {
           if (params.data) {
             const res = await updateQuantity(params.data.id, params.newValue);
-            setUpdatedTransaction(params.data);
+            setUpdatedTransaction({ ...params.data, qty: params.newValue });
             if (res.error) {
               toast({
                 title: "Error Happened",
