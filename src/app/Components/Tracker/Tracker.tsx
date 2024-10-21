@@ -67,15 +67,12 @@ export default function Tracker({ table }: { table: Table }) {
         filter: "agNumberColumnFilter",
         editable: !isComplete,
         cellEditor: "agNumberCellEditor",
-        valueGetter: (params: { data: { amount: number } }) => {
+        valueGetter: (params: { data: Transaction }) => {
           return params.data?.amount ? params.data.amount / 1000 : 0;
         },
-        valueSetter: (params: {
-          data: { amount: number };
-          newValue: number;
-        }) => {
+        valueSetter: (params: { data: Transaction; newValue: number }) => {
           if (params.data) {
-            params.data.amount = Number((params.newValue * 1000).toFixed(0));
+            params.data.amount = Math.abs(Number(params.newValue)) * 1000;
             return true;
           }
           return false;
@@ -113,6 +110,13 @@ export default function Tracker({ table }: { table: Table }) {
         filter: "agNumberColumnFilter",
         editable: !isComplete,
         cellEditor: "agNumberCellEditor",
+        valueSetter: (params: { data: Transaction; newValue: number }) => {
+          if (params.data) {
+            params.data.qty = Number(Math.ceil(Math.abs(params.newValue)));
+            return true;
+          }
+          return false;
+        },
         onCellValueChanged: async (params) => {
           if (params.data) {
             const res = await updateQuantity(params.data.id, params.newValue);

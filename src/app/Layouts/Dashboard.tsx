@@ -1,34 +1,34 @@
-"use client"
-import React, { useEffect, useState } from "react"
+"use client";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Tabs, TabsContent } from "@/components/ui/tabs"
-import { DoubleArrowDownIcon, DoubleArrowUpIcon } from "@radix-ui/react-icons"
-import { LineChart } from "../Components/Chart"
-import { getTotalIncomes, getTotalExpenses } from "../API/dashbourd.actions"
+} from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { DoubleArrowDownIcon, DoubleArrowUpIcon } from "@radix-ui/react-icons";
+import { LineChart } from "../Components/Chart";
+import { getTotalIncomes, getTotalExpenses } from "../API/dashbourd.actions";
 
 export default function Dashboard() {
-  const [totalIncomes, setTotalIncomes] = useState(0)
-  const [totalExpenses, setTotalExpenses] = useState(0)
+  const [totalIncomes, setTotalIncomes] = useState(0);
+  const [totalExpenses, setTotalExpenses] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
-      await getTotalIncomes()
-      await getTotalExpenses()
-      setTotalIncomes(await getTotalIncomes())
-      setTotalExpenses(await getTotalExpenses())
+      await getTotalIncomes();
+      await getTotalExpenses();
+      setTotalIncomes(await getTotalIncomes());
+      setTotalExpenses(await getTotalExpenses());
     }
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
-  const getBalance = totalIncomes - totalExpenses
+  const getBalance = totalIncomes - totalExpenses;
 
   return (
     <ScrollArea className="w-full h-full">
@@ -100,5 +100,5 @@ export default function Dashboard() {
         <LineChart />
       </div>
     </ScrollArea>
-  )
+  );
 }

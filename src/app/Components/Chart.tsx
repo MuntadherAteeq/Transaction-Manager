@@ -1,25 +1,25 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import * as React from "react";
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-import { DollarSign } from "lucide-react"
-import { Transaction } from "@prisma/client"
-import { fetchCompletedTransactions } from "./Table/table.actions"
+} from "@/components/ui/chart";
+import { DollarSign } from "lucide-react";
+import { Transaction } from "@prisma/client";
+import { fetchCompletedTransactions } from "./Table/table.actions";
 
-export const description = "An interactive bar chart"
+export const description = "An interactive bar chart";
 
 const chartConfig: ChartConfig = {
   views: {
@@ -37,20 +37,20 @@ const chartConfig: ChartConfig = {
     label: "Expense",
     color: "var(--negative)",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export function LineChart() {
   const [activeChart, setActiveChart] =
-    React.useState<keyof typeof chartConfig>("income")
-  const [chartData, setChartData] = React.useState<Transaction[]>([])
+    React.useState<keyof typeof chartConfig>("income");
+  const [chartData, setChartData] = React.useState<Transaction[]>([]);
 
   React.useEffect(() => {
     async function loadData() {
-      const data = await fetchCompletedTransactions()
-      setChartData(data)
+      const data = await fetchCompletedTransactions();
+      setChartData(data);
     }
-    loadData()
-  }, [])
+    loadData();
+  }, []);
 
   const total = React.useMemo(
     () => ({
@@ -62,7 +62,7 @@ export function LineChart() {
         .reduce((acc, curr) => acc + curr.amount * curr.qty, 0),
     }),
     [chartData]
-  )
+  );
 
   return (
     <Card className="bg-background">
@@ -75,7 +75,7 @@ export function LineChart() {
         </div>
         <div className="flex">
           {(["income", "expense"] as const).map((key) => {
-            const chart = key
+            const chart = key;
             return (
               <button
                 key={chart}
@@ -93,7 +93,7 @@ export function LineChart() {
                   {total[chart].toLocaleString()}
                 </span>
               </button>
-            )
+            );
           })}
         </div>
       </CardHeader>
@@ -101,19 +101,19 @@ export function LineChart() {
         <DynamicBarChart data={chartData} type={activeChart} />
       </CardContent>
     </Card>
-  )
+  );
 }
 
 function DynamicBarChart({
   data,
   type,
 }: {
-  data: Transaction[]
-  type: keyof typeof chartConfig
+  data: Transaction[];
+  type: keyof typeof chartConfig;
 }) {
-  const filteredData = data.filter((transaction) => transaction.type === type)
+  const filteredData = data.filter((transaction) => transaction.type === type);
   const color =
-    type === "income" ? chartConfig.income.color : chartConfig.expense.color
+    type === "income" ? chartConfig.income.color : chartConfig.expense.color;
 
   return (
     <ChartContainer
@@ -136,11 +136,11 @@ function DynamicBarChart({
           tickMargin={8}
           minTickGap={32}
           tickFormatter={(value) => {
-            const date = new Date(value)
+            const date = new Date(value);
             return date.toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
-            })
+            });
           }}
         />
         <ChartTooltip
@@ -153,7 +153,7 @@ function DynamicBarChart({
                   month: "short",
                   day: "numeric",
                   year: "numeric",
-                })
+                });
               }}
             />
           }
@@ -161,5 +161,5 @@ function DynamicBarChart({
         <Bar dataKey="amount" fill={color} />
       </BarChart>
     </ChartContainer>
-  )
+  );
 }
