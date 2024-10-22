@@ -1,5 +1,5 @@
-"use client"
-import { Button } from "./ui/button"
+"use client";
+import { Button } from "./ui/button";
 import {
   Card,
   CardContent,
@@ -7,11 +7,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card"
-import { Input } from "./ui/input"
+} from "./ui/card";
+import { Input } from "./ui/input";
 
-import z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -19,19 +19,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form"
-import { useForm } from "react-hook-form"
-import { useRouter } from "next/navigation"
-import { signIn } from "@/app/Auth/auth.actions"
-import { useToast } from "@/hooks/use-toast"
+} from "./ui/form";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { signIn } from "@/app/Auth/auth.actions";
+import { useToast } from "@/hooks/use-toast";
 export const SignInSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
-})
+});
 
 export default function SignInTab() {
-  const { toast } = useToast()
-  const router = useRouter()
+  const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof SignInSchema>>({
     resolver: zodResolver(SignInSchema),
@@ -39,18 +39,18 @@ export default function SignInTab() {
       email: "",
       password: "",
     },
-  })
+  });
 
   async function onSubmit(data: z.infer<typeof SignInSchema>) {
-    const res = await signIn(data)
-    if (res.success) router.push("/")
+    const res = await signIn(data);
+    if (res.success) router.push("/");
     if (res.error) {
       toast({
         title: "Error",
         description: res.error,
         variant: "destructive",
         duration: 2000,
-      })
+      });
     }
   }
 
@@ -111,5 +111,5 @@ export default function SignInTab() {
         </Form>
       </Card>
     </>
-  )
+  );
 }

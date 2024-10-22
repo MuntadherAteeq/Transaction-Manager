@@ -1,10 +1,8 @@
 "use client";
 import { Record_Property } from "./Record-Property";
 import Phone_Icon from "../../Assets/Icons/Phone";
-import Calender_Icon from "../../Assets/Icons/Calender";
 import Email_Icon from "../../Assets/Icons/Email";
-import Info_Icon from "../../Assets/Icons/info";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Trash_Icon } from "../../Assets/Icons/Trash";
 import Done_Icon from "../../Assets/Icons/Done";
 import { Settings_Icon } from "../../Assets/Icons/Settings";
@@ -12,7 +10,7 @@ import Export_Icon from "../../Assets/Icons/Export";
 import Avatar from "../Avatar";
 import { HomeIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
-import { AlignJustify, Check, DollarSign, X } from "lucide-react";
+import { AlignJustify, Check, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import {
@@ -26,52 +24,55 @@ import { usePathname, useRouter } from "next/navigation";
 import { Record } from "@prisma/client";
 import { Input } from "@/components/ui/input";
 import { Alert } from "../Alert";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const recordSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  phone: z.string().optional(),
+  email: z.string().email("Invalid email address").optional(),
+  address: z.string().optional(),
+  category: z.string().optional(),
+});
+
+const types = {
+  phone: { type: "tel", icon: <Phone_Icon /> },
+  email: { type: "email", icon: <Email_Icon /> },
+  address: { type: "text", icon: <HomeIcon /> },
+  category: { type: "text", icon: <AlignJustify /> },
+};
 
 export default function Profile({ recordData }: { recordData: Record }) {
   const [record, setRecord] = useState(recordData);
   const [editable, setEditable] = useState(false);
   const path = usePathname();
   const route = useRouter();
-  const keys = useMemo(
-    () => ["phone", "balance", "email", "desc", "address", "category"],
-    []
-  );
+
+  const { toast } = useToast();
+  const { register, handleSubmit } = useForm({
+    resolver: zodResolver(recordSchema),
+  });
+
+  const recordProperties = Object.entries(record)
+    .filter(([key]) => key in types)
+    .map(([key, value]) => ({
+      key,
+      value,
+      ...types[key as keyof typeof types],
+    }));
 
   useEffect(() => {
-    setRecord(recordData);
     return () => {
       setEditable(false);
     };
   }, []);
-
-  const iconMap: { [key: string]: JSX.Element } = {
-    phone: <Phone_Icon />,
-    date: <Calender_Icon />,
-    email: <Email_Icon />,
-    desc: <Info_Icon />,
-    address: <HomeIcon />,
-    category: <AlignJustify />,
-    balance: <DollarSign />,
-  };
-
-  const GetIcon = (type: string): React.ReactNode => {
-    return iconMap[type] || <></>;
-  };
 
   const handleEdit: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     setEditable(!editable);
   };
 
-  const recordEntries = useMemo(() => {
-    return Object.entries(record).filter(([key]) => keys.includes(key));
-  }, [keys, record]);
-
-  const { toast } = useToast();
-  const { register, handleSubmit } = useForm();
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data) => {
     const newRecord = { ...record, ...data };
     const res = await editRecord(newRecord);
     if (res.error) {
@@ -83,6 +84,7 @@ export default function Profile({ recordData }: { recordData: Record }) {
     } else {
       await mutate(`/API/records?activity=${record.category}`);
       setRecord(newRecord);
+      setEditable(false);
     }
   };
 
@@ -93,27 +95,29 @@ export default function Profile({ recordData }: { recordData: Record }) {
           <div className="header">
             <Avatar />
             {editable ? (
-              <Input
-                className="border-none text-2xl p-0 m-0"
-                autoComplete="off"
-                readOnly={!editable}
-                defaultValue={record.name ?? ""}
-                {...register("name")}
-              />
+              <>
+                <Input
+                  className="border-none text-2xl p-0 m-0"
+                  autoComplete="off"
+                  readOnly={!editable}
+                  defaultValue={record.name ?? ""}
+                  {...register("name")}
+                />
+              </>
             ) : (
               <p className="flex-1 text-2xl">{record.name}</p>
             )}
           </div>
 
-          {recordEntries.map(([key, value]) => (
+          {recordProperties.map((property) => (
             <Record_Property
-              icon={GetIcon(key)}
-              key={key}
-              title={key}
-              type="text"
+              key={property.key}
+              title={property.key}
+              type={property.type}
+              icon={property.icon}
+              value={property.value}
               readOnly={!editable}
-              value={value}
-              register={{ ...register(key) }}
+              register={register(property.key)}
             />
           ))}
         </div>
@@ -122,10 +126,10 @@ export default function Profile({ recordData }: { recordData: Record }) {
             <>
               <span></span>
               <span></span>
-              <Button onClick={() => setEditable(!editable)}>
+              <Button>
                 <Option icon={<Check />}>Done</Option>
               </Button>
-              <Button onClick={() => setEditable(!editable)}>
+              <Button onClick={handleEdit}>
                 <Option icon={<X />}>Cancel</Option>
               </Button>
             </>

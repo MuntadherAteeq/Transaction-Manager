@@ -1,17 +1,17 @@
-"use client"
-import { Input } from "@/components/ui/input"
-import { Decimal } from "@prisma/client/runtime/library"
-import { cn } from "@/lib/utils"
+"use client";
+import { Input } from "@/components/ui/input";
+import { Decimal } from "@prisma/client/runtime/library";
+import { cn } from "@/lib/utils";
 
 export interface RecordPropertyProps {
-  title: string
-  type: string
-  icon: React.ReactNode
-  value?: string | number | Decimal | Date | null
-  readOnly?: boolean
+  title: string;
+  type: string;
+  icon: React.ReactNode;
+  value?: string | number | Decimal | Date | null;
+  readOnly?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  register?: any
-  className?: string
+  register?: any;
+  className?: string;
 }
 
 export function Record_Property({
@@ -37,5 +37,5 @@ export function Record_Property({
         {...register}
       />
     </label>
-  )
+  );
 }
