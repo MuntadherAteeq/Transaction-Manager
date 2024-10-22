@@ -11,7 +11,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { DoubleArrowDownIcon, DoubleArrowUpIcon } from "@radix-ui/react-icons";
 import { LineChart } from "../Components/Chart";
-import { getTotalIncomes, getTotalExpenses } from "../API/dashbourd.actions";
+import { getTotalIncomes, getTotalExpenses } from "../API/dashboard.actions";
 
 export default function Dashboard() {
   const [totalIncomes, setTotalIncomes] = useState(0);

@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/chart";
 import { DollarSign } from "lucide-react";
 import { Transaction } from "@prisma/client";
-import { fetchCompletedTransactions } from "./Table/table.actions";
+import { getCompletedTransactions } from "../API/dashboard.actions";
 
 export const description = "An interactive bar chart";
 
@@ -46,7 +46,7 @@ export function LineChart() {
 
   React.useEffect(() => {
     async function loadData() {
-      const data = await fetchCompletedTransactions();
+      const data = await getCompletedTransactions();
       setChartData(data);
     }
     loadData();
