@@ -22,10 +22,10 @@ import { mutate } from "swr";
 import React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Record } from "@prisma/client";
-import { Input } from "@/components/ui/input";
 import { Alert } from "../Alert";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Textarea } from "@/components/ui/textarea";
 
 const recordSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -71,8 +71,8 @@ export default function Profile({ recordData }: { recordData: Record }) {
     e.preventDefault();
     setEditable(!editable);
   };
-
-  const onSubmit = async (data) => {
+  //  eslint-disable-next-line
+  const onSubmit = async (data: any) => {
     const newRecord = { ...record, ...data };
     const res = await editRecord(newRecord);
     if (res.error) {
@@ -91,12 +91,12 @@ export default function Profile({ recordData }: { recordData: Record }) {
   return (
     <form className="h-full" onSubmit={handleSubmit(onSubmit)}>
       <div className="Profile">
-        <div className="top">
+        <div className="top overflow-y-auto overflow-x-hidden app-scrollbar ">
           <div className="header">
             <Avatar />
             {editable ? (
               <>
-                <Input
+                <Textarea
                   className="border-none text-2xl p-0 m-0"
                   autoComplete="off"
                   readOnly={!editable}

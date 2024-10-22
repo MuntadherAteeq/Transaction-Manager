@@ -5,6 +5,19 @@ label {
   display: inline-block;
 }
 
+.app-scrollbar {
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--hover);
+      border-radius: 3px;
+      opacity: 0.2;
+    }
+  }
+}
+
 // light theme
 // :root {
 //   --title-bar-hight: 40px;
