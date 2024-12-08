@@ -1,33 +1,33 @@
-"use client"
+"use client";
 
-import { AgGridReact } from "ag-grid-react"
-import { useEffect, useMemo, useState, useCallback, useRef } from "react"
-import { ColDef, SelectionChangedEvent } from "ag-grid-community"
-import { Table, Transaction } from "@prisma/client"
+import { AgGridReact } from "ag-grid-react";
+import { useEffect, useMemo, useState, useCallback, useRef } from "react";
+import { ColDef, SelectionChangedEvent } from "ag-grid-community";
+import { Table, Transaction } from "@prisma/client";
 import {
   getTransactions,
   updateDesc,
   updatePrice,
   updateQuantity,
-} from "./table.actions"
-import TableHeader from "./TableHeader"
-import TableFooter from "./TableFooter"
+} from "./table.actions";
+import TableHeader from "./TableHeader";
+import TableFooter from "./TableFooter";
 
 export default function TransactionTable({ table }: { table: Table }) {
-  const [selected, setSelected] = useState<Transaction[]>([])
-  const [rowData, setRowData] = useState<Transaction[]>([])
-  const [isComplete, setIsComplete] = useState(table.isCompleted)
+  const [selected, setSelected] = useState<Transaction[]>([]);
+  const [rowData, setRowData] = useState<Transaction[]>([]);
+  const [isComplete, setIsComplete] = useState(table.isCompleted);
   const [updatedTransaction, setUpdatedTransaction] =
-    useState<Transaction | null>(null)
+    useState<Transaction | null>(null);
 
   const fetchData = useCallback(async () => {
-    const result = await getTransactions(table.id)
-    setRowData(result.data)
-  }, [table.id])
+    const result = await getTransactions(table.id);
+    setRowData(result.data);
+  }, [table.id]);
 
   useEffect(() => {
-    fetchData()
-  }, [fetchData])
+    fetchData();
+  }, [fetchData]);
 
   const defaultColDef = useMemo(
     () => ({
@@ -35,7 +35,7 @@ export default function TransactionTable({ table }: { table: Table }) {
       flex: 1,
     }),
     []
-  )
+  );
 
   const columnDefs = useMemo<ColDef[]>(
     () => [
@@ -45,7 +45,7 @@ export default function TransactionTable({ table }: { table: Table }) {
         editable: !isComplete,
         onCellValueChanged: async (params) => {
           if (params.oldValue !== params.newValue) {
-            await updateDesc(params.data.id, params.newValue)
+            await updateDesc(params.data.id, params.newValue);
           }
         },
       },
@@ -55,34 +55,35 @@ export default function TransactionTable({ table }: { table: Table }) {
         editable: !isComplete,
         cellEditor: "agNumberCellEditor",
         valueGetter: (params: { data: { amount: number } }) => {
-          return params.data?.amount ? params.data.amount / 1000 : 0
+          return params.data?.amount ? params.data.amount / 1000 : 0;
         },
         valueSetter: (params: {
-          data: { amount: number }
-          newValue: number
+          data: { amount: number };
+          newValue: number;
         }) => {
           if (params.data) {
-            params.data.amount = Number((params.newValue * 1000).toFixed(0))
-            return true
+            params.data.amount = Number((params.newValue * 1000).toFixed(0));
+            return true;
           }
-          return false
+          return false;
         },
         onCellValueChanged: async (params) => {
           if (params.data) {
-            const res = await updatePrice(params.data.id, params.data.amount)
+            const res = await updatePrice(params.data.id, params.data.amount);
             if (res.status !== 200) {
-              fetchData()
+              fetchData();
             }
             setUpdatedTransaction({
               ...params.data,
               amount: params.data.amount,
-            })
+            });
           }
         },
         cellRenderer: (params: { value: number }) => {
-          const amount = Number(params.value)
-          if (amount === 0 || amount === null || amount === undefined) return ""
-          return `${params.value.toFixed(3)} BD`
+          const amount = Number(params.value);
+          if (amount === 0 || amount === null || amount === undefined)
+            return "";
+          return `${params.value.toFixed(3)} BD`;
         },
       },
       {
@@ -92,17 +93,17 @@ export default function TransactionTable({ table }: { table: Table }) {
         cellEditor: "agNumberCellEditor",
         onCellValueChanged: async (params) => {
           if (params.data) {
-            const res = await updateQuantity(params.data.id, params.newValue)
+            const res = await updateQuantity(params.data.id, params.newValue);
             if (res.status !== 200) {
-              fetchData()
+              fetchData();
             }
-            setUpdatedTransaction({ ...params.data, qty: params.newValue })
+            setUpdatedTransaction({ ...params.data, qty: params.newValue });
           }
         },
         cellRenderer: (params: { value: number }) => {
-          const qty = Number(params.value)
-          if (qty === 0 || qty === null || qty === undefined) return ""
-          return params.value
+          const qty = Number(params.value);
+          if (qty === 0 || qty === null || qty === undefined) return "";
+          return params.value;
         },
       },
       {
@@ -111,25 +112,25 @@ export default function TransactionTable({ table }: { table: Table }) {
           if (params.data?.amount && params.data?.qty) {
             return `${((params.data.amount / 1000) * params.data.qty).toFixed(
               3
-            )} BD`
+            )} BD`;
           }
-          return "0.000 BD"
+          return "0.000 BD";
         },
       },
     ],
     [isComplete]
-  )
+  );
   const rowSelection = useMemo(() => {
     return {
       mode: "multiRow",
-    }
-  }, [])
+    };
+  }, []);
 
   const handleSelectedRows = (event: SelectionChangedEvent) => {
-    setSelected(event.api.getSelectedRows())
-  }
+    setSelected(event.api.getSelectedRows());
+  };
 
-  const gridRef = useRef<AgGridReact>(null)
+  const gridRef = useRef<AgGridReact>(null);
 
   const onPrint = useCallback(() => {
     // Print selected transactions
@@ -137,7 +138,7 @@ export default function TransactionTable({ table }: { table: Table }) {
       // const gridApi: GridApi = gridRef.current.api
       // const csv = gridApi.getDataAsCsv()
     }
-  }, [])
+  }, []);
 
   return (
     <div className="flex flex-col w-full h-full animate-show-down opacity-0 mb-9">
@@ -170,5 +171,5 @@ export default function TransactionTable({ table }: { table: Table }) {
         isComplete={isComplete}
       />
     </div>
-  )
+  );
 }
