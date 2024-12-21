@@ -1,15 +1,15 @@
-import SignInTab from "@/components/SignInTab"
-import SignUpTab from "@/components/SignUpTab"
-import { TabSwitcher } from "@/components/TabSwitcher"
-import { getUser } from "../Library/lucia"
-import { redirect } from "next/navigation"
-import Link from "next/link"
-import Logo_Icon from "../Assets/Icons/Logo"
-import { GitHubLogoIcon } from "@radix-ui/react-icons"
-import { ImageSlider } from "../Components/ImageSlider"
+import SignInTab from "@/components/SignInTab";
+import SignUpTab from "@/components/SignUpTab";
+import { TabSwitcher } from "@/components/TabSwitcher";
+import { getUser } from "../Library/lucia";
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import Logo_Icon from "../Assets/Icons/Logo";
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
+// import { ImageSlider } from "../Components/ImageSlider";
 
 export default async function Auth() {
-  ;(await getUser()) ? redirect("/") : null
+  (await getUser()) ? redirect("/") : null;
   return (
     <div className=" flex relative  h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
       <div className=" flex justify-between relative h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r sm:hidden">
@@ -18,7 +18,7 @@ export default async function Auth() {
           <Logo_Icon className="w-12 h-12" />
           <span>Transaction Manager</span>
         </div>
-        <ImageSlider />
+        {/* <ImageSlider /> */}
         <div className="relative z-20">
           <blockquote className="space-y-2">
             <p className="text-lg">
@@ -56,5 +56,5 @@ export default async function Auth() {
         </div>
       </div>
     </div>
-  )
+  );
 }
