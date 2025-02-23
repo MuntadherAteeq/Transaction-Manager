@@ -8,11 +8,7 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/app/Library/lucia";
 import React from "react";
 
-export default async function Record_Page({
-  params,
-}: {
-  params: { activity: string; record: string };
-}) {
+export default async function Record_Page({ params }: { params: any }) {
   const session = await getUser();
   if (session === null) redirect("/Auth");
   const prisma = new PrismaClient();
