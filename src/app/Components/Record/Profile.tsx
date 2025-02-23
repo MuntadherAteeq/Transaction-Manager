@@ -173,7 +173,7 @@ export default function Profile({ recordData }: { recordData: Record }) {
                 description="This action will remove all tables of this records and will remove all transactions as well , I
                 recommend you to make a back up before deleting this record"
                 callback={async function () {
-                  const activity = path.split("/")[1];
+                  const activity = path?.split("/")[1];
                   await deleteRecord(record.id);
                   await mutate(`/API/records?activity=${activity}`);
                   route.push(`/${activity}`);

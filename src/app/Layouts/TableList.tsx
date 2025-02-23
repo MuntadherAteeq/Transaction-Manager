@@ -8,8 +8,8 @@ import React from "react"
 import Tracker from "../Components/Tracker/Tracker"
 
 export default function TableList() {
-  const id = usePathname().split("/")[2]
-  const activity = usePathname().split("/")[1]
+  const id = usePathname()?.split("/")[2]
+  const activity = usePathname()?.split("/")[1]
   const api = `/API/tables?recordId=${id}&activity=${activity}`
   const { data: tables, error } = useSWR(api, fetcher)
   return (

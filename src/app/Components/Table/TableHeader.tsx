@@ -26,7 +26,7 @@ export default function TableHeader({
 }) {
   const [count, setCount] = useState(0);
   const [inProgress, setInProgress] = useState(table.isCompleted);
-  const activity = usePathname().split("/")[1];
+  const activity = usePathname()?.split("/")[1];
 
   async function add() {
     const res = await addTransaction(table.id);
