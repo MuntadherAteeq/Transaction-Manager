@@ -8,10 +8,20 @@ import { redirect } from "next/navigation";
 import { getUser } from "@/app/Library/lucia";
 import React from "react";
 
+let prisma: PrismaClient;
+
+if (process.env.NODE_ENV === "production") {
+  prisma = new PrismaClient();
+} else {
+  if (!global.prisma) {
+    global.prisma = new PrismaClient();
+  }
+  prisma = global.prisma;
+}
+
 export default async function Record_Page({ params }: { params: any }) {
   const session = await getUser();
   if (session === null) redirect("/Auth");
-  const prisma = new PrismaClient();
   const activity = params.activity;
 
   const record = await prisma.record.findFirst({
