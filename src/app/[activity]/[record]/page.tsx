@@ -11,7 +11,6 @@ import React from "react";
 export default async function Record_Page({
   params,
 }: {
-  children: React.ReactNode;
   params: { activity: string; record: string };
 }) {
   const session = await getUser();
