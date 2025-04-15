@@ -9,9 +9,5 @@ export default async function Activity_Page(props: {
   children: React.ReactNode;
 }) {
   const { Activity } = await props.params;
-  return (
-    <App>
-      <RecordList activity={Activity}>{props.children}</RecordList>
-    </App>
-  );
+  return <App>{props.children}</App>;
 }

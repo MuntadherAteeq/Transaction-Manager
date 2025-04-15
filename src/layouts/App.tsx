@@ -38,6 +38,7 @@ export default function Page(props: any) {
           <SidebarTrigger className="-ml-1" onClick={handleSidebarChange} />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Nav_Path />
+          
         </header>
         {props.children}
       </SidebarInset>

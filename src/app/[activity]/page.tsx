@@ -2,19 +2,23 @@ import { RecordItems, RecordList } from "@/layouts/Record/RecordList";
 import React from "react";
 
 export default function Activity_Page(props: any) {
-  const params = React.use<any>(props.params);
+  const { Activity } = React.use<any>(props.params);
 
-  if (!params) {
-    return <div>Loading...</div>;
-  }
-
-  switch (params.Activity) {
+  switch (Activity) {
     case "Archive":
-      return <RecordItems activity="Archive" />;
+      return (
+        <RecordList activity={Activity}>
+          <RecordItems activity={Activity} />
+        </RecordList>
+      );
     case "Inventory":
       return <div>Inventory</div>;
     case "History":
-      return <RecordItems activity="History" />;
+      return (
+        <RecordList activity={Activity}>
+          <RecordItems activity={Activity} />
+        </RecordList>
+      );
     case "Dashboard":
       return <div>Dashboard</div>;
     case "Settings":

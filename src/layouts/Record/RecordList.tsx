@@ -11,11 +11,13 @@ export function RecordList(props: {
   return (
     <>
       <div className="sticky top-12 bg-sidebar z-10 w-full h-12 p-2 flex gap-2 flex-row items-center">
-        <CreateRecordDialog>
-          <Button className="rounded-sm  text-sm font-semibold bg-primary ">
-            Add New
-          </Button>
-        </CreateRecordDialog>
+        {props.activity === "Archive" && (
+          <CreateRecordDialog>
+            <Button className="rounded-sm  text-sm font-semibold bg-primary ">
+              Add New
+            </Button>
+          </CreateRecordDialog>
+        )}
         <div className="relative w-full">
           <Input
             type="text"
@@ -31,6 +33,7 @@ export function RecordList(props: {
 }
 
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 export function RecordSkeleton() {
   return (
@@ -51,7 +54,9 @@ export function RecordItems(props: {
   return (
     <div className="flex flex-1 flex-col gap-2 p-4 bg-card">
       {Array.from({ length: 15 }, (_, index) => (
-        <RecordItem key={index} />
+        <Link href={`/${props.activity}/${index}`} key={index}>
+          <RecordItem key={index} />
+        </Link>
       ))}
     </div>
   );
