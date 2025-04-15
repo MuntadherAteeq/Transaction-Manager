@@ -234,7 +234,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { NavPath } from "@/components/Nav-Path";
-import Logo_Icon from "@/Assets/Icons/Logo";
+import Logo_Icon from "@/assets/icons/Logo";
 import Link from "next/link";
 import { ThemeSwitcher } from "@/components/Theme-Provider";
 import { CommandShortcut } from "@/components/ui/command";

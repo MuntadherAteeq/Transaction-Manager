@@ -1,4 +1,4 @@
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import {
   Breadcrumb,
@@ -8,19 +8,14 @@ import {
   BreadcrumbSeparator,
 } from "./ui/breadcrumb";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { MenubarItem } from "./ui/menubar";
 import { RecordDrawer } from "@/layouts/Record/Records";
 import { Button } from "./ui/button";
-
-interface NavRecordItemProps {
-  src: string;
-  title: string;
-}
+import avatar from "@/assets/images/Avatar.png";
 
 export const NavPath: React.FC = () => {
   const pathname = usePathname();
   const pathSegments = pathname?.split("/").filter(Boolean) || []; // Handle undefined pathname
-
+  const router = useRouter();
   return (
     <Breadcrumb>
       <BreadcrumbList>
@@ -30,7 +25,7 @@ export const NavPath: React.FC = () => {
           return (
             <React.Fragment key={index}>
               {index === 1 ? (
-                <NavRecordItem title={"Untitled Record"} />
+                <NavRecordItem src={avatar.src} title={"Untitled Record"} />
               ) : (
                 <Button
                   variant="ghost"
@@ -39,7 +34,9 @@ export const NavPath: React.FC = () => {
                   <BreadcrumbItem>
                     <BreadcrumbLink
                       onClick={() => {
-                        history.go(-(index + 1));
+                        router.push(
+                          `/${pathSegments.slice(0, index + 1).join("/")}`
+                        );
                       }}
                       className="text-sm"
                     >

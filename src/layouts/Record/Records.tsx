@@ -1,17 +1,9 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import avatar from "@/Assets/images/Avatar.png";
+import avatar from "@/assets/images/Avatar.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Calendar,
-  Home,
-  Mail,
-  MapPin,
-  Phone,
-  Search,
-  User,
-} from "lucide-react";
+import { Calendar, Mail, MapPin, Phone, User } from "lucide-react";
 
 export const RecordItem = (props: {
   activity?: "Archive" | "History";

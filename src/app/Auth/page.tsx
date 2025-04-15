@@ -3,7 +3,7 @@ import SignUpTab from "./SignUp";
 import { TabSwitcher } from "./TabSwitcher";
 // import { redirect } from "next/navigation";
 import Link from "next/link";
-import Logo_Icon from "@/Assets/Icons/Logo";
+import Logo_Icon from "@/assets/icons/Logo";
 // import { ImageSlider } from "../Components/ImageSlider";
 
 export default async function Auth() {

@@ -1,4 +1,4 @@
-import { RecordItems, RecordList } from "@/layouts/Record/Record-List";
+import { RecordList } from "@/layouts/Record/Record-List";
 import React from "react";
 
 export default function Activity_Page(props: any) {
@@ -6,19 +6,11 @@ export default function Activity_Page(props: any) {
 
   switch (Activity) {
     case "Archive":
-      return (
-        <RecordList activity={Activity}>
-          <RecordItems activity={Activity} />
-        </RecordList>
-      );
+      return <RecordList activity={Activity} />;
     case "Inventory":
       return <div>Inventory</div>;
     case "History":
-      return (
-        <RecordList activity={Activity}>
-          <RecordItems activity={Activity} />
-        </RecordList>
-      );
+      return <RecordList activity={Activity} />;
     case "Dashboard":
       return <div>Dashboard</div>;
     case "Settings":

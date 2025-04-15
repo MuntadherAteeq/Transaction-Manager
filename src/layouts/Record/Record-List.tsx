@@ -6,7 +6,6 @@ import { Plus, Search } from "lucide-react";
 
 export function RecordList(props: {
   activity: string;
-  children: React.ReactNode;
 }) {
   return (
     <>
@@ -20,7 +19,13 @@ export function RecordList(props: {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
         </div>
       </div>
-      {props.children}
+      <div className="flex flex-1 flex-col gap-2 p-4 ">
+      {Array.from({ length: 15 }, (_, index) => (
+        <Link href={`/${props.activity}/${index}`} key={index}>
+          <RecordItem key={index} />
+        </Link>
+      ))}
+    </div>
     </>
   );
 }
@@ -40,20 +45,7 @@ export function RecordSkeleton() {
   );
 }
 
-export function RecordItems(props: {
-  activity: "Archive" | "History";
-  records?: any[];
-}) {
-  return (
-    <div className="flex flex-1 flex-col gap-2 p-4 ">
-      {Array.from({ length: 15 }, (_, index) => (
-        <Link href={`/${props.activity}/${index}`} key={index}>
-          <RecordItem key={index} />
-        </Link>
-      ))}
-    </div>
-  );
-}
+
 
 export function AddNewRecordBTN(props: any) {
   return (
