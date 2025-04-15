@@ -58,9 +58,9 @@ export function NavRecordItem(props: any) {
         <AvatarImage src={props.src} alt="Record Image" />
         <AvatarFallback>RM</AvatarFallback>
       </Avatar>
-      <BreadcrumbItem className="text-sm truncate font-semibold ps-1 text-foreground">
+      <span className="text-sm truncate font-semibold ps-1 text-foreground">
         {props.title}
-      </BreadcrumbItem>
+      </span>
     </BreadcrumbItem>
   );
 }

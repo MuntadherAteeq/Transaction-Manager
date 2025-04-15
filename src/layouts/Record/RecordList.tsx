@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { CreateRecordDialog, RecordItem } from "./Records";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 
 export function RecordList(props: {
   activity: string;
@@ -59,8 +59,12 @@ export function RecordItems(props: {
 export function AddNewRecordBTN(props: any) {
   return (
     <CreateRecordDialog>
-      <Button className="rounded-sm  text-sm font-semibold bg-primary ">
-        Add New
+      <Button
+        variant={"default"}
+        className="rounded-sm  text-sm font-semibold "
+      >
+        <Plus className="sm:hidden size-5" />
+        <span className="max-sm:hidden">New Record</span>
       </Button>
     </CreateRecordDialog>
   );
