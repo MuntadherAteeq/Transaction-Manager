@@ -1,36 +1,49 @@
 import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import "./styles.scss";
-import { ThemeProvider } from "@/components/ui/theme-provider";
-import { GeistSans } from "geist/font/sans";
-import favicon from "./favicon.ico";
-import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "@/components/Theme-Provider";
+import { Toaster } from "@/components/ui/sonner";
+import { SidebarProvider } from "@/components/ui/sidebar";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Transaction Manager",
-  description: "A Simple transaction manager app for managing your finances.",
+  description: "Best CRM system for your business to manage transactions",
   icons: {
-    icon: favicon.src,
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
-  children?: React.ReactNode;
+  children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={GeistSans.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+          attribute={"class"}
+          defaultTheme={"system"}
+          enableSystem={true}
+          storageKey={"theme"}
         >
           {children}
-          <Toaster />
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );

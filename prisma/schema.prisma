@@ -8,23 +8,31 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// datasource db {
-//   provider = "sqlite"
-//   url      = env("DATABASE_URL")
-// }
-
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
+// datasource db {
+//   provider  = "postgresql"
+//   url       = env("DATABASE_URL")
+//   directUrl = env("DIRECT_URL")
+// }
+
 model User {
-  id       String    @id @default(cuid())
-  email    String    @unique
-  password String
-  sessions Session[]
-  records  Record[]
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  sessions      Session[]
+  records       Record[]
+  name          String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  accounts      Account[]
+
+  @@map("user")
 }
 
 model Session {
@@ -32,10 +40,18 @@ model Session {
   userId    String
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id])
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+
+  @@unique([token])
+  @@map("session")
 }
 
 model Record {
-  id       Int      @id @default(autoincrement())
+  id       String   @id @default(cuid())
   category String?
   name     String?  @default("Untitled")
   date     DateTime @default(now())
@@ -50,7 +66,7 @@ model Record {
 
 model Table {
   id           Int           @id @default(autoincrement())
-  recordId     Int
+  recordId     String
   isCompleted  Boolean       @default(false)
   transactions Transaction[]
   record       Record        @relation(fields: [recordId], references: [id])
@@ -65,4 +81,34 @@ model Transaction {
   date        DateTime @default(now())
   qty         Int      @default(1)
   table       Table    @relation(fields: [tableId], references: [id])
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
 }

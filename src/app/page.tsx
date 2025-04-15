@@ -1,8 +1,8 @@
-import { getUser } from "./Library/lucia"
-import { redirect } from "next/navigation"
+"use client";
 
-export default async function Home() {
-  const session = await getUser()
-  if (session === null) redirect("/Auth")
-  redirect("/Archive")
+import App from "@/layouts/App";
+import Background from "@/layouts/Background";
+
+export default function Home(props: any) {
+  return <App>{props.children}</App>;
 }

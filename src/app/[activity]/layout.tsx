@@ -1,45 +1,17 @@
-import L_Sidebar from "../Layouts/L-Sidebar"
-import ActivityBar from "../Layouts/ActivityBar"
-import TitleBar from "../Layouts/Title-Bar"
-import Record_List from "../Components/Record/Record-List"
-import { redirect } from "next/navigation"
-import { getUser } from "../Library/lucia"
-import { Activities } from "../Utils/common"
-import Dashboard from "../Layouts/Dashboard"
+import App from "@/layouts/App";
+import { RecordList } from "@/layouts/Record/RecordList";
+import React from "react";
 
-export default async function RecordList({
-  children,
-  params,
-}: {
-  children: React.ReactNode
-  params: { activity: string }
+export default async function Activity_Page(props: {
+  params: {
+    Activity: string;
+  };
+  children: React.ReactNode;
 }) {
-  const session = await getUser()
-  if (session === null) redirect("/Auth")
-  const activity = Activities.includes(params.activity)
-    ? params.activity
-    : redirect("/Archive")
-
-  const isDashboard = activity === "Dashboard"
-
+  const { Activity } = await props.params;
   return (
-    <>
-      <TitleBar />
-      <div className="App-Container">
-        <ActivityBar />
-        {isDashboard ? (
-          <>
-            <Dashboard />
-          </>
-        ) : (
-          <>
-            <L_Sidebar>
-              <Record_List activity={activity} />
-            </L_Sidebar>
-            {children}
-          </>
-        )}
-      </div>
-    </>
-  )
+    <App>
+      <RecordList activity={Activity}>{props.children}</RecordList>
+    </App>
+  );
 }
