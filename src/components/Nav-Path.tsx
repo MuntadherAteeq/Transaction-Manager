@@ -10,13 +10,14 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { MenubarItem } from "./ui/menubar";
 import { RecordDrawer } from "@/layouts/Record/Records";
+import { Button } from "./ui/button";
 
 interface NavRecordItemProps {
   src: string;
   title: string;
 }
 
-export const Nav_Path: React.FC = () => {
+export const NavPath: React.FC = () => {
   const pathname = usePathname();
   const pathSegments = pathname?.split("/").filter(Boolean) || []; // Handle undefined pathname
 
@@ -29,19 +30,23 @@ export const Nav_Path: React.FC = () => {
           return (
             <React.Fragment key={index}>
               {index === 1 ? (
-                <NavRecordItem
-                  src={`https://picsum.photos/id/${index}/200/200`}
-                  title={"Untitled Record"}
-                />
+                <NavRecordItem title={"Untitled Record"} />
               ) : (
-                <BreadcrumbItem className="max-sm:hidden">
-                  <BreadcrumbLink
-                    href={`/${pathSegments.slice(0, index + 1).join("/")}`}
-                    className="text-sm"
-                  >
-                    {segment}
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
+                <Button
+                  variant="ghost"
+                  className=" max-sm:hidden h-full p-1 px-2"
+                >
+                  <BreadcrumbItem>
+                    <BreadcrumbLink
+                      onClick={() => {
+                        history.go(-(index + 1));
+                      }}
+                      className="text-sm"
+                    >
+                      {segment}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                </Button>
               )}
               {!isLast && <BreadcrumbSeparator className="max-sm:hidden" />}
             </React.Fragment>
@@ -54,16 +59,18 @@ export const Nav_Path: React.FC = () => {
 
 export function NavRecordItem(props: any) {
   return (
-    <RecordDrawer className="h-full">
-      <BreadcrumbItem>
-        <Avatar>
-          <AvatarImage src={props.src} alt="Record Image" />
-          <AvatarFallback>RM</AvatarFallback>
-        </Avatar>
-        <span className="text-sm truncate font-semibold ps-1 text-foreground">
-          {props.title}
-        </span>
-      </BreadcrumbItem>
+    <RecordDrawer>
+      <Button variant={"ghost"} className="p-1 px-2">
+        <BreadcrumbItem>
+          <Avatar>
+            <AvatarImage src={props.src} alt="Record Image" />
+            <AvatarFallback>RM</AvatarFallback>
+          </Avatar>
+          <span className="text-sm truncate font-semibold ps-1 text-foreground">
+            {props.title}
+          </span>
+        </BreadcrumbItem>
+      </Button>
     </RecordDrawer>
   );
 }

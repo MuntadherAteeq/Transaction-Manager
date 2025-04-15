@@ -36,7 +36,7 @@ export default function Page(props: any) {
         <header className="flex sticky z-10 top-0 bg-sidebar h-12 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" onClick={handleSidebarChange} />
           <Separator orientation="vertical" className="mr-2 h-4" />
-          <Nav_Path />
+          <NavPath />
           <div className="ml-auto ">
             <AddNewRecordBTN />
           </div>
@@ -233,13 +233,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Nav_Path } from "@/components/Nav-Path";
+import { NavPath } from "@/components/Nav-Path";
 import Logo_Icon from "@/Assets/Icons/Logo";
 import Link from "next/link";
 import { ThemeSwitcher } from "@/components/Theme-Provider";
 import { CommandShortcut } from "@/components/ui/command";
 import { atom, useAtom } from "jotai";
-import { AddNewRecordBTN } from "./Record/RecordList";
+import { AddNewRecordBTN } from "./Record/Record-List";
 
 export function NavMain({
   items,

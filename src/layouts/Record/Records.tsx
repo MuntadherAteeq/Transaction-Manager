@@ -25,12 +25,10 @@ export const RecordItem = (props: {
       className="flex rounded-xl flex-row min-h-[80px] select-none relative animate-show-down  hover:outline-1 hover:bg-primary/5"
     >
       <div className="flex justify-center items-center m-2.5">
-        <RecordDrawer className="w-full h-full ">
-          <Avatar draggable="false" className=" w-[50px] h-[50px] ">
-            <AvatarImage src={avatar.src} alt="Avatar" />
-            <AvatarFallback>MU</AvatarFallback>
-          </Avatar>
-        </RecordDrawer>
+        <Avatar draggable="false" className=" w-[50px] h-[50px] ">
+          <AvatarImage src={avatar.src} alt="Avatar" />
+          <AvatarFallback>MU</AvatarFallback>
+        </Avatar>
       </div>
       <div className="overflow-hidden relative flex-1 flex justify-evenly py-0 px-2.5 flex-col text-right before:content-[''] before:absolute before:bottom-0 before:block before:w-[90%] before:h-px before:bg-text before:opacity-10">
         <div className="top">
@@ -184,7 +182,10 @@ import {
 export const RecordDrawer = (props: any) => {
   return (
     <Drawer direction="right">
-      <DrawerTrigger className="p-0 m-0 h-full flex items-center justify-center">
+      <DrawerTrigger
+        className="p-0 m-0 h-full flex items-center justify-center"
+        asChild
+      >
         {props.children}
       </DrawerTrigger>
       <DrawerContent>

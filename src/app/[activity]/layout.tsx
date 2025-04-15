@@ -1,5 +1,5 @@
 import App from "@/layouts/App";
-import { RecordList } from "@/layouts/Record/RecordList";
+import { RecordList } from "@/layouts/Record/Record-List";
 import React from "react";
 
 export default async function Activity_Page(props: {

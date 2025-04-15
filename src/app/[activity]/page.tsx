@@ -1,4 +1,4 @@
-import { RecordItems, RecordList } from "@/layouts/Record/RecordList";
+import { RecordItems, RecordList } from "@/layouts/Record/Record-List";
 import React from "react";
 
 export default function Activity_Page(props: any) {
