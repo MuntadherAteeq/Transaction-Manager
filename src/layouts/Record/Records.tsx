@@ -115,9 +115,6 @@ export const RecordInfo = (props: any) => {
             <DrawerTitle className="truncate font-semibold text-2xl ps-4">
               {props.record?.name || "Untitled Record "}
             </DrawerTitle>
-            {/* <span className="truncate text-xs ps-4 text-foreground/75">
-                {props.record?.email || "example@example.com"}
-              </span> */}
           </div>
         </div>
       </DrawerHeader>
@@ -187,7 +184,9 @@ import {
 export const RecordDrawer = (props: any) => {
   return (
     <Drawer direction="right">
-      <DrawerTrigger>{props.children}</DrawerTrigger>
+      <DrawerTrigger className="p-0 m-0 h-full flex items-center justify-center">
+        {props.children}
+      </DrawerTrigger>
       <DrawerContent>
         <RecordInfo />
         <DrawerFooter>

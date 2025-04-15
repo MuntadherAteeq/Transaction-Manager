@@ -7,7 +7,6 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { RecordItem } from "@/layouts/Record/Records";
 import { usePathname } from "next/navigation";
 
 import {
@@ -42,7 +41,6 @@ export default function Page(props: any) {
             <AddNewRecordBTN />
           </div>
         </header>
-
         {props.children}
       </SidebarInset>
     </SidebarProvider>
@@ -132,15 +130,11 @@ export function TeamSwitcher() {
 }
 
 import {
-  BadgeCheck,
   Bell,
   ChevronsUpDown,
-  CreditCard,
-  Folder,
   LogOut,
   Moon,
   Settings,
-  Sparkles,
   User,
 } from "lucide-react";
 
@@ -245,14 +239,7 @@ import Link from "next/link";
 import { ThemeSwitcher } from "@/components/Theme-Provider";
 import { CommandShortcut } from "@/components/ui/command";
 import { atom, useAtom } from "jotai";
-import { useState } from "react";
 import { AddNewRecordBTN } from "./Record/RecordList";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
 
 export function NavMain({
   items,

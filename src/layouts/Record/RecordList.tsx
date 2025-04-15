@@ -10,8 +10,7 @@ export function RecordList(props: {
 }) {
   return (
     <>
-      <div className="sticky top-12 bg-sidebar z-10 w-full h-12 p-2 flex gap-2 flex-row items-center">
-        {/* {props.activity === "Archive" && <AddNewRecordBTN />} */}
+      <div className="sticky top-12 bg-sidebar z-10 w-full h-12 p-2 flex gap-2 flex-row items-center border-b-1 shadow-md shadow-black/10 ">
         <div className="relative w-full">
           <Input
             type="text"
@@ -46,7 +45,7 @@ export function RecordItems(props: {
   records?: any[];
 }) {
   return (
-    <div className="flex flex-1 flex-col gap-2 p-4 bg-card">
+    <div className="flex flex-1 flex-col gap-2 p-4 ">
       {Array.from({ length: 15 }, (_, index) => (
         <Link href={`/${props.activity}/${index}`} key={index}>
           <RecordItem key={index} />

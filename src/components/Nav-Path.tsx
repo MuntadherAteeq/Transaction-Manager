@@ -9,6 +9,7 @@ import {
 } from "./ui/breadcrumb";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { MenubarItem } from "./ui/menubar";
+import { RecordDrawer } from "@/layouts/Record/Records";
 
 interface NavRecordItemProps {
   src: string;
@@ -53,14 +54,16 @@ export const Nav_Path: React.FC = () => {
 
 export function NavRecordItem(props: any) {
   return (
-    <BreadcrumbItem>
-      <Avatar>
-        <AvatarImage src={props.src} alt="Record Image" />
-        <AvatarFallback>RM</AvatarFallback>
-      </Avatar>
-      <span className="text-sm truncate font-semibold ps-1 text-foreground">
-        {props.title}
-      </span>
-    </BreadcrumbItem>
+    <RecordDrawer className="h-full">
+      <BreadcrumbItem>
+        <Avatar>
+          <AvatarImage src={props.src} alt="Record Image" />
+          <AvatarFallback>RM</AvatarFallback>
+        </Avatar>
+        <span className="text-sm truncate font-semibold ps-1 text-foreground">
+          {props.title}
+        </span>
+      </BreadcrumbItem>
+    </RecordDrawer>
   );
 }
