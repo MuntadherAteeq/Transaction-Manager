@@ -38,8 +38,11 @@ export default function Page(props: any) {
           <SidebarTrigger className="-ml-1" onClick={handleSidebarChange} />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Nav_Path />
-          
+          <div className="ml-auto ">
+            <AddNewRecordBTN />
+          </div>
         </header>
+
         {props.children}
       </SidebarInset>
     </SidebarProvider>
@@ -243,6 +246,13 @@ import { ThemeSwitcher } from "@/components/Theme-Provider";
 import { CommandShortcut } from "@/components/ui/command";
 import { atom, useAtom } from "jotai";
 import { useState } from "react";
+import { AddNewRecordBTN } from "./Record/RecordList";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb";
 
 export function NavMain({
   items,

@@ -11,13 +11,7 @@ export function RecordList(props: {
   return (
     <>
       <div className="sticky top-12 bg-sidebar z-10 w-full h-12 p-2 flex gap-2 flex-row items-center">
-        {props.activity === "Archive" && (
-          <CreateRecordDialog>
-            <Button className="rounded-sm  text-sm font-semibold bg-primary ">
-              Add New
-            </Button>
-          </CreateRecordDialog>
-        )}
+        {/* {props.activity === "Archive" && <AddNewRecordBTN />} */}
         <div className="relative w-full">
           <Input
             type="text"
@@ -59,5 +53,15 @@ export function RecordItems(props: {
         </Link>
       ))}
     </div>
+  );
+}
+
+export function AddNewRecordBTN(props: any) {
+  return (
+    <CreateRecordDialog>
+      <Button className="rounded-sm  text-sm font-semibold bg-primary ">
+        Add New
+      </Button>
+    </CreateRecordDialog>
   );
 }
