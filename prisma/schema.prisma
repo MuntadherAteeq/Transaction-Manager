@@ -20,23 +20,23 @@ datasource db {
 // }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String    @id @default(uuid())
   email         String    @unique
-  password      String
+  password      String?
   sessions      Session[]
   records       Record[]
   name          String
   emailVerified Boolean
   image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
+  createdAt     DateTime?
+  updatedAt     DateTime?
   accounts      Account[]
 
   @@map("user")
 }
 
 model Session {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   userId    String
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id])
@@ -51,7 +51,7 @@ model Session {
 }
 
 model Record {
-  id       String   @id @default(cuid())
+  id       String   @id @default(uuid())
   category String?
   name     String?  @default("Untitled")
   date     DateTime @default(now())

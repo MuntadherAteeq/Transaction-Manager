@@ -5,15 +5,17 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { AlertCircle, User } from "lucide-react";
+import { AlertCircle, Loader2, User } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { z } from "zod";
+import { authClient } from "@/lib/auth-client";
 
 // Define the form schema with Zod
 const SignUpSchema = z
@@ -45,7 +47,6 @@ const SignUpForm = () => {
 
   const [avatar, setAvatar] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-  const [avatarError, setAvatarError] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -69,17 +70,23 @@ const SignUpForm = () => {
 
     // Check file size (1MB = 1048576 bytes)
     if (file.size > 1048576) {
-      setAvatarError("Avatar image must be less than 1MB");
+      setFormErrors((prev) => ({
+        ...prev,
+        image: "Avatar image must be less than 1MB",
+      }));
       return;
     }
 
     // Check file type
     if (!file.type.startsWith("image/")) {
-      setAvatarError("Please upload an image file");
+      setFormErrors((prev) => ({
+        ...prev,
+        image: "Please upload an image file",
+      }));
       return;
     }
 
-    setAvatarError(null);
+    setFormErrors((prev) => ({ ...prev, image: undefined }));
     setAvatar(file);
 
     // Convert image to base64
@@ -119,6 +126,30 @@ const SignUpForm = () => {
 
     // Form validation passed
     console.log("Form submitted:", { ...form, avatar });
+    const { data, error } = await authClient.signUp.email(
+      {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        image: form.image,
+      },
+      {
+        onRequest: (ctx) => {
+          // Handle request start (e.g., show a loading spinner)
+          console.log("Request started:", ctx);
+        },
+        onSuccess: (ctx) => {
+          // Handle successful response (e.g., redirect to a different page)
+          console.log("Request succeeded:", ctx);
+        },
+        onError: (ctx) => {
+          setFormErrors((prev) => ({
+            ...prev,
+            image: ctx.error.message,
+          }));
+        },
+      }
+    );
 
     // Here you would typically send the data to your backend
   };
@@ -169,10 +200,10 @@ const SignUpForm = () => {
       </div>
 
       <CardContent className="pt-6">
-        {avatarError && (
+        {formErrors.image && (
           <Alert variant="destructive" className="mb-4">
             <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{avatarError}</AlertDescription>
+            <AlertDescription>{formErrors.image}</AlertDescription>
           </Alert>
         )}
 
@@ -195,7 +226,6 @@ const SignUpForm = () => {
               <p className="text-sm text-red-500">{formErrors.name}</p>
             )}
           </div>
-
           {/* Email Field */}
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
@@ -215,7 +245,6 @@ const SignUpForm = () => {
               <p className="text-sm text-red-500">{formErrors.email}</p>
             )}
           </div>
-
           {/* Password Field */}
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
@@ -235,7 +264,6 @@ const SignUpForm = () => {
               <p className="text-sm text-red-500">{formErrors.password}</p>
             )}
           </div>
-
           {/* Confirm Password Field */}
           <div className="grid gap-2">
             <Label htmlFor="confirmPassword">Confirm Password</Label>
@@ -259,10 +287,31 @@ const SignUpForm = () => {
           </div>
 
           <Button type="submit" className="w-full">
+            {/* <Loader2 className="animate-spin size-4" /> */}
             Create Account
           </Button>
         </form>
       </CardContent>
+      <CardFooter className="inline px-6 pt-6 ">
+        By signing up, you agree to our
+        <a
+          href="#"
+          className="inline text-primary hover:underline px-2"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Terms of Service
+        </a>
+        and
+        <a
+          href="#"
+          className="inline text-primary hover:underline px-2"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Privacy Policy
+        </a>
+      </CardFooter>
     </Card>
   );
 };

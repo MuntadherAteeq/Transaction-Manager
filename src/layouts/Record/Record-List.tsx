@@ -4,12 +4,10 @@ import { CreateRecordDialog, RecordItem } from "./Records";
 import { Input } from "@/components/ui/input";
 import { Plus, Search } from "lucide-react";
 
-export function RecordList(props: {
-  activity: string;
-}) {
+export function RecordList(props: { activity: string }) {
   return (
     <>
-      <div className="sticky top-12 bg-sidebar z-10 w-full h-12 p-2 flex gap-2 flex-row items-center border-b-1 shadow-md shadow-black/10 ">
+      <div className="top-12 bg-sidebar w-full h-12 p-2 flex gap-2 flex-row items-center border-b-1 shadow-md shadow-black/10 ">
         <div className="relative w-full">
           <Input
             type="text"
@@ -20,12 +18,12 @@ export function RecordList(props: {
         </div>
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4 ">
-      {Array.from({ length: 15 }, (_, index) => (
-        <Link href={`/${props.activity}/${index}`} key={index}>
-          <RecordItem key={index} />
-        </Link>
-      ))}
-    </div>
+        {Array.from({ length: 15 }, (_, index) => (
+          <Link href={`/${props.activity}/${index}`} key={index}>
+            <RecordItem key={index} />
+          </Link>
+        ))}
+      </div>
     </>
   );
 }
@@ -44,8 +42,6 @@ export function RecordSkeleton() {
     </div>
   );
 }
-
-
 
 export function AddNewRecordBTN(props: any) {
   return (
