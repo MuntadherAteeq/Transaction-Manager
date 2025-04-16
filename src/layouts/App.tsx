@@ -215,7 +215,11 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                await authClient.signOut();
+              }}
+            >
               <LogOut />
               Log out
             </DropdownMenuItem>
@@ -234,12 +238,13 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { NavPath } from "@/components/Nav-Path";
-import Logo_Icon from "@/assets/icons/Logo";
 import Link from "next/link";
 import { ThemeSwitcher } from "@/components/Theme-Provider";
 import { CommandShortcut } from "@/components/ui/command";
 import { atom, useAtom } from "jotai";
 import { AddNewRecordBTN } from "./Record/Record-List";
+import { authClient } from "@/lib/auth-client";
+import Logo_Icon from "@/Assets/Icons/Logo";
 
 export function NavMain({
   items,

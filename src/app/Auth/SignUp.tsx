@@ -125,7 +125,7 @@ const SignUpForm = () => {
     }
 
     // Form validation passed
-    console.log("Form submitted:", { ...form, avatar });
+    console.log("Form submitted:", { ...form });
     const { data, error } = await authClient.signUp.email(
       {
         name: form.name,
@@ -188,7 +188,7 @@ const SignUpForm = () => {
 
           <Input
             ref={fileInputRef}
-            id="avatar"
+            id="image"
             type="file"
             accept="image/*"
             className="hidden"
