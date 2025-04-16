@@ -45,7 +45,7 @@ const SignUpForm = () => {
     confirmPassword: "",
     image: "",
   });
-
+  const [loading, setLoading] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -134,12 +134,15 @@ const SignUpForm = () => {
       {
         onRequest: (ctx) => {
           // Handle request start (e.g., show a loading spinner)
+          setLoading(true);
         },
         onSuccess: (ctx) => {
           // Handle successful response (e.g., redirect to a different page)
+          setLoading(false);
           redirect("/");
         },
         onError: (ctx) => {
+          setLoading(false);
           setFormErrors((prev) => ({
             ...prev,
             image: ctx.error.message,
@@ -283,9 +286,9 @@ const SignUpForm = () => {
             )}
           </div>
 
-          <Button type="submit" className="w-full">
-            {/* <Loader2 className="animate-spin size-4" /> */}
-            Create Account
+          <Button disabled={loading} type="submit" className="w-full font-bold">
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {!loading && "Sign Up"}
           </Button>
         </form>
       </CardContent>
