@@ -4,6 +4,9 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/Theme-Provider";
 import { Toaster } from "@/components/ui/sonner";
 import { authClient } from "@/lib/auth-client";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,11 +28,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout(props: any) {
+  
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -41,7 +41,7 @@ export default function RootLayout({
           enableSystem={true}
           storageKey={"theme"}
         >
-          {children}
+          {props.children}
         </ThemeProvider>
         <Toaster />
       </body>

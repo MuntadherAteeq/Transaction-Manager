@@ -23,6 +23,7 @@ import {
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { authClient } from "@/lib/auth-client";
 export const SignInSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
@@ -39,8 +40,30 @@ export default function SignInTab() {
     },
   });
 
-  async function onSubmit(data: z.infer<typeof SignInSchema>) {
-    
+  async function onSubmit(formData: z.infer<typeof SignInSchema>) {
+    const { data, error } = await authClient.signIn.email(
+      {
+        email: formData.email, // user email address
+        password: formData.password, // user password -> min 8 characters by default
+        // callbackURL: "/", // A URL to redirect to after the user verifies their email (optional)
+      },
+      {
+        onRequest: (ctx) => {
+          //show loading
+          console.log(ctx);
+        },
+        onSuccess: (ctx) => {
+          //redirect to the dashboard or sign in page
+          console.log(ctx);
+        },
+        onError: (ctx) => {
+          // display the error message
+          toast.error(ctx.error.message, {
+            description: "Please check your credentials and try again.",
+          });
+        },
+      }
+    );
   }
 
   return (

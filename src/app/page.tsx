@@ -1,18 +1,13 @@
-"use client";
-
 import App from "@/layouts/App";
-import Background from "@/layouts/Background";
-import { authClient } from "@/lib/auth-client";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function Home(props: any) {
-  const {
-    data: session,
-    isPending, //loading state
-    error, //error object
-    refetch, //refetch the session
-  } = authClient.useSession();
-  console.log("Session data:", session);
-  console.log("Session error:", error);
-  console.log("Session isPending:", isPending);
+export default async function Home(props: any) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  console.log("Session:", session);
+  !session ? redirect("/Auth") : null;
   return <App>{props.children}</App>;
 }

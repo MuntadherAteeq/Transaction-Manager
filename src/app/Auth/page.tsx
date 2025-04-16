@@ -1,13 +1,9 @@
 import SignInTab from "./SignIn";
 import SignUpTab from "./SignUp";
 import { TabSwitcher } from "./TabSwitcher";
-// import { redirect } from "next/navigation";
-import Link from "next/link";
-import Logo_Icon from "@/assets/icons/Logo";
-// import { ImageSlider } from "../Components/ImageSlider";
+import Logo_Icon from "@/Assets/Icons/Logo";
 
 export default async function Auth() {
-  // (await getUser()) ? redirect("/") : null;
   return (
     <div className="  relative  h-screen items-center justify-center lg:grid  lg:grid-cols-2 ">
       <div className=" max-md:hidden flex justify-between relative h-full flex-col bg-muted-foreground p-10 text-card-foreground lg:flex dark:border-r sm:hidden">

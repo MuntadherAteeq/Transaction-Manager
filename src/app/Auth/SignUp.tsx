@@ -176,8 +176,8 @@ const SignUpForm = () => {
                   alt="Avatar preview"
                 />
               ) : (
-                <AvatarFallback className="bg-gray-100">
-                  <User className="w-12 h-12 text-gray-400 " />
+                <AvatarFallback className="bg-card border-3 border-muted-foreground/50 ">
+                  <User className="w-12 h-12 text-accent-foreground/50 " />
                 </AvatarFallback>
               )}
             </Avatar>
