@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { signIn } from "@/app/Auth/auth.actions";
 import { toast } from "sonner";
 export const SignInSchema = z.object({
   email: z.string().email(),
@@ -41,14 +40,7 @@ export default function SignInTab() {
   });
 
   async function onSubmit(data: z.infer<typeof SignInSchema>) {
-    const res = await signIn(data);
-    if (res.success) router.push("/");
-    if (res.error) {
-      toast("Error", {
-        description: res.error,
-        duration: 2000,
-      });
-    }
+    
   }
 
   return (

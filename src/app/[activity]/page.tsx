@@ -1,4 +1,5 @@
 import { RecordList } from "@/layouts/Record/Record-List";
+import { redirect } from "next/navigation";
 import React from "react";
 
 export default function Activity_Page(props: any) {
@@ -16,6 +17,6 @@ export default function Activity_Page(props: any) {
     case "Settings":
       return <div>Settings</div>;
     default:
-      return <div>404</div>;
+      redirect("/");
   }
 }
