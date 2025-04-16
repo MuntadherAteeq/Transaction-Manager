@@ -217,7 +217,7 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={async () => {
-                await authClient.signOut();
+                await SignOut();
               }}
             >
               <LogOut />
@@ -243,7 +243,7 @@ import { ThemeSwitcher } from "@/components/Theme-Provider";
 import { CommandShortcut } from "@/components/ui/command";
 import { atom, useAtom } from "jotai";
 import { AddNewRecordBTN } from "./Record/Record-List";
-import { authClient } from "@/lib/auth-client";
+import { authClient, SignOut } from "@/lib/auth-client";
 import Logo_Icon from "@/Assets/Icons/Logo";
 
 export function NavMain({

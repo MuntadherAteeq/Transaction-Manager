@@ -24,6 +24,8 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 export const SignInSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
@@ -31,7 +33,7 @@ export const SignInSchema = z.object({
 
 export default function SignInTab() {
   const router = useRouter();
-
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof SignInSchema>>({
     resolver: zodResolver(SignInSchema),
     defaultValues: {
@@ -50,17 +52,18 @@ export default function SignInTab() {
       {
         onRequest: (ctx) => {
           //show loading
-          console.log(ctx);
+          setLoading(true);
         },
         onSuccess: (ctx) => {
-          //redirect to the dashboard or sign in page
-          console.log(ctx);
+          //redirect to the home page
+          router.push("/");
         },
         onError: (ctx) => {
           // display the error message
           toast.error(ctx.error.message, {
             description: "Please check your credentials and try again.",
           });
+          setLoading(false);
         },
       }
     );
@@ -121,8 +124,13 @@ export default function SignInTab() {
               ></FormField>
             </CardContent>
             <CardFooter className="mt-5">
-              <Button type="submit" className="w-full font-bold">
-                Log In
+              <Button
+                disabled={loading}
+                type="submit"
+                className="w-full font-bold"
+              >
+                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {!loading && "Log In"}
               </Button>
             </CardFooter>
           </form>

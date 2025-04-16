@@ -46,7 +46,6 @@ const SignUpForm = () => {
     image: "",
   });
 
-  const [avatar, setAvatar] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -88,7 +87,6 @@ const SignUpForm = () => {
     }
 
     setFormErrors((prev) => ({ ...prev, image: undefined }));
-    setAvatar(file);
 
     // Convert image to base64
     const reader = new FileReader();
@@ -126,7 +124,6 @@ const SignUpForm = () => {
     }
 
     // Form validation passed
-    console.log("Form submitted:", { ...form });
     const { data, error } = await authClient.signUp.email(
       {
         name: form.name,
@@ -137,7 +134,6 @@ const SignUpForm = () => {
       {
         onRequest: (ctx) => {
           // Handle request start (e.g., show a loading spinner)
-          console.log("Request started:", ctx);
         },
         onSuccess: (ctx) => {
           // Handle successful response (e.g., redirect to a different page)
