@@ -21,7 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { redirect, RedirectType, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
@@ -43,27 +43,20 @@ export default function SignInTab() {
   });
 
   async function onSubmit(formData: z.infer<typeof SignInSchema>) {
+    setLoading(true);
     const { data, error } = await authClient.signIn.email(
       {
-        email: formData.email, // user email address
-        password: formData.password, // user password -> min 8 characters by default
-        // callbackURL: "/", // A URL to redirect to after the user verifies their email (optional)
+        email: formData.email,
+        password: formData.password,
+        callbackURL: "/Archive",
       },
       {
         onRequest: (ctx) => {
-          //show loading
           setLoading(true);
         },
-        onSuccess: (ctx) => {
-          //redirect to the home page
-          router.push("/");
-        },
         onError: (ctx) => {
-          // display the error message
-          toast.error(ctx.error.message, {
-            description: "Please check your credentials and try again.",
-          });
           setLoading(false);
+          toast.error("Sign in failed! Please check your credentials.");
         },
       }
     );

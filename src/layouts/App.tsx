@@ -7,7 +7,26 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
+import { NavPath } from "@/components/Nav-Path";
+import Link from "next/link";
+import { ThemeSwitcher } from "@/components/Theme-Provider";
+import { CommandShortcut } from "@/components/ui/command";
+import { atom, useAtom } from "jotai";
+import { AddNewRecordBTN } from "./Record/Record-List";
+import { authClient } from "@/lib/auth-client";
+import Logo_Icon from "@/Assets/Icons/Logo";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useRouter } from "next/navigation";
+import {
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
 
 import {
   DropdownMenu,
@@ -138,8 +157,6 @@ import {
   User,
 } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 export function NavUser({
   user,
 }: {
@@ -216,10 +233,10 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
+
             <DropdownMenuItem
               onClick={async () => {
                 await authClient.signOut();
-                router.push("/Auth");
               }}
             >
               <LogOut />
@@ -231,23 +248,6 @@ export function NavUser({
     </SidebarMenu>
   );
 }
-
-import {
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { NavPath } from "@/components/Nav-Path";
-import Link from "next/link";
-import { ThemeSwitcher } from "@/components/Theme-Provider";
-import { CommandShortcut } from "@/components/ui/command";
-import { atom, useAtom } from "jotai";
-import { AddNewRecordBTN } from "./Record/Record-List";
-import { authClient } from "@/lib/auth-client";
-import Logo_Icon from "@/Assets/Icons/Logo";
-import { useRouter } from "next/navigation";
 
 export function NavMain({
   items,
