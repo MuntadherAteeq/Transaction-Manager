@@ -1,11 +1,15 @@
-"use client";
-
+import { redirect } from "next/navigation";
 import SignInTab from "./SignIn";
 import SignUpTab from "./SignUp";
 import { TabSwitcher } from "./TabSwitcher";
 import Logo_Icon from "@/Assets/Icons/Logo";
+import { getSession } from "@/lib/auth";
 
-export default function Auth() {
+export default async function Auth() {
+  const session = await getSession();
+  if (session) {
+    redirect("/");
+  }
   return (
     <div className="  relative  h-screen items-center justify-center lg:grid  lg:grid-cols-2 ">
       <div className=" max-md:hidden flex justify-between relative h-full flex-col bg-muted-foreground p-10 text-card-foreground lg:flex dark:border-r sm:hidden">

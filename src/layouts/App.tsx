@@ -16,8 +16,6 @@ import { atom, useAtom } from "jotai";
 import { AddNewRecordBTN } from "./Record/Record-List";
 import { authClient } from "@/lib/auth-client";
 import Logo_Icon from "@/Assets/Icons/Logo";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import {

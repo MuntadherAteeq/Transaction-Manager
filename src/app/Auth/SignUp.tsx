@@ -141,7 +141,8 @@ const SignUpForm = () => {
           // Handle successful response (e.g., redirect to a different page)
           console.log("Sign up successful:", ctx.data);
           setLoading(false);
-         },
+          router.replace("/");
+        },
         onError: (ctx) => {
           setLoading(false);
           setFormErrors((prev) => ({
@@ -293,26 +294,6 @@ const SignUpForm = () => {
           </Button>
         </form>
       </CardContent>
-      <CardFooter className="inline px-6 pt-6 ">
-        By signing up, you agree to our
-        <a
-          href="#"
-          className="inline text-primary hover:underline px-2"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Terms of Service
-        </a>
-        and
-        <a
-          href="#"
-          className="inline text-primary hover:underline px-2"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Privacy Policy
-        </a>
-      </CardFooter>
     </Card>
   );
 };
