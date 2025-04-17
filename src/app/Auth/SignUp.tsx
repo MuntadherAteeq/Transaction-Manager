@@ -16,7 +16,7 @@ import { AlertCircle, Loader2, User } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { z } from "zod";
 import { authClient } from "@/lib/auth-client";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 // Define the form schema with Zod
 const SignUpSchema = z
@@ -49,6 +49,7 @@ const SignUpForm = () => {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -138,9 +139,9 @@ const SignUpForm = () => {
         },
         onSuccess: (ctx) => {
           // Handle successful response (e.g., redirect to a different page)
+          console.log("Sign up successful:", ctx.data);
           setLoading(false);
-          redirect("/");
-        },
+         },
         onError: (ctx) => {
           setLoading(false);
           setFormErrors((prev) => ({

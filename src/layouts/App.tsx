@@ -150,6 +150,7 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+  const router = useRouter();
 
   return (
     <SidebarMenu>
@@ -217,7 +218,8 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={async () => {
-                await SignOut();
+                await authClient.signOut();
+                router.push("/Auth");
               }}
             >
               <LogOut />
@@ -243,8 +245,9 @@ import { ThemeSwitcher } from "@/components/Theme-Provider";
 import { CommandShortcut } from "@/components/ui/command";
 import { atom, useAtom } from "jotai";
 import { AddNewRecordBTN } from "./Record/Record-List";
-import { authClient, SignOut } from "@/lib/auth-client";
+import { authClient } from "@/lib/auth-client";
 import Logo_Icon from "@/Assets/Icons/Logo";
+import { useRouter } from "next/navigation";
 
 export function NavMain({
   items,
