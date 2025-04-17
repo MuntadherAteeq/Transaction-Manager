@@ -36,22 +36,24 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const open = atom(true);
+// const open = atom(true);
 
 export default function Page(props: any) {
   const currentActivity = usePathname().split("/")[1];
-  const [isOpen, setOpen] = useAtom(open);
+  // const [isOpen, setOpen] = useAtom(open);
 
-  const handleSidebarChange = () => {
-    setOpen((prev) => !prev);
-  };
+  // const handleSidebarChange = () => {
+  //   setOpen((prev) => !prev);
+  // };
 
   return (
-    <SidebarProvider open={isOpen}>
+    // <SidebarProvider open={isOpen}>
+    <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
         <header className="flex sticky z-10 top-0 bg-sidebar h-12 shrink-0 items-center gap-2 border-b px-4">
-          <SidebarTrigger className="-ml-1" onClick={handleSidebarChange} />
+          {/* <SidebarTrigger className="-ml-1" onClick={handleSidebarChange} /> */}
+          <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <NavPath />
           <div className="ml-auto ">
@@ -154,6 +156,7 @@ import {
   Settings,
   User,
 } from "lucide-react";
+import { SplashScreen } from "./Splash-Screen";
 
 export function NavUser({
   user,
@@ -261,7 +264,7 @@ export function NavMain({
     }[];
   }[];
 }) {
-  const [isOpen, setOpen] = useAtom(open);
+  // const [isOpen, setOpen] = useAtom(open);
   const isActive = (activity: string) => {
     const currentActivity = usePathname().split("/")[1];
     return currentActivity === activity;
@@ -274,7 +277,7 @@ export function NavMain({
           <SidebarMenuItem key={item.title}>
             <Link href={item.url} className="flex justify-center items-center">
               <SidebarMenuButton
-                isActive={isActive(item.title) && isOpen}
+                // isActive={isActive(item.title) && isOpen}
                 tooltip={item.title}
                 size={"lg"}
                 className="flex items-center "

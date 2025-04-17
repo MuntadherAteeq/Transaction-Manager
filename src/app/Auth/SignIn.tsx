@@ -48,7 +48,7 @@ export default function SignInTab() {
       {
         email: formData.email,
         password: formData.password,
-        callbackURL: "/",
+        callbackURL: "/Archive",
       },
       {
         onRequest: (ctx) => {

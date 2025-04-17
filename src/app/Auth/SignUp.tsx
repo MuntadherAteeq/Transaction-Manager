@@ -141,7 +141,7 @@ const SignUpForm = () => {
           // Handle successful response (e.g., redirect to a different page)
           console.log("Sign up successful:", ctx.data);
           setLoading(false);
-          router.replace("/");
+          router.replace("/Archive");
         },
         onError: (ctx) => {
           setLoading(false);

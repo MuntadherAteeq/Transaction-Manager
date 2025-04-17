@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/Theme-Provider";
 import { Toaster } from "@/components/ui/sonner";
+import { SplashScreen } from "@/layouts/Splash-Screen";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +37,8 @@ export default async function RootLayout(props: any) {
           enableSystem={true}
           storageKey={"theme"}
         >
-          {props.children}
+          <SplashScreen>{props.children}</SplashScreen>
+          {/* {props.children} */}
         </ThemeProvider>
         <Toaster />
       </body>
