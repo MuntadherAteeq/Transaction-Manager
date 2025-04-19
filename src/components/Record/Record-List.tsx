@@ -1,12 +1,13 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import { CreateRecordDialog, RecordListItem } from "./Records";
 import { Input } from "@/components/ui/input";
 import { Plus, Search } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
+import { getRecords } from "./Record.actions";
 
-export function RecordList(props: { activity: string }) {
+export async function RecordList(props: { Activity: string }) {
+  const records = await getRecords();
   return (
     <>
       <div className="top-12 bg-sidebar w-full h-12 p-2 flex gap-2 flex-row items-center border-b-1 shadow-md shadow-black/10 ">
@@ -20,11 +21,13 @@ export function RecordList(props: { activity: string }) {
         </div>
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4 ">
-        {Array.from({ length: 15 }, (_, index) => (
-          <Link href={`/${props.activity}/${index}`} key={index}>
-            <RecordListItem key={index} />
-          </Link>
-        ))}
+        {records?.map((record) => {
+          return (
+            <Link href={`/${props.Activity}/${record.id}`} key={record.id}>
+              <RecordListItem record={record} />
+            </Link>
+          );
+        })}
       </div>
     </>
   );

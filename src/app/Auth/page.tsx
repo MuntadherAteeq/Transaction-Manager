@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation";
-import { getSession } from "./auth.actions";
+import { getUser } from "./auth.actions";
 import SignInTab from "./SignIn";
 import SignUpTab from "./SignUp";
 import { TabSwitcher } from "./TabSwitcher";
 import Logo_Icon from "@/Assets/Icons/Logo";
 
 export default async function Auth(props: any) {
-  const session = await getSession();
+  const session = await getUser();
   if (session) redirect("/Archive");
 
   return (

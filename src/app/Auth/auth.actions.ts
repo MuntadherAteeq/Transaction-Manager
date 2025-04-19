@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 import { randomUUID } from "crypto";
 import * as bcrypt from "bcrypt";
 import { z } from "zod";
@@ -16,16 +16,11 @@ const SESSION_DURATION = 24 * 60 * 60 * 1000;
 const prisma = new PrismaClient();
 
 // Interface for user session
-interface UserSession {
-  id: string;
-  email: string;
-  expiresAt: Date;
-}
 
 /**
  * Get the current user session from the cookies
  */
-export async function getSession(): Promise<UserSession | null> {
+export async function getUser(): Promise<User | null> {
   const sessionToken = (await cookies()).get("session_token")?.value;
 
   if (!sessionToken) {
@@ -53,11 +48,7 @@ export async function getSession(): Promise<UserSession | null> {
     return null;
   }
 
-  return {
-    id: session.user.id,
-    email: session.user.email,
-    expiresAt: session.expiresAt,
-  };
+  return session.user;
 }
 
 /**
@@ -248,7 +239,7 @@ export async function signOut() {
  * Protect a route by checking if the user is authenticated
  */
 export async function requireAuth() {
-  const session = await getSession();
+  const session = await getUser();
 
   if (!session) redirect("/Auth");
 

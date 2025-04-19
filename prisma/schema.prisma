@@ -49,6 +49,7 @@ model Record {
   category String?
   name     String?  @default("Untitled")
   date     DateTime @default(now())
+  image    String?
   email    String?
   phone    String?
   address  String?

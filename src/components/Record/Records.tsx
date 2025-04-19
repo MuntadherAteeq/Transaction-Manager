@@ -5,13 +5,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar, Loader2, Mail, MapPin, Phone, User } from "lucide-react";
 
-export const RecordListItem = (props: {
+interface RecordListItemProps {
   activity?: "Archive" | "History";
   disabled?: boolean;
   className?: string;
   record?: Record;
   [key: string]: any;
-}) => {
+}
+
+export const RecordListItem = ({
+  record,
+  className,
+  disabled = false,
+  ...props
+}: RecordListItemProps) => {
   const [loading, setLoading] = useState(false);
   return (
     <div
@@ -21,19 +28,19 @@ export const RecordListItem = (props: {
     >
       <div className="flex justify-center items-center m-2.5">
         <Avatar draggable="false" className=" w-[50px] h-[50px] ">
-          <AvatarImage src={avatar.src} alt="Avatar" />
-          <AvatarFallback>MU</AvatarFallback>
+          <AvatarImage src={record?.image ?? undefined} alt="Avatar" />
+          <AvatarFallback>{record?.name?.charAt(0)}</AvatarFallback>
         </Avatar>
       </div>
       <div className="overflow-hidden relative flex-1 flex justify-evenly py-0 px-2.5 flex-col text-right before:content-[''] before:absolute before:bottom-0 before:block before:w-[90%] before:h-px before:bg-text before:opacity-10">
         <div className="top">
           <div className="text-left whitespace-nowrap overflow-hidden text-ellipsis">
-            {props.record?.name || "Untitled Record"}
+            {record?.name || "Untitled Record"}
           </div>
         </div>
         <div className="flex flex-row justify-between">
           <div className="opacity-70">{`${
-            props.record?.date || new Date().toLocaleDateString()
+            record?.date || new Date().toLocaleDateString()
           }`}</div>
         </div>
       </div>
