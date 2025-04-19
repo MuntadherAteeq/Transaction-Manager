@@ -199,7 +199,6 @@ function Sidebar({
             direction={side}
             open={openMobile}
             onOpenChange={setOpenMobile}
-            {...props}
           >
             <DrawerContent
               data-sidebar="sidebar"
@@ -211,6 +210,7 @@ function Sidebar({
                   "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
                 } as React.CSSProperties
               }
+              {...props}
             >
               <DrawerHeader className="sr-only">
                 <DrawerTitle>Sidebar</DrawerTitle>
