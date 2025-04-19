@@ -65,7 +65,6 @@ export async function getSession(): Promise<UserSession | null> {
  */
 
 export async function signIn(formData: z.infer<typeof SignInSchema>) {
-  console.log("Sign in data:", formData);
   const email = formData.email as string;
   const password = formData.password as string;
 
@@ -249,10 +248,9 @@ export async function signOut() {
  * Protect a route by checking if the user is authenticated
  */
 export async function requireAuth() {
-
   const session = await getSession();
 
   if (!session) redirect("/Auth");
-  
+
   return session;
 }

@@ -83,7 +83,6 @@ export function SplashScreen({
     };
 
     window.addEventListener("load", handleLoad);
-    console.log(progress);
 
     return () => {
       window.removeEventListener("load", handleLoad);
