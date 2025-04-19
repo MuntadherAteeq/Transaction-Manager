@@ -21,11 +21,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { redirect, RedirectType, useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { signIn } from "./auth.actions";
+
 export const SignInSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
@@ -44,22 +45,16 @@ export default function SignInTab() {
 
   async function onSubmit(formData: z.infer<typeof SignInSchema>) {
     setLoading(true);
-    const { data, error } = await authClient.signIn.email(
-      {
-        email: formData.email,
-        password: formData.password,
-        callbackURL: "/Archive",
-      },
-      {
-        onRequest: (ctx) => {
-          setLoading(true);
-        },
-        onError: (ctx) => {
-          setLoading(false);
-          toast.error("Sign in failed! Please check your credentials.");
-        },
-      }
-    );
+    const res = await signIn(formData);
+    if (res?.success) {
+      setTimeout(() => {
+        router.push("/Archive");
+      }, 1000); // Simulate a delay for the splash screen
+      // Redirect to the Archive page
+    } else {
+      toast.error(res?.error); // Show an error message
+      setLoading(false);
+    }
   }
 
   return (

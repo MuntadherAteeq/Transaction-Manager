@@ -1,15 +1,17 @@
 import { redirect } from "next/navigation";
+import { getSession } from "./auth.actions";
 import SignInTab from "./SignIn";
 import SignUpTab from "./SignUp";
 import { TabSwitcher } from "./TabSwitcher";
 import Logo_Icon from "@/Assets/Icons/Logo";
-import { getSession } from "@/lib/auth";
+import App from "@/layouts/App";
 
-export default async function Auth() {
+export default async function Auth(props: any) {
   const session = await getSession();
   if (session) {
-    redirect("/");
+    <App>{props.children}</App>;
   }
+
   return (
     <div className="  relative  h-screen items-center justify-center lg:grid  lg:grid-cols-2 ">
       <div className=" max-md:hidden flex justify-between relative h-full flex-col bg-muted-foreground p-10 text-card-foreground lg:flex dark:border-r sm:hidden">

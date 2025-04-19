@@ -14,7 +14,6 @@ import { ThemeSwitcher } from "@/components/Theme-Provider";
 import { CommandShortcut } from "@/components/ui/command";
 import { atom, useAtom } from "jotai";
 import { AddNewRecordBTN } from "./Record/Record-List";
-import { authClient } from "@/lib/auth-client";
 import Logo_Icon from "@/Assets/Icons/Logo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
@@ -156,7 +155,7 @@ import {
   Settings,
   User,
 } from "lucide-react";
-import { SplashScreen } from "./Splash-Screen";
+import { signOut } from "@/app/Auth/auth.actions";
 
 export function NavUser({
   user,
@@ -237,7 +236,7 @@ export function NavUser({
 
             <DropdownMenuItem
               onClick={async () => {
-                await authClient.signOut();
+                await signOut();
               }}
             >
               <LogOut />

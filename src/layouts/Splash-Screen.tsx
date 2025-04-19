@@ -110,7 +110,6 @@ export function SplashScreen({
               className="flex w-full max-w-md flex-col items-center gap-4 px-4"
             >
               <Logo_Icon className="size-64" />
-              <Loader2 className="h-12 w-12 animate-spin text-primary" />
               <h1 className="text-2xl font-bold">Loading your application</h1>
 
               <div className="w-full space-y-2">
@@ -123,9 +122,9 @@ export function SplashScreen({
                 <Progress value={progress} className="h-2 w-full" />
               </div>
 
-              <p className="text-center text-sm text-muted-foreground">
+              {/* <p className="text-center text-sm text-muted-foreground">
                 {resourcesLoaded.current} resources loaded
-              </p>
+              </p> */}
             </motion.div>
           </motion.div>
         ) : null}

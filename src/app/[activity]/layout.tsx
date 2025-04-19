@@ -1,8 +1,8 @@
 import App from "@/layouts/App";
-import { auth, getSession } from "@/lib/auth";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
+
 import React from "react";
+import { getSession } from "../Auth/auth.actions";
+import Auth from "../Auth/page";
 
 export default async function Activity_Page(props: {
   params: {
@@ -11,7 +11,7 @@ export default async function Activity_Page(props: {
   children: React.ReactNode;
 }) {
   const session = await getSession();
-  if (!session) redirect("/Auth");
-
-  return <App>{props.children}</App>;
+  if (!session) {
+    return <Auth />;
+  } else return <App>{props.children}</App>;
 }

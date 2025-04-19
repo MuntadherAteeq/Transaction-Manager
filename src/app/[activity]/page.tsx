@@ -18,6 +18,6 @@ export default function Activity_Page(props: any) {
     case "Settings":
       return <div>Settings</div>;
     default:
-      redirect("/");
+      redirect("/Archive");
   }
 }
