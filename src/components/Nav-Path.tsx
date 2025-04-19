@@ -8,7 +8,7 @@ import {
   BreadcrumbSeparator,
 } from "./ui/breadcrumb";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { RecordDrawer } from "@/layouts/Record/Records";
+import { RecordDrawer } from "@/components/Record/Records";
 import { Button } from "./ui/button";
 import avatar from "@/assets/images/Avatar.png";
 

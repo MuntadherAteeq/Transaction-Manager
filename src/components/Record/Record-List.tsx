@@ -1,8 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { CreateRecordDialog, RecordItem } from "./Records";
+import { CreateRecordDialog, RecordListItem } from "./Records";
 import { Input } from "@/components/ui/input";
 import { Plus, Search } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 export function RecordList(props: { activity: string }) {
   return (
@@ -20,16 +22,13 @@ export function RecordList(props: { activity: string }) {
       <div className="flex flex-1 flex-col gap-2 p-4 ">
         {Array.from({ length: 15 }, (_, index) => (
           <Link href={`/${props.activity}/${index}`} key={index}>
-            <RecordItem key={index} />
+            <RecordListItem key={index} />
           </Link>
         ))}
       </div>
     </>
   );
 }
-
-import { Skeleton } from "@/components/ui/skeleton";
-import Link from "next/link";
 
 export function RecordSkeleton() {
   return (

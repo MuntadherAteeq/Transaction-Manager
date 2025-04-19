@@ -3,18 +3,21 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import avatar from "@/assets/images/Avatar.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Calendar, Mail, MapPin, Phone, User } from "lucide-react";
+import { Calendar, Loader2, Mail, MapPin, Phone, User } from "lucide-react";
 
-export const RecordItem = (props: {
+export const RecordListItem = (props: {
   activity?: "Archive" | "History";
+  disabled?: boolean;
   className?: string;
   record?: Record;
   [key: string]: any;
 }) => {
+  const [loading, setLoading] = useState(false);
   return (
     <div
       {...props}
       className="flex rounded-xl flex-row min-h-[80px] select-none relative animate-show-down  hover:outline-1 hover:bg-primary/5"
+      onClick={() => setLoading(true)}
     >
       <div className="flex justify-center items-center m-2.5">
         <Avatar draggable="false" className=" w-[50px] h-[50px] ">
@@ -34,6 +37,11 @@ export const RecordItem = (props: {
           }`}</div>
         </div>
       </div>
+      <Loader2
+        className={`absolute top-1/2 right-0 transform -translate-x-1/2 -translate-y-1/2 text-primary animate-spin ${
+          loading ? "block" : "hidden"
+        }`}
+      />
     </div>
   );
 };
@@ -50,7 +58,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-import React from "react";
+import React, { useState } from "react";
 import { Record } from "@prisma/client";
 export function CreateRecordDialog(props: any) {
   const [open, setOpen] = React.useState(false);

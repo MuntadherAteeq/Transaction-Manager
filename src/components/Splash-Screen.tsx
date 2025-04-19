@@ -3,18 +3,19 @@
 import type React from "react";
 
 import { useEffect, useState, useRef } from "react";
-import { Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 import Logo_Icon from "@/Assets/Icons/Logo";
+import { usePathname } from "next/navigation";
 
-export function SplashScreen({
-  children,
-  minimumLoadingTime = 2000,
-}: {
+export function SplashScreen(props: {
   children: React.ReactNode;
   minimumLoadingTime?: number;
 }) {
+  const path = usePathname().split("/")[1];
+  if (path === "Auth") return <>{props.children}</>;
+
+  const { minimumLoadingTime = 1000 } = props;
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const initialResourceCount = useRef(0);
@@ -138,7 +139,7 @@ export function SplashScreen({
             transition={{ duration: 0.5 }}
             className="h-full"
           >
-            {children}
+            {props.children}
           </motion.div>
         )}
       </AnimatePresence>

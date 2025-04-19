@@ -1,8 +1,8 @@
-import App from "@/layouts/App";
 
 import React from "react";
 import { getSession } from "../Auth/auth.actions";
 import { redirect } from "next/navigation";
+import App from "../App";
 
 export default async function Activity_Page(props: {
   params: {

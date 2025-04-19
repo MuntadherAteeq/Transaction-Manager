@@ -7,13 +7,11 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { redirect, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { NavPath } from "@/components/Nav-Path";
 import Link from "next/link";
 import { ThemeSwitcher } from "@/components/Theme-Provider";
 import { CommandShortcut } from "@/components/ui/command";
-import { atom, useAtom } from "jotai";
-import { AddNewRecordBTN } from "./Record/Record-List";
 import Logo_Icon from "@/Assets/Icons/Logo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
@@ -39,14 +37,8 @@ import {
 
 export default function Page(props: any) {
   const currentActivity = usePathname().split("/")[1];
-  // const [isOpen, setOpen] = useAtom(open);
-
-  // const handleSidebarChange = () => {
-  //   setOpen((prev) => !prev);
-  // };
 
   return (
-    // <SidebarProvider open={isOpen}>
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
@@ -156,6 +148,7 @@ import {
   User,
 } from "lucide-react";
 import { signOut } from "@/app/Auth/auth.actions";
+import { AddNewRecordBTN } from "@/components/Record/Record-List";
 
 export function NavUser({
   user,
