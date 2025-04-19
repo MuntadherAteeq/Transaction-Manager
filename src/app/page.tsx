@@ -1,7 +1,6 @@
-import { redirect } from "next/navigation";
 import { requireAuth } from "./Auth/auth.actions";
 
-export default async function Home(props: any) {
+export default async function Home_Page(props: any) {
   await requireAuth();
-  redirect("/App");
+  return <>{props.children}</>;
 }

@@ -12,9 +12,7 @@ export function SplashScreen(props: {
   children: React.ReactNode;
   minimumLoadingTime?: number;
 }) {
-  const path = usePathname().split("/")[1];
-  if (path === "Auth") return <>{props.children}</>;
-
+  
   const { minimumLoadingTime = 1000 } = props;
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -22,6 +20,9 @@ export function SplashScreen(props: {
   const resourcesLoaded = useRef(0);
   const rafId = useRef<number | null>(null);
   const startTime = useRef(Date.now());
+
+  const path = usePathname().split("/")[1];
+  if (path === "Auth") return <>{props.children}</>;
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
