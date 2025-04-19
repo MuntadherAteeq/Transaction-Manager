@@ -4,13 +4,10 @@ import SignInTab from "./SignIn";
 import SignUpTab from "./SignUp";
 import { TabSwitcher } from "./TabSwitcher";
 import Logo_Icon from "@/Assets/Icons/Logo";
-import App from "@/layouts/App";
 
 export default async function Auth(props: any) {
   const session = await getSession();
-  if (session) {
-    <App>{props.children}</App>;
-  }
+  if (session) redirect("/Archive");
 
   return (
     <div className="  relative  h-screen items-center justify-center lg:grid  lg:grid-cols-2 ">
