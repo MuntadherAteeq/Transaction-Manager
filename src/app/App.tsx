@@ -48,9 +48,9 @@ export default function App(props: AppProps) {
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <NavPath />
-          <div className="ml-auto ">
+          {/* <div className="ml-auto ">
             <AddNewRecordBTN />
-          </div>
+          </div> */}
         </header>
         {props.children}
       </SidebarInset>
@@ -122,7 +122,8 @@ export function TeamSwitcher() {
       <SidebarMenuItem>
         <SidebarMenuButton
           size="lg"
-          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+          className="!opacity-100 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+          disabled
         >
           <div className="flex aspect-square size-8 items-center justify-center rounded-lg  text-sidebar-primary-foreground">
             <Logo_Icon className="size-7" />
@@ -153,7 +154,6 @@ import { User } from "@prisma/client";
 
 export function NavUser({ user }: { user: User | null }) {
   const { isMobile } = useSidebar();
-  const router = useRouter();
 
   return (
     <SidebarMenu>
@@ -260,13 +260,13 @@ export function NavMain({
   };
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Activity</SidebarGroupLabel>
+      <SidebarMenuButton disabled></SidebarMenuButton>
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
             <Link href={item.url} className="flex justify-center items-center">
               <SidebarMenuButton
-                // isActive={isActive(item.title) && isOpen}
+                isActive={isActive(item.title)}
                 tooltip={item.title}
                 size={"lg"}
                 className="flex items-center "

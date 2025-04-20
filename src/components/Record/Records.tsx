@@ -69,7 +69,7 @@ import React, { useState } from "react";
 import { Record } from "@prisma/client";
 export function CreateRecordDialog(props: any) {
   const [open, setOpen] = React.useState(false);
-
+  const isMobile = useIsMobile();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{props.children}</DialogTrigger>
@@ -85,7 +85,11 @@ export function CreateRecordDialog(props: any) {
             <Label htmlFor="title">Title</Label>
             <Input id="title" placeholder="Enter title" />
             <Label htmlFor="date">Date</Label>
-            <Input id="date" type="date" />
+            <Input
+              id="date"
+              type="date"
+              defaultValue={new Date().toISOString().split("T")[0]}
+            />
             <Label htmlFor="phone">Phone</Label>
             <Input id="phone" type="tel" placeholder="Enter phone number" />
             <Label htmlFor="email">Email</Label>
@@ -185,6 +189,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const RecordDrawer = (props: any) => {
   return (

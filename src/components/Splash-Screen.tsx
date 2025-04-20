@@ -109,14 +109,14 @@ export function SplashScreen(props: {
               <Logo_Icon className="size-64" />
               <h1 className="text-2xl font-bold">Loading your application</h1>
 
-              <div className="w-full space-y-2">
+              <div className=" space-y-2 w-[80%]">
                 <div className="flex justify-between">
                   <p className="text-sm text-muted-foreground">
                     Loading resources...
                   </p>
                   <p className="text-sm font-medium">{progress}%</p>
                 </div>
-                <Progress value={progress} className="h-2 w-full" />
+                <Progress value={progress} className="h-2 w-full " />
               </div>
 
               {/* <p className="text-center text-sm text-muted-foreground">
