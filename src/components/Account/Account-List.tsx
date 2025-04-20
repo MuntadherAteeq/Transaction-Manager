@@ -1,20 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { CreateRecordDialog, RecordListItem } from "./Records";
 import { Input } from "@/components/ui/input";
 import { Plus, Search } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
-import { getRecords } from "./Record.actions";
 
 import { Inbox } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { getAccounts } from "./accounts.actions";
+import { CreateRecordDialog, RecordListItem } from "../Record/Records";
 
-export async function RecordList(props: { Activity: string }) {
-  const records = await getRecords();
+export async function AccountList(props: { Activity: string }) {
+  const accounts = await getAccounts();
   return (
     <>
       <div className="top-12 bg-sidebar w-full h-12 px-1 py-2 flex gap-2 flex-row items-center border-b-1 shadow-md shadow-black/10 ">
-        <AddNewRecordBTN />
+        <AddNewRecord />
         <div className="relative w-full">
           <Input
             type="text"
@@ -26,19 +25,9 @@ export async function RecordList(props: { Activity: string }) {
       </div>
       <Card className="shadow-md rounded-none h-full">
         <CardContent>
-          {(records ?? []).length > 0 ? (
-            <ul className="flex flex-1 flex-col gap-2 p-4 ">
-              {records?.map((record) => {
-                return (
-                  <Link
-                    href={`/${props.Activity}/${record.id}`}
-                    key={record.id}
-                  >
-                    <RecordListItem record={record} />
-                  </Link>
-                );
-              })}
-            </ul>
+          {(accounts ?? []).length > 0 ? (
+            // <DataTable data={data} />
+            <h1>Hello world</h1>
           ) : (
             <div className="py-12 flex flex-col items-center justify-center text-center space-y-4">
               <div className="bg-muted p-4 rounded-full">
@@ -51,7 +40,7 @@ export async function RecordList(props: { Activity: string }) {
                   first Record to get started.
                 </p>
               </div>
-              <AddNewRecordBTN />
+              <AddNewRecord />
             </div>
           )}
         </CardContent>
@@ -60,19 +49,7 @@ export async function RecordList(props: { Activity: string }) {
   );
 }
 
-// export function RecordSkeleton() {
-//   return (
-//     <div className="flex items-center space-x-4 m-2.5">
-//       <Skeleton className="bg-foreground/15 h-12 w-12 rounded-full" />
-//       <div className="space-y-2">
-//         <Skeleton className=" bg-foreground/15 h-4 w-[250px]" />
-//         <Skeleton className=" bg-foreground/15 h-4 w-[200px]" />
-//       </div>
-//     </div>
-//   );
-// }
-
-export function AddNewRecordBTN(props: any) {
+export function AddNewRecord(props: any) {
   return (
     <CreateRecordDialog>
       <Button

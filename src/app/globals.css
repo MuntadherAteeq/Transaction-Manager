@@ -45,6 +45,7 @@
   --sidebar-border: #e9e8f0; /* oklch(0.928 0.006 264.531) */
   --sidebar-ring: #aba8c1; /* oklch(0.707 0.022 261.325) */
 }
+
 .dark {
   --background: #1c1c1c; /* oklch(0.13 0.028 261.692) */
   --foreground: #fbfbfb; /* oklch(0.985 0.002 247.839) */

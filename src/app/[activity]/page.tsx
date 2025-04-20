@@ -1,3 +1,4 @@
+import { AccountList } from "@/components/Account/Account-List";
 import { RecordList } from "@/components/Record/Record-List";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -14,8 +15,8 @@ export default async function Activity_Page(props: any) {
       return <RecordList Activity={Activity} />;
     case "Dashboard":
       return <div>Dashboard</div>;
-    case "Settings":
-      return <div>Settings</div>;
+    case "Accounts":
+      return <AccountList Activity={Activity} />;
     default:
       redirect("/Archive");
   }

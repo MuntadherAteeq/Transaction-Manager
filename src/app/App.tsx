@@ -67,31 +67,6 @@ import {
 } from "@/components/ui/sidebar";
 
 // This is sample data.
-const data = {
-  navMain: [
-    {
-      title: "Archive",
-      url: "/Archive",
-      icon: "icon-[stash--folder-alt]",
-      isActive: true,
-    },
-    {
-      title: "History",
-      url: "/History",
-      icon: "icon-[bi--clock]",
-    },
-    {
-      title: "Inventory",
-      url: "/Inventory",
-      icon: "icon-[solar--box-outline]",
-    },
-    {
-      title: "Dashboard",
-      url: "/Dashboard",
-      icon: "icon-[solar--chart-square-linear]",
-    },
-  ],
-};
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user: User | null;
@@ -104,7 +79,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
         <TeamSwitcher />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={Activities} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={props.user} />
@@ -151,6 +126,7 @@ import {
 import { signOut } from "@/app/Auth/auth.actions";
 import { AddNewRecordBTN } from "@/components/Record/Record-List";
 import { User } from "@prisma/client";
+import { Activities } from "@/lib/Activities";
 
 export function NavUser({ user }: { user: User | null }) {
   const { isMobile } = useSidebar();
