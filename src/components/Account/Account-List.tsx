@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus, Search } from "lucide-react";
-import Link from "next/link";
 
 import { Inbox } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,8 +25,7 @@ export async function AccountList(props: { Activity: string }) {
       <Card className="shadow-md rounded-none h-full">
         <CardContent>
           {(accounts ?? []).length > 0 ? (
-            // <DataTable data={data} />
-            <h1>Hello world</h1>
+            <h1>Hi</h1>
           ) : (
             <div className="py-12 flex flex-col items-center justify-center text-center space-y-4">
               <div className="bg-muted p-4 rounded-full">

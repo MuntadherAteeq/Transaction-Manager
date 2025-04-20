@@ -12,7 +12,7 @@ import { NavPath } from "@/components/Nav-Path";
 import Link from "next/link";
 import { ThemeSwitcher } from "@/components/Theme-Provider";
 import { CommandShortcut } from "@/components/ui/command";
-import Logo_Icon from "@/Assets/Icons/Logo";
+import AppLogo from "@/Assets/Icons/Logo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import {
@@ -101,7 +101,7 @@ export function TeamSwitcher() {
           disabled
         >
           <div className="flex aspect-square size-8 items-center justify-center rounded-lg  text-sidebar-primary-foreground">
-            <Logo_Icon className="size-7" />
+            <AppLogo className="size-7" />
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
             <span className="truncate font-semibold text-lg">

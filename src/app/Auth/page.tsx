@@ -3,7 +3,7 @@ import { getUser } from "./auth.actions";
 import SignInTab from "./SignIn";
 import SignUpTab from "./SignUp";
 import { TabSwitcher } from "./TabSwitcher";
-import Logo_Icon from "@/Assets/Icons/Logo";
+import AppLogo from "@/Assets/Icons/Logo";
 
 export default async function Auth(props: any) {
   const session = await getUser();
@@ -14,7 +14,7 @@ export default async function Auth(props: any) {
       <div className=" max-md:hidden flex justify-between relative h-full flex-col bg-muted-foreground p-10 text-card-foreground lg:flex dark:border-r sm:hidden">
         <div className="  absolute inset-0 bg-muted " />
         <div className=" relative z-20 flex items-center text-3xl font-medium gap-2">
-          <Logo_Icon className="w-12 h-12" />
+          <AppLogo className="w-12 h-12" />
           <span>Transaction Manager</span>
         </div>
         {/* <ImageSlider /> */}

@@ -5,7 +5,7 @@ import type React from "react";
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
-import Logo_Icon from "@/Assets/Icons/Logo";
+import AppLogo from "@/Assets/Icons/Logo";
 import { usePathname } from "next/navigation";
 
 export function SplashScreen(props: {
@@ -106,7 +106,7 @@ export function SplashScreen(props: {
               transition={{ duration: 0.5 }}
               className="flex w-full max-w-md flex-col items-center gap-4 px-4"
             >
-              <Logo_Icon className="size-64" />
+              <AppLogo className="size-64" />
               <h1 className="text-2xl font-bold">Loading your application</h1>
 
               <div className=" space-y-2 w-[80%]">

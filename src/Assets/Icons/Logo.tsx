@@ -1,4 +1,4 @@
-export default function Logo_Icon(props: React.SVGProps<SVGSVGElement>) {
+export default function AppLogo(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       width="354"
@@ -208,5 +208,5 @@ export default function Logo_Icon(props: React.SVGProps<SVGSVGElement>) {
         </linearGradient>
       </defs>
     </svg>
-  )
+  );
 }
