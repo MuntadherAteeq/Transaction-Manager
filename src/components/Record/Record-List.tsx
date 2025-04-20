@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { CreateRecordDialog, RecordListItem } from "./Records";
 import { Input } from "@/components/ui/input";
 import { Plus, Search } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { getRecords } from "./Record.actions";
 
@@ -21,7 +20,7 @@ export async function RecordList(props: { Activity: string }) {
             placeholder="Search integrations..."
             className="w-full h-10 pl-12  bg-transparent"
           />
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
         </div>
       </div>
       <Card className="shadow-md rounded-none h-full">
@@ -59,18 +58,6 @@ export async function RecordList(props: { Activity: string }) {
     </>
   );
 }
-
-// export function RecordSkeleton() {
-//   return (
-//     <div className="flex items-center space-x-4 m-2.5">
-//       <Skeleton className="bg-foreground/15 h-12 w-12 rounded-full" />
-//       <div className="space-y-2">
-//         <Skeleton className=" bg-foreground/15 h-4 w-[250px]" />
-//         <Skeleton className=" bg-foreground/15 h-4 w-[200px]" />
-//       </div>
-//     </div>
-//   );
-// }
 
 export function AddNewRecordBTN(props: any) {
   return (
