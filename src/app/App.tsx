@@ -7,7 +7,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { NavPath } from "@/components/Nav-Path";
 import Link from "next/link";
 import { ThemeSwitcher } from "@/components/Theme-Provider";
@@ -255,7 +255,7 @@ export function NavMain({
 }) {
   // const [isOpen, setOpen] = useAtom(open);
   const isActive = (activity: string) => {
-    const currentActivity = usePathname().split("/")[1];
+    const currentActivity = useParams().Activity;
     return currentActivity === activity;
   };
   return (
