@@ -1,40 +1,27 @@
-import {
-  BoxesIcon,
-  Clock,
-  FolderOpen,
-  LayoutDashboard,
-  LucideUsers,
-} from "lucide-react";
-
 export const Activities = [
   {
     title: "Archive",
     url: "/Archive",
-    // icon: <i className="w-full h-full !size-7 icon-[stash--folder-alt]"/>,
-    icon: <FolderOpen />,
+    icon: "icon-[stash--folder-alt]",
   },
   {
     title: "History",
     url: "/History",
-    // icon: <i className="w-full h-full !size-7 icon-[bi--clock]" />,
-    icon: <Clock />,
+    icon: "icon-[bi--clock]",
   },
   {
     title: "Inventory",
     url: "/Inventory",
-    // icon: <i className="w-full h-full !size-7 icon-[solar--box-outline]" />,
-    icon: <BoxesIcon />,
+    icon: "icon-[solar--box-outline]",
   },
   {
     title: "Dashboard",
     url: "/Dashboard",
-    // icon: <i className="w-full h-full !size-7 icon-[solar--chart-square-linear]" />,
-    icon: <LayoutDashboard />,
+    icon: "icon-[solar--chart-square-linear]",
   },
   {
     title: "Accounts",
     url: "/Accounts",
-    // icon: <i className="w-full h-full !size-7 "icon-[hugeicons--user-account]" />,
-    icon: <LucideUsers />,
+    icon: "icon-[hugeicons--user-account]",
   },
 ];

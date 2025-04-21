@@ -249,19 +249,19 @@ export function NavMain({
                 className="flex items-center "
               >
                 {/* item.icon is lucide-react icons  */}
-                <span
+
+                <i
                   className={cn(
-                    "flex items-center justify-center size-7 text-muted-foreground",
-                    !isActive(item.title) && ""
+                    "size-7 shrink-0",
+                    item.icon,
+                    !isActive(item.title) && "text-muted-foreground"
                   )}
-                >
-                  {item.icon}
-                </span>
+                />
 
                 <span
-                  className={`${
+                  className={cn(
                     !isActive(item.title) && "text-muted-foreground"
-                  }`}
+                  )}
                 >
                   {item.title}
                 </span>
