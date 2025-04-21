@@ -17,6 +17,8 @@ export default async function Activity_Page(props: any) {
       return <div>Dashboard</div>;
     case "Accounts":
       return <AccountList Activity={Activity} />;
+    case "JobCards":
+      return <div>JobCards</div>;
     default:
       redirect("/Archive");
   }

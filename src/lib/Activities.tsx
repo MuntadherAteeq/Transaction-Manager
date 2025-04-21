@@ -1,6 +1,16 @@
 export const Activities = [
   {
-    title: "Archive",
+    title: "Dashboard",
+    url: "/Dashboard",
+    icon: "icon-[solar--chart-square-linear]",
+  },
+  {
+    title: "Accounts",
+    url: "/Accounts",
+    icon: "icon-[hugeicons--user-account]",
+  },
+  {
+    title: "Sales",
     url: "/Archive",
     icon: "icon-[stash--folder-alt]",
   },
@@ -15,13 +25,8 @@ export const Activities = [
     icon: "icon-[solar--box-outline]",
   },
   {
-    title: "Dashboard",
-    url: "/Dashboard",
-    icon: "icon-[solar--chart-square-linear]",
-  },
-  {
-    title: "Accounts",
-    url: "/Accounts",
-    icon: "icon-[hugeicons--user-account]",
+    title: "Job Cards",
+    url: "/JobCards",
+    icon: "icon-[fluent--card-ui-24-regular]",
   },
 ];

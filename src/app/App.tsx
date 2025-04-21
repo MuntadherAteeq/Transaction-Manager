@@ -231,39 +231,35 @@ export function NavMain({
   }[];
 }) {
   // const [isOpen, setOpen] = useAtom(open);
-  const isActive = (activity: string) => {
+  const isActive = (Activity: string) => {
     const currentActivity = useParams().Activity;
-    return currentActivity === activity;
+    return currentActivity === Activity.substring(1);
   };
   return (
     <SidebarGroup>
       <SidebarMenuButton disabled></SidebarMenuButton>
       <SidebarMenu>
-        {items.map((item) => (
-          <SidebarMenuItem key={item.title}>
-            <Link href={item.url} className="flex justify-center items-center">
+        {items.map(({ title, url, icon }) => (
+          <SidebarMenuItem key={title}>
+            <Link href={url} className="flex justify-center items-center">
               <SidebarMenuButton
-                isActive={isActive(item.title)}
-                tooltip={item.title}
+                isActive={isActive(url)}
+                tooltip={title}
                 size={"lg"}
                 className="flex items-center "
               >
-                {/* item.icon is lucide-react icons  */}
+                {/* icon is lucide-react icons  */}
 
                 <i
                   className={cn(
                     "size-7 shrink-0",
-                    item.icon,
-                    !isActive(item.title) && "text-muted-foreground"
+                    icon,
+                    !isActive(url) && "text-muted-foreground"
                   )}
                 />
 
-                <span
-                  className={cn(
-                    !isActive(item.title) && "text-muted-foreground"
-                  )}
-                >
-                  {item.title}
+                <span className={cn(!isActive(url) && "text-muted-foreground")}>
+                  {title}
                 </span>
               </SidebarMenuButton>
             </Link>
