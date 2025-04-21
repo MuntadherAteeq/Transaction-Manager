@@ -1,7 +1,7 @@
 "use client";
 
 import { AgGridReact } from "ag-grid-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { User } from "@prisma/client";
 
@@ -15,7 +15,6 @@ import { ClientSideRowModelModule } from "ag-grid-community"; // Import the miss
 import { useTableTheme } from "@/hooks/use-TableTheme";
 import { Badge } from "@/components/ui/badge";
 import { User2 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -31,11 +30,75 @@ export default function AccountTable({ users }: { users: User[] }) {
   const [rowData, setRowData] = useState<User[]>(users || []);
   // Column Definitions: Defines the columns to be displayed.
 
-  const colDefs = useMemo<ColDef[]>(() => {
-    return isMobile ? mobileColumnDefs : desktopColumnDefs;
-  }, [isMobile]);
+  const colDefs: ColDef[] = [
+    {
+      field: "image",
+      headerName: "",
+      width: 80,
+      resizable: false,
+      cellClass: "w-full h-full",
+      lockPosition: true,
+      cellRenderer: (params: { value: string; data: User }) => {
+        return (
+          <div className="flex items-center justify-center w-full h-full">
+            <Avatar className="size-10">
+              <AvatarImage
+                className="size-10 shrink-0 rounded-full object-cover"
+                src={params.value}
+                alt="Image"
+              />
+              <AvatarFallback>{params.data.name.charAt(0)}</AvatarFallback>
+            </Avatar>
+          </div>
+        );
+      },
+    },
+    {
+      field: "name",
+      sortable: true,
+      filter: true,
+      cellClass: "flex items-center justify-center pt-1",
+      editable: true,
+      lockPosition: true,
+      flex: isMobile ? 0 : 1,
+    },
+    {
+      field: "email",
+      sortable: true,
+      filter: true,
+      cellClass: "flex items-center justify-center pt-1",
+      lockPosition: true,
+      flex: isMobile ? 0 : 1,
+    },
+    {
+      field: "rules",
+      sortable: true,
+      filter: true,
+      lockPosition: true,
+      flex: isMobile ? 0 : 1,
 
-  console.log(colDefs);
+      cellRenderer: (params: { value: string }) => {
+        const rules = ["Admin", "User", "Manager", "Editor"];
+        return (
+          <div className="flex w-full h-full items-center justify-center gap-2 flex-wrap max-sm:overflow-y-scroll max-sm:overflow-x-hidden ">
+            {rules.map((rule: string, index: number) => {
+              const trimmedRule = rule.trim();
+              return (
+                <Badge
+                  key={index}
+                  variant={trimmedRule === "Admin" ? "destructive" : "outline"}
+                  className="text-accent-foreground/90"
+                >
+                  <User2 className="mr-2 h-4 w-4 " />
+                  {trimmedRule}
+                </Badge>
+              );
+            })}
+          </div>
+        );
+      },
+    },
+  ];
 
   const rowSelection = useMemo<
     RowSelectionOptions | "single" | "multiple"
@@ -62,139 +125,3 @@ export default function AccountTable({ users }: { users: User[] }) {
     </div>
   );
 }
-
-const desktopColumnDefs = [
-  {
-    field: "image",
-    headerName: "",
-    width: 80,
-    resizable: false,
-    cellClass: "w-full h-full !p-0 !m-0",
-    lockPosition: true,
-    flex: 1,
-    cellRenderer: (params: { value: string; data: User }) => {
-      return (
-        <div className="flex items-center justify-center w-full h-full">
-          <Avatar className="size-10">
-            <AvatarImage
-              className="size-10 shrink-0 rounded-full object-cover"
-              src={params.value}
-              alt="Image"
-            />
-            <AvatarFallback>{params.data.name.charAt(0)}</AvatarFallback>
-          </Avatar>
-        </div>
-      );
-    },
-  },
-  {
-    field: "name",
-    sortable: true,
-    filter: true,
-    cellClass: "flex items-center justify-center pt-1",
-    editable: true,
-    lockPosition: true,
-    flex: 1,
-  },
-  {
-    field: "email",
-    sortable: true,
-    filter: true,
-    cellClass: "flex items-center justify-center pt-1",
-    lockPosition: true,
-    flex: 1,
-  },
-  {
-    field: "rules",
-    sortable: true,
-    filter: true,
-    lockPosition: true,
-    flex: 1,
-    cellRenderer: (params: { value: string }) => {
-      const rules = ["Admin", "User", "Manager", "Editor"];
-      return (
-        <div className="flex w-full h-full items-center justify-center gap-2 flex-wrap max-sm:overflow-y-scroll max-sm:overflow-x-hidden ">
-          {rules.map((rule: string, index: number) => {
-            const trimmedRule = rule.trim();
-            return (
-              <Badge
-                key={index}
-                variant={trimmedRule === "Admin" ? "destructive" : "outline"}
-                className="text-accent-foreground/90"
-              >
-                <User2 className="mr-2 h-4 w-4 " />
-                {trimmedRule}
-              </Badge>
-            );
-          })}
-        </div>
-      );
-    },
-  },
-];
-
-const mobileColumnDefs = [
-  {
-    field: "image",
-    headerName: "",
-    width: 80,
-    resizable: false,
-    cellClass: "w-full h-full !p-0 !m-0",
-    lockPosition: true,
-    cellRenderer: (params: { value: string; data: User }) => {
-      return (
-        <div className="flex items-center justify-center w-full h-full">
-          <Avatar className="size-10">
-            <AvatarImage
-              className="size-10 shrink-0 rounded-full object-cover"
-              src={params.value}
-              alt="Image"
-            />
-            <AvatarFallback>{params.data.name.charAt(0)}</AvatarFallback>
-          </Avatar>
-        </div>
-      );
-    },
-  },
-  {
-    field: "name",
-    sortable: true,
-    filter: true,
-    cellClass: "flex items-center justify-center pt-1",
-    editable: true,
-    lockPosition: true,
-  },
-  {
-    field: "email",
-    sortable: true,
-    filter: true,
-    cellClass: "flex items-center justify-center pt-1",
-    lockPosition: true,
-  },
-  {
-    field: "rules",
-    sortable: true,
-    filter: true,
-    lockPosition: true,
-    cellRenderer: (params: { value: string }) => {
-      const rules = ["Admin", "User", "Manager", "Editor"];
-      return (
-        <div className="flex w-full h-full items-center justify-center gap-2 flex-wrap max-sm:overflow-y-scroll max-sm:overflow-x-hidden ">
-          {rules.map((rule: string, index: number) => {
-            const trimmedRule = rule.trim();
-            return (
-              <Badge
-                key={index}
-                variant={trimmedRule === "Admin" ? "destructive" : "outline"}
-                className="text-accent-foreground/90"
-              >
-                <User2 className="mr-2 h-4 w-4 " />
-                {trimmedRule}
-              </Badge>
-            );
-          })}
-        </div>
-      );
-    },
-  },
-];
