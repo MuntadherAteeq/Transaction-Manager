@@ -6,7 +6,6 @@ import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 import AppLogo from "@/Assets/Icons/Logo";
-import { usePathname } from "next/navigation";
 
 export function SplashScreen(props: {
   children: React.ReactNode;

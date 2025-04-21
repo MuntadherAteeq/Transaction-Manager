@@ -9,7 +9,6 @@ import { Inbox } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import RecordTable from "./Record-Table";
 import { getUser } from "@/app/Auth/auth.actions";
-import { User } from "@prisma/client";
 
 export async function RecordList(props: { Activity: string }) {
   const records = await getRecords();
@@ -29,7 +28,7 @@ export async function RecordList(props: { Activity: string }) {
       </div>
       {user && <RecordTable user={user} />}
 
-      {/* <Card className="shadow-md rounded-none h-full">
+      <Card className="shadow-md rounded-none h-full">
         <CardContent>
           {(records ?? []).length > 0 ? (
             <ul className="flex flex-1 flex-col gap-2 p-4 ">
@@ -60,7 +59,7 @@ export async function RecordList(props: { Activity: string }) {
             </div>
           )}
         </CardContent>
-      </Card> */}
+      </Card>
     </>
   );
 }

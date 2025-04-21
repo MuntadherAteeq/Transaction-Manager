@@ -1,9 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Plus, Search } from "lucide-react";
 
-import { Inbox } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import { getAccounts } from "./accounts.actions";
 import { CreateRecordDialog, RecordListItem } from "../Record/Records";
 import AccountTable from "./Account-Table";
