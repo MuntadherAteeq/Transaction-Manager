@@ -9,6 +9,9 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
+.test {
+  color: #121212;
+}
 
 :root {
   --background: #ffffff; /* oklch(1 0 0) */
