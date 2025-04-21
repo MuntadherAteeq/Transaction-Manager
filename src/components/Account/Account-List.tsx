@@ -12,19 +12,6 @@ export async function AccountList(props: { Activity: string }) {
   const users = await getAccounts();
   return (
     <>
-      <div className="top-12 bg-sidebar w-full h-12 px-1 py-2 flex gap-2 flex-row items-center border-b-1 shadow-md shadow-black/10 ">
-        <AddNewRecord />
-        <div className="relative w-full">
-          <Input
-            type="text"
-            placeholder="Search integrations..."
-            className="w-full h-10 pl-12  bg-transparent"
-          />
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-        </div>
-      </div>
-      {/* <Card className="shadow-md rounded-none h-full"> */}
-      {/* <CardContent> */}
       {(users ?? []).length > 0 ? (
         <AccountTable users={users} />
       ) : (

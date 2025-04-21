@@ -18,7 +18,7 @@ export const NavPath: React.FC = () => {
   const router = useRouter();
   return (
     <Breadcrumb>
-      <BreadcrumbList>
+      <BreadcrumbList className="flex-nowrap">
         {pathSegments.map((segment, index) => {
           const isLast = index === pathSegments.length - 1;
 
@@ -27,10 +27,7 @@ export const NavPath: React.FC = () => {
               {index === 1 ? (
                 <NavRecordItem src={avatar.src} title={"Untitled Record"} />
               ) : (
-                <Button
-                  variant="ghost"
-                  className=" max-sm:hidden h-full p-1 px-2"
-                >
+                <Button variant="ghost" className=" h-full p-1 px-2">
                   <BreadcrumbItem>
                     <BreadcrumbLink
                       onClick={() => {
@@ -38,14 +35,14 @@ export const NavPath: React.FC = () => {
                           `/${pathSegments.slice(0, index + 1).join("/")}`
                         );
                       }}
-                      className="text-sm"
+                      className="text-lg"
                     >
                       {segment}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                 </Button>
               )}
-              {!isLast && <BreadcrumbSeparator className="max-sm:hidden" />}
+              {!isLast && <BreadcrumbSeparator />}
             </React.Fragment>
           );
         })}
