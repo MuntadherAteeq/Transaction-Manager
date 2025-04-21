@@ -8,6 +8,8 @@ import { User } from "@prisma/client";
 import {
   AllCommunityModule,
   ColDef,
+  FilterManager,
+  FilterValueService,
   ModuleRegistry,
   RowSelectionOptions,
 } from "ag-grid-community";
@@ -20,7 +22,7 @@ import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 // Register the required modules
-ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 export default function AccountTable({ users }: { users: User[] }) {
   const tableTheme = useTableTheme();
@@ -38,6 +40,7 @@ export default function AccountTable({ users }: { users: User[] }) {
       resizable: false,
       cellClass: "w-full h-full",
       lockPosition: true,
+      filter: false,
       cellRenderer: (params: { value: string; data: User }) => {
         return (
           <div className="flex items-center justify-center w-full h-full">
@@ -56,10 +59,10 @@ export default function AccountTable({ users }: { users: User[] }) {
     {
       field: "name",
       sortable: true,
-      filter: true,
       cellClass: "flex items-center justify-center pt-1",
       editable: true,
       lockPosition: true,
+      filter: true,
       flex: isMobile ? 0 : 1,
     },
     {
