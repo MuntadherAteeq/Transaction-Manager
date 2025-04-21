@@ -127,6 +127,7 @@ import { signOut } from "@/app/Auth/auth.actions";
 import { AddNewRecordBTN } from "@/components/Record/Record-List";
 import { User } from "@prisma/client";
 import { Activities } from "@/lib/Activities";
+import { cn } from "@/lib/utils";
 
 export function NavUser({ user }: { user: User | null }) {
   const { isMobile } = useSidebar();
@@ -247,11 +248,16 @@ export function NavMain({
                 size={"lg"}
                 className="flex items-center "
               >
-                <svg
-                  className={`${item.icon} !size-7  ${
-                    !isActive(item.title) && "text-muted-foreground"
-                  }`}
-                />
+                {/* item.icon is lucide-react icons  */}
+                <span
+                  className={cn(
+                    "flex items-center justify-center size-7 text-muted-foreground",
+                    !isActive(item.title) && ""
+                  )}
+                >
+                  {item.icon}
+                </span>
+
                 <span
                   className={`${
                     !isActive(item.title) && "text-muted-foreground"
