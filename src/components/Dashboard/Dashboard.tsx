@@ -510,12 +510,7 @@ export function Dashboard() {
                         Engine repair and full service
                       </TableCell>
                       <TableCell>
-                        <Badge
-                          variant="outline"
-                          className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
-                        >
-                          In Progress
-                        </Badge>
+                        <Badge variant="warning">In Progress</Badge>
                       </TableCell>
                       <TableCell>Apr 18, 2025</TableCell>
                       <TableCell>Apr 23, 2025</TableCell>
