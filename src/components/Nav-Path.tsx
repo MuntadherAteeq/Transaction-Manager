@@ -10,7 +10,6 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { RecordDrawer } from "@/components/Record/Records";
 import { Button } from "./ui/button";
-import avatar from "@/assets/images/Avatar.png";
 
 export const NavPath: React.FC = () => {
   const pathname = usePathname();
@@ -25,7 +24,7 @@ export const NavPath: React.FC = () => {
           return (
             <React.Fragment key={index}>
               {index === 1 ? (
-                <NavRecordItem src={avatar.src} title={"Untitled Record"} />
+                <NavRecordItem title={"Untitled Record"} />
               ) : (
                 <Button variant="ghost" className=" h-full p-1 px-2">
                   <BreadcrumbItem>

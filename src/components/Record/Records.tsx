@@ -1,6 +1,5 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import avatar from "@/assets/images/Avatar.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar, Loader2, Mail, MapPin, Phone, User } from "lucide-react";
@@ -117,7 +116,7 @@ export const RecordInfo = (props: any) => {
       <DrawerHeader className="px-6 pt-6">
         <div className="flex max-sm:flex-col items-center gap-2 text-left text-sm">
           <Avatar className="h-14 w-14 rounded-full">
-            <AvatarImage src={avatar.src} alt={"avatar"} />
+            <AvatarImage alt={"avatar"} />
             <AvatarFallback className="rounded-lg">CN</AvatarFallback>
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
