@@ -10,8 +10,8 @@ import {
   updatePrice,
   updateQuantity,
 } from "./table.actions";
-import TableHeader from "./TableHeader";
-import TableFooter from "./TableFooter";
+// import TableHeader from "./TableHeader";
+// import TableFooter from "./TableFooter";
 
 export default function TransactionTable({ table }: { table: Table }) {
   const [selected, setSelected] = useState<Transaction[]>([]);
