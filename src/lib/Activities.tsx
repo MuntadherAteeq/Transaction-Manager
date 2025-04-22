@@ -10,7 +10,7 @@ export const Activities = [
     icon: "icon-[hugeicons--user-account]",
   },
   {
-    title: "Sales",
+    title: "Archive",
     url: "/Archive",
     icon: "icon-[stash--folder-alt]",
   },

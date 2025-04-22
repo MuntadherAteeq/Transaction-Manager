@@ -21,6 +21,6 @@ export default async function Activity_Page(props: any) {
     case "JobCards":
       return <div>JobCards</div>;
     default:
-      redirect("/Archive");
+      return <div>Default</div>;
   }
 }
