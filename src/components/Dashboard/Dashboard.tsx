@@ -94,7 +94,7 @@ export function Dashboard() {
               <DollarSign className=" text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold">$45,231.89</div>
+              <div className="text-4xl font-bold truncate">$45,231.89</div>
             </CardContent>
             <CardFooter className="flex items-center space-x-2">
               <Badge variant="success" className="text-xs">
@@ -112,7 +112,7 @@ export function Dashboard() {
               <Wrench className=" text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold">24</div>
+              <div className="text-4xl font-bold truncate">24</div>
             </CardContent>
             <CardFooter className="flex items-center space-x-2">
               <Badge variant="success" className="text-xs">
@@ -130,7 +130,7 @@ export function Dashboard() {
               <Package className=" text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold">1,245</div>
+              <div className="text-4xl font-bold truncate">1,245</div>
             </CardContent>
             <CardFooter className="flex items-center space-x-2">
               <Badge variant="destructive" className="text-xs">
@@ -148,7 +148,7 @@ export function Dashboard() {
               <ShoppingCart className=" text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold">149</div>
+              <div className="text-4xl font-bold truncate">149</div>
               <div className="flex items-center space-x-2">
                 <Badge variant="success" className="text-xs">
                   <ArrowUp className="mr-1 h-3 w-3" />
