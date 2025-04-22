@@ -48,7 +48,7 @@ export default function SignInTab() {
     const res = await signIn(formData);
     if (res?.success) {
       setTimeout(() => {
-        router.push("/Archive");
+        router.push("/");
       }, 1000); // Simulate a delay for the splash screen
       // Redirect to the Archive page
     } else {

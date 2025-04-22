@@ -93,7 +93,7 @@ const SignUpForm = () => {
     setLoading(true);
     try {
       await signUp(data);
-      router.push("/dashboard");
+      router.push("/");
     } catch (error) {
       console.error("Sign up failed:", error);
     } finally {
