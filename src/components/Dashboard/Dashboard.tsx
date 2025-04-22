@@ -97,7 +97,7 @@ export function Dashboard() {
               <div className="text-4xl font-bold truncate">$45,231.89</div>
             </CardContent>
             <CardFooter className="flex items-center space-x-2">
-              <Badge variant="success" className="text-xs">
+              <Badge variant="destructive" className="text-xs">
                 <ArrowUp className="mr-1 h-3 w-3" />
                 12.5%
               </Badge>
@@ -115,7 +115,7 @@ export function Dashboard() {
               <div className="text-4xl font-bold truncate">24</div>
             </CardContent>
             <CardFooter className="flex items-center space-x-2">
-              <Badge variant="success" className="text-xs">
+              <Badge variant="success">
                 <ArrowUp className="mr-1 h-3 w-3" />
                 8.2%
               </Badge>
@@ -133,7 +133,7 @@ export function Dashboard() {
               <div className="text-4xl font-bold truncate">1,245</div>
             </CardContent>
             <CardFooter className="flex items-center space-x-2">
-              <Badge variant="destructive" className="text-xs">
+              <Badge variant="warning" className="text-xs">
                 <ArrowDown className="mr-1 h-3 w-3" />
                 3.1%
               </Badge>
@@ -242,12 +242,7 @@ export function Dashboard() {
                         <TableCell className="font-medium">JC-1001</TableCell>
                         <TableCell>Acme Corp</TableCell>
                         <TableCell>
-                          <Badge
-                            variant="outline"
-                            className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
-                          >
-                            In Progress
-                          </Badge>
+                          <Badge variant="warning">In Progress</Badge>
                         </TableCell>
                         <TableCell>Apr 23, 2025</TableCell>
                         <TableCell className="text-right">
@@ -278,12 +273,7 @@ export function Dashboard() {
                         <TableCell className="font-medium">JC-1002</TableCell>
                         <TableCell>TechSolutions Inc</TableCell>
                         <TableCell>
-                          <Badge
-                            variant="outline"
-                            className="bg-green-100 text-green-800 hover:bg-green-100"
-                          >
-                            Completed
-                          </Badge>
+                          <Badge variant="success">Completed</Badge>
                         </TableCell>
                         <TableCell>Apr 21, 2025</TableCell>
                         <TableCell className="text-right">
@@ -312,12 +302,7 @@ export function Dashboard() {
                         <TableCell className="font-medium">JC-1003</TableCell>
                         <TableCell>Global Enterprises</TableCell>
                         <TableCell>
-                          <Badge
-                            variant="outline"
-                            className="bg-blue-100 text-blue-800 hover:bg-blue-100"
-                          >
-                            Pending
-                          </Badge>
+                          <Badge variant="default">Pending</Badge>
                         </TableCell>
                         <TableCell>Apr 25, 2025</TableCell>
                         <TableCell className="text-right">
@@ -430,7 +415,7 @@ export function Dashboard() {
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button variant="outline" className="w-full">
+                  <Button variant="destructive" className="w-full">
                     View All Low Stock Items
                   </Button>
                 </CardFooter>

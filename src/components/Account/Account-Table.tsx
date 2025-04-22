@@ -89,8 +89,7 @@ export default function AccountTable({ users }: { users: User[] }) {
               return (
                 <Badge
                   key={index}
-                  variant={trimmedRule === "Admin" ? "destructive" : "outline"}
-                  className="text-accent-foreground/90"
+                  variant={trimmedRule === "Admin" ? "destructive" : "default"}
                 >
                   <User2 className="mr-2 h-4 w-4 " />
                   {trimmedRule}
