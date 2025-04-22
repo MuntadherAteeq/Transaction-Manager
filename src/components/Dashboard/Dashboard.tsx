@@ -415,7 +415,7 @@ export function Dashboard() {
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button variant="destructive" className="w-full">
+                  <Button variant="outline" className="w-full">
                     View All Low Stock Items
                   </Button>
                 </CardFooter>
