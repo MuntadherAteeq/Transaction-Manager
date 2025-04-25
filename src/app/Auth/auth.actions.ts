@@ -227,7 +227,7 @@ export async function signOut() {
       console.error("Error deleting session:", error);
     }
   }
-
+  
   // Delete the session cookie
   (await cookies()).delete("session_token");
 
@@ -244,4 +244,11 @@ export async function requireAuth() {
   if (!session) redirect("/Auth");
 
   return session;
+}
+
+export async function isAdmin() {
+  const user = await getUser();
+  if (!user) return false;
+  const roles = JSON.parse(user.roles);
+  return roles.includes("Admin");
 }

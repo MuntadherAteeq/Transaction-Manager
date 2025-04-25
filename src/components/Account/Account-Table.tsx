@@ -8,23 +8,23 @@ import { User } from "@prisma/client";
 import {
   AllCommunityModule,
   ColDef,
-  FilterManager,
-  FilterValueService,
   ModuleRegistry,
   RowSelectionOptions,
 } from "ag-grid-community";
-import { ClientSideRowModelModule } from "ag-grid-community"; // Import the missing module
 import { useTableTheme } from "@/hooks/use-TableTheme";
 import { Badge } from "@/components/ui/badge";
-import { User2 } from "lucide-react";
+import { Plus, Trash, User2 } from "lucide-react";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { z } from "zod";
 
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export default function AccountTable({ users }: { users: User[] }) {
+export default function AccountTableHeader({ users }: { users: User[] }) {
   const tableTheme = useTableTheme();
 
   const isMobile = useIsMobile();
@@ -111,7 +111,8 @@ export default function AccountTable({ users }: { users: User[] }) {
   }, []);
 
   return (
-    <div className=" flex flex-col w-full h-full bg-popover">
+    <div className=" flex flex-col w-full h-full">
+      <AccountsTableHeader />
       <AgGridReact
         theme={tableTheme}
         className="h-full w-full"
@@ -125,5 +126,41 @@ export default function AccountTable({ users }: { users: User[] }) {
         rowSelection={rowSelection}
       />
     </div>
+  );
+}
+
+const account = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  email: z.string().email({ message: "Email is required" }),
+  image: z.string().optional(),
+  password: z.string().min(6, { message: "Password is required" }),
+  roles: z.array(z.string()).min(1, { message: "Role is required" }),
+});
+
+interface Account extends z.infer<typeof account> {}
+
+export function AccountsTableHeader(props: any) {
+  const [inProgress, setInProgress] = useState(false);
+
+  return (
+    <Card className="flex flex-row p-0 m-0 rounded-b-none">
+      <CardContent className="w-full p-3 space-x-3">
+        <Button
+          variant={"default"}
+          className=" bg-transparent hover:bg-background  border "
+        >
+          <Plus />
+          <span className="max-sm:hidden me-2 ">New</span>
+        </Button>
+
+        <Button
+          variant={"destructive"}
+          className=" bg-transparent hover:bg-background hover:text-destructive-foreground border"
+        >
+          <Trash />
+          <span className="max-sm:hidden me-2">Delete</span>
+        </Button>
+      </CardContent>
+    </Card>
   );
 }

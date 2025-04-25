@@ -10,6 +10,7 @@ export function useTableTheme() {
     headerBackgroundColor: "#2b2b2b",
     oddRowBackgroundColor: "#131313",
     headerColumnResizeHandleColor: "#a1a1aa",
+    wrapperBorderRadius: "0px 0px 15px 15px",
   });
   const tableTheme =
     theme.resolvedTheme === "dark"
