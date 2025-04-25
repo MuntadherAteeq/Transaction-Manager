@@ -1,9 +1,9 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { getUser } from "@/app/Auth/auth.actions";
+import { getAccount } from "@/app/Auth/auth.actions";
 
 export async function getRecords() {
-  const user = await getUser();
-  return user ? await prisma.record.findMany({}) : undefined;
+  const account = await getAccount();
+  return account ? await prisma.record.findMany({}) : undefined;
 }

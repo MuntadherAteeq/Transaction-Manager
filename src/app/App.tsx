@@ -34,13 +34,13 @@ import {
 // const open = atom(true);
 interface AppProps {
   children: React.ReactNode;
-  user: User | null;
+  account: Account | null;
 }
 
 export default function App(props: AppProps) {
   return (
     <SidebarProvider>
-      <AppSidebar user={props.user} />
+      <AppSidebar account={props.account} />
       <SidebarInset>
         <header className="flex sticky z-10 top-0 bg-sidebar h-12 shrink-0 items-center gap-2 border-b px-4 flex-nowrap">
           <SidebarTrigger className="-ml-1" />
@@ -64,7 +64,7 @@ import {
 // This is sample data.
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  user: User | null;
+  account: Account | null;
 }
 
 export function AppSidebar({ ...props }: AppSidebarProps) {
@@ -77,7 +77,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
         <NavMain items={Activities} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={props.user} />
+        <NavUser account={props.account} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
@@ -120,11 +120,11 @@ import {
 } from "lucide-react";
 import { signOut } from "@/app/Auth/auth.actions";
 import { AddNewRecordBTN } from "@/components/Record/Record-List";
-import { User } from "@prisma/client";
+import { Account } from "@prisma/client";
 import { Activities } from "@/lib/Activities";
 import { cn } from "@/lib/utils";
 
-export function NavUser({ user }: { user: User | null }) {
+export function NavUser({ account: account }: { account: Account | null }) {
   const { isMobile } = useSidebar();
 
   return (
@@ -137,12 +137,15 @@ export function NavUser({ user }: { user: User | null }) {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8">
-                <AvatarImage src={user?.image ?? undefined} alt={user?.name} />
-                <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
+                <AvatarImage
+                  src={account?.image ?? undefined}
+                  alt={account?.name}
+                />
+                <AvatarFallback>{account?.name.charAt(0)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user?.name}</span>
-                <span className="truncate text-xs">{user?.email}</span>
+                <span className="truncate font-semibold">{account?.name}</span>
+                <span className="truncate text-xs">{account?.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -157,15 +160,17 @@ export function NavUser({ user }: { user: User | null }) {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 ">
                   <AvatarImage
-                    src={user?.image ?? undefined}
-                    alt={user?.name}
+                    src={account?.image ?? undefined}
+                    alt={account?.name}
                     covered
                   />
-                  <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
+                  <AvatarFallback>{account?.name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user?.name}</span>
-                  <span className="truncate text-xs">{user?.email}</span>
+                  <span className="truncate font-semibold">
+                    {account?.name}
+                  </span>
+                  <span className="truncate text-xs">{account?.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>

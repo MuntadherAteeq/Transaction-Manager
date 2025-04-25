@@ -3,8 +3,6 @@
 import { AgGridReact } from "ag-grid-react";
 import { useContext, useMemo, useState } from "react";
 
-import { User } from "@prisma/client";
-
 import {
   AllCommunityModule,
   ColDef,
@@ -22,15 +20,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { z } from "zod";
 
 import { createStore } from "zustand";
-
-import {
-  Drawer,
-  DrawerContent,
-  DrawerFooter,
-  DrawerTitle,
-  DrawerTrigger,
-} from "../ui/drawer";
-import SignUpForm from "./Account-Drawer";
+import { AddAccount } from "./Account-Drawer";
 
 const useAccountStore = createStore(() => ({
   accounts: [] as Account[],
@@ -50,12 +40,12 @@ const useAccountStore = createStore(() => ({
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export default function AccountTableHeader({ users }: { users: User[] }) {
+export default function AccountTableHeader({ users }: { users: Account[] }) {
   const tableTheme = useTableTheme();
 
   const isMobile = useIsMobile();
 
-  const [rowData, setRowData] = useState<User[]>(users || []);
+  const [rowData, setRowData] = useState<Account[]>(users || []);
   // Column Definitions: Defines the columns to be displayed.
 
   const colDefs: ColDef[] = [
@@ -67,7 +57,7 @@ export default function AccountTableHeader({ users }: { users: User[] }) {
       cellClass: "w-full h-full",
       lockPosition: true,
       filter: false,
-      cellRenderer: (params: { value: string; data: User }) => {
+      cellRenderer: (params: { value: string; data: Account }) => {
         return (
           <div className="flex items-center justify-center w-full h-full">
             <Avatar className="size-10">
@@ -106,7 +96,7 @@ export default function AccountTableHeader({ users }: { users: User[] }) {
       flex: isMobile ? 0 : 1,
 
       cellRenderer: (params: { value: string }) => {
-        const rules = ["Admin", "User", "Manager", "Editor"];
+        const rules = ["Admin", "User"];
         return (
           <div className="flex w-full h-full items-center justify-center gap-2 flex-wrap max-sm:overflow-y-scroll max-sm:overflow-x-hidden ">
             {rules.map((rule: string, index: number) => {
@@ -168,15 +158,7 @@ export function AccountsTableHeader(props: any) {
   return (
     <Card className="flex flex-row p-0 m-0 rounded-b-none">
       <CardContent className="w-full p-3 space-x-3">
-        <AddAccount>
-          <Button
-            variant={"ghost"}
-            className=" bg-transparent hover:bg-background  border "
-          >
-            <Plus />
-            <span className="max-sm:hidden me-2 ">New</span>
-          </Button>
-        </AddAccount>
+        <AddAccount />
         <Button
           variant={"ghost"}
           className=" bg-transparent hover:bg-background  border "
@@ -194,30 +176,5 @@ export function AccountsTableHeader(props: any) {
         </Button>
       </CardContent>
     </Card>
-  );
-}
-
-export function AddAccount(props: any) {
-  return (
-    <Drawer direction="right">
-      <form action="">
-        <DrawerTrigger asChild>{props.children}</DrawerTrigger>
-        <DrawerContent className="sm:max-w-[425px]">
-          <DrawerTitle className="flex items-center justify-between w-full p-4 text-lg font-semibold"></DrawerTitle>
-          <SignUpForm className="bg-transparent border-none" />
-          <DrawerFooter>
-            <Button
-              variant="default"
-              className="w-full bg-primary hover:bg-primary/90"
-              onClick={() => {
-                useAccountStore.setState({ selectedAccount: null });
-              }}
-            >
-              Save
-            </Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </form>
-    </Drawer>
   );
 }

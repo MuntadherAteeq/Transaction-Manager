@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient, Account } from "@prisma/client";
 import { randomUUID } from "crypto";
 import * as bcrypt from "bcrypt";
 import { z } from "zod";
@@ -20,7 +20,7 @@ const prisma = new PrismaClient();
 /**
  * Get the current user session from the cookies
  */
-export async function getUser(): Promise<User | null> {
+export async function getAccount(): Promise<Account | null> {
   const sessionToken = (await cookies()).get("session_token")?.value;
 
   if (!sessionToken) {
@@ -32,7 +32,7 @@ export async function getUser(): Promise<User | null> {
       token: sessionToken,
     },
     include: {
-      user: true,
+      account: true,
     },
   });
 
@@ -48,7 +48,7 @@ export async function getUser(): Promise<User | null> {
     return null;
   }
 
-  return session.user;
+  return session.account;
 }
 
 /**
@@ -67,20 +67,20 @@ export async function signIn(formData: z.infer<typeof SignInSchema>) {
 
   try {
     // Find the user by email
-    const user = await prisma.user.findUnique({
+    const account = await prisma.account.findUnique({
       where: {
         email,
       },
     });
 
-    if (!user) {
+    if (!account) {
       return {
         error: "Invalid email or password",
       };
     }
 
     // Verify password
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, account.password);
 
     if (!passwordMatch) {
       return {
@@ -97,7 +97,7 @@ export async function signIn(formData: z.infer<typeof SignInSchema>) {
       data: {
         token,
         expiresAt,
-        userId: user.id,
+        accountId: account.id,
       },
     });
 
@@ -133,6 +133,7 @@ export async function signUp(formData: z.infer<typeof SignUpSchema>) {
   const confirmPassword = formData.confirmPassword as string;
   const name = formData.name as string;
   const image = formData.image as string;
+  const role = formData.role as string;
 
   if (!email || !password) {
     return {
@@ -148,7 +149,7 @@ export async function signUp(formData: z.infer<typeof SignUpSchema>) {
 
   try {
     // Check if user already exists
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.account.findUnique({
       where: {
         email,
       },
@@ -165,12 +166,13 @@ export async function signUp(formData: z.infer<typeof SignUpSchema>) {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Create the user
-    const user = await prisma.user.create({
+    const account = await prisma.account.create({
       data: {
         email,
         password: hashedPassword,
         name,
         image,
+        role,
       },
     });
 
@@ -183,7 +185,7 @@ export async function signUp(formData: z.infer<typeof SignUpSchema>) {
       data: {
         token,
         expiresAt,
-        userId: user.id,
+        accountId: account.id,
       },
     });
 
@@ -227,7 +229,7 @@ export async function signOut() {
       console.error("Error deleting session:", error);
     }
   }
-  
+
   // Delete the session cookie
   (await cookies()).delete("session_token");
 
@@ -239,16 +241,9 @@ export async function signOut() {
  * Protect a route by checking if the user is authenticated
  */
 export async function requireAuth() {
-  const session = await getUser();
+  const session = await getAccount();
 
   if (!session) redirect("/Auth");
 
   return session;
-}
-
-export async function isAdmin() {
-  const user = await getUser();
-  if (!user) return false;
-  const roles = JSON.parse(user.roles);
-  return roles.includes("Admin");
 }

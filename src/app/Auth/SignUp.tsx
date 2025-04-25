@@ -24,6 +24,7 @@ export const SignUpSchema = z
     name: z.string().min(1, "Name is required"),
     email: z.string().email("Please enter a valid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
+    role: z.enum(["User", "Admin"]).default("Admin"),
     confirmPassword: z
       .string()
       .min(6, "Password must be at least 6 characters"),
@@ -147,84 +148,78 @@ export const SignUpForm = (props: any) => {
       </div>
 
       <CardContent className="pt-6">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* Name Field */}
-            <div className="grid gap-2">
-              <Label htmlFor="name">Full Name</Label>
-              <Input
-                id="name"
-                {...register("name")}
-                className={`border-1 ${
-                  errors.name ? "border-red-500" : "border-muted-foreground/50"
-                }`}
-              />
-              {errors.name && (
-                <p className="text-sm text-red-500">{errors.name.message}</p>
-              )}
-            </div>
-            {/* Email Field */}
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                {...register("email")}
-                className={`border-1 ${
-                  errors.email ? "border-red-500" : "border-muted-foreground/50"
-                }`}
-              />
-              {errors.email && (
-                <p className="text-sm text-red-500">{errors.email.message}</p>
-              )}
-            </div>
-            {/* Password Field */}
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                {...register("password")}
-                className={`border-1 ${
-                  errors.password
-                    ? "border-red-500"
-                    : "border-muted-foreground/50"
-                }`}
-              />
-              {errors.password && (
-                <p className="text-sm text-red-500">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
-            {/* Confirm Password Field */}
-            <div className="grid gap-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                {...register("confirmPassword")}
-                className={`border-1 ${
-                  errors.confirmPassword
-                    ? "border-red-500"
-                    : "border-muted-foreground/50"
-                }`}
-              />
-              {errors.confirmPassword && (
-                <p className="text-sm text-red-500">
-                  {errors.confirmPassword.message}
-                </p>
-              )}
-            </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {/* Name Field */}
+          <div className="grid gap-2">
+            <Label htmlFor="name">Full Name</Label>
+            <Input
+              id="name"
+              {...register("name")}
+              className={`border-1 ${
+                errors.name ? "border-red-500" : "border-muted-foreground/50"
+              }`}
+            />
+            {errors.name && (
+              <p className="text-sm text-red-500">{errors.name.message}</p>
+            )}
+          </div>
+          {/* Email Field */}
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              {...register("email")}
+              className={`border-1 ${
+                errors.email ? "border-red-500" : "border-muted-foreground/50"
+              }`}
+            />
+            {errors.email && (
+              <p className="text-sm text-red-500">{errors.email.message}</p>
+            )}
+          </div>
+          {/* Password Field */}
+          <div className="grid gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              {...register("password")}
+              className={`border-1 ${
+                errors.password
+                  ? "border-red-500"
+                  : "border-muted-foreground/50"
+              }`}
+            />
+            {errors.password && (
+              <p className="text-sm text-red-500">{errors.password.message}</p>
+            )}
+          </div>
+          {/* Confirm Password Field */}
+          <div className="grid gap-2">
+            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Input
+              id="confirmPassword"
+              type="password"
+              {...register("confirmPassword")}
+              className={`border-1 ${
+                errors.confirmPassword
+                  ? "border-red-500"
+                  : "border-muted-foreground/50"
+              }`}
+            />
+            {errors.confirmPassword && (
+              <p className="text-sm text-red-500">
+                {errors.confirmPassword.message}
+              </p>
+            )}
+          </div>
 
-            <Button
-              disabled={loading}
-              type="submit"
-              className="w-full font-bold"
-            >
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {!loading && "Sign Up"}
-            </Button>
-          </form>
+          <Button disabled={loading} type="submit" className="w-full font-bold">
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {!loading && "Sign Up"}
+          </Button>
+        </form>
       </CardContent>
     </Card>
   );

@@ -8,11 +8,11 @@ import { getRecords } from "./Record.actions";
 import { Inbox } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import RecordTable from "./Record-Table";
-import { getUser } from "@/app/Auth/auth.actions";
+import { getAccount } from "@/app/Auth/auth.actions";
 
 export async function RecordList(props: { Activity: string }) {
   const records = await getRecords();
-  const user = await getUser();
+  const account = await getAccount();
   return (
     <>
       <div className="top-12 bg-sidebar w-full h-12 px-1 py-2 flex gap-2 flex-row items-center border-b-1 shadow-md shadow-black/10 ">
@@ -26,7 +26,7 @@ export async function RecordList(props: { Activity: string }) {
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
         </div>
       </div>
-      {user && <RecordTable user={user} />}
+      {account && <RecordTable account={account} />}
 
       <Card className="shadow-md rounded-none h-full">
         <CardContent>

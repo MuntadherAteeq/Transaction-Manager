@@ -1,32 +1,33 @@
 "use server";
 
-import { User } from "@prisma/client";
+import { Account } from "@prisma/client";
 
-export async function getAccounts(): Promise<User[]> {
-  const users = await prisma.user.findMany({});
-  return users;
+export async function getAccounts(): Promise<Account[]> {
+  const account = await prisma.account.findMany({});
+  return account;
 }
 
-export async function getAccountByEmail(email: string): Promise<User | null> {
-  const user = await prisma.user.findUnique({
+export async function getAccountByEmail(
+  email: string
+): Promise<Account | null> {
+  const account = await prisma.account.findUnique({
     where: { email: email },
   });
-  return user;
+  return account;
 }
 
-export async function createAccount(data: User) {
-  
+export async function createAccount(data: Account) {
   const account = await getAccountByEmail(data.email);
   if (account) {
     return { error: "Account already exists" };
   }
-  const newAccount = await prisma.user.create({
+  const newAccount = await prisma.account.create({
     data: {
       name: data.name,
       email: data.email,
       image: data.image,
       password: data.password,
-      roles: JSON.stringify(data.roles),
+      role: data.role,
       createdAt: new Date(),
       updatedAt: new Date(),
     },

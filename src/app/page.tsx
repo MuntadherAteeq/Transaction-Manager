@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
-import { getUser } from "./Auth/auth.actions";
+import { getAccount } from "./Auth/auth.actions";
 import App from "./App";
 
 export default async function Page(props: any) {
-  const user = await getUser();
-  if (!user) redirect("/Auth");
+  const account = await getAccount();
+  if (!account) redirect("/Auth");
 
-  return <App user={user}>{props.children}</App>;
+  return <App account={account}>{props.children}</App>;
 }

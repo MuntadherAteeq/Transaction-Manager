@@ -39,7 +39,7 @@ export default async function RootLayout(props: any) {
         >
           <SplashScreen>{props.children}</SplashScreen>
         </ThemeProvider>
-        <Toaster />
+        <Toaster position="bottom-center" />
       </body>
     </html>
   );

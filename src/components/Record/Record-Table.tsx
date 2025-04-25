@@ -3,7 +3,7 @@
 import { AgGridReact } from "ag-grid-react";
 import { useState } from "react";
 
-import { User } from "@prisma/client";
+import { Account } from "@prisma/client";
 
 import { AllCommunityModule, ColDef, ModuleRegistry } from "ag-grid-community";
 import { ClientSideRowModelModule } from "ag-grid-community"; // Import the missing module
@@ -13,15 +13,15 @@ import { useTableTheme } from "@/hooks/use-TableTheme";
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 
-export default function RecordTable({ user }: { user: User }) {
+export default function RecordTable({ account }: { account: Account }) {
   const tableTheme = useTableTheme();
 
-  const [rowData, setRowData] = useState<User[]>([
+  const [rowData, setRowData] = useState<Account[]>([
     {
       id: "1",
       name: "Tesla",
       email: "ex@gfdg.community",
-      rules: "Admin",
+      role: "Admin",
       createdAt: new Date(),
       updatedAt: new Date(),
       image: "https://github.com/shadcn.png",
@@ -31,7 +31,7 @@ export default function RecordTable({ user }: { user: User }) {
       id: "2",
       name: "Tesla",
       email: "ex@gfdg.community",
-      rules: "Admin",
+      role: "Admin",
       createdAt: new Date(),
       updatedAt: new Date(),
       image: "https://github.com/shadcn.png",
