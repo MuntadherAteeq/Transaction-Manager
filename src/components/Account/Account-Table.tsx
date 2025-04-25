@@ -1,7 +1,7 @@
 "use client";
 
 import { AgGridReact } from "ag-grid-react";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 
 import { User } from "@prisma/client";
 
@@ -13,13 +13,39 @@ import {
 } from "ag-grid-community";
 import { useTableTheme } from "@/hooks/use-TableTheme";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash, User2 } from "lucide-react";
+import { Edit, MoreHorizontal, Plus, Trash, User2 } from "lucide-react";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { z } from "zod";
+
+import { createStore } from "zustand";
+
+import {
+  Drawer,
+  DrawerContent,
+  DrawerFooter,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../ui/drawer";
+import SignUpForm from "./Account-Drawer";
+
+const useAccountStore = createStore(() => ({
+  accounts: [] as Account[],
+  setAccounts: (accounts: Account[]) => ({ accounts }),
+  selectedAccount: null as Account | null,
+  setSelectedAccount: (account: Account | null) => ({
+    selectedAccount: account,
+  }),
+  addAccount: (account: Account) => (state: any) => {
+    state.setAccounts([...state.accounts, account]);
+  },
+  removeAccount: (account: Account) => (state: any) => {
+    state.setAccounts(state.accounts.filter((a: Account) => a !== account));
+  },
+}));
 
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -60,7 +86,6 @@ export default function AccountTableHeader({ users }: { users: User[] }) {
       field: "name",
       sortable: true,
       cellClass: "flex items-center justify-center pt-1",
-      editable: true,
       lockPosition: true,
       filter: true,
       flex: isMobile ? 0 : 1,
@@ -106,7 +131,7 @@ export default function AccountTableHeader({ users }: { users: User[] }) {
     RowSelectionOptions | "single" | "multiple"
   >(() => {
     return {
-      mode: "multiRow",
+      mode: "singleRow",
     };
   }, []);
 
@@ -140,17 +165,24 @@ const account = z.object({
 interface Account extends z.infer<typeof account> {}
 
 export function AccountsTableHeader(props: any) {
-  const [inProgress, setInProgress] = useState(false);
-
   return (
     <Card className="flex flex-row p-0 m-0 rounded-b-none">
       <CardContent className="w-full p-3 space-x-3">
+        <AddAccount>
+          <Button
+            variant={"ghost"}
+            className=" bg-transparent hover:bg-background  border "
+          >
+            <Plus />
+            <span className="max-sm:hidden me-2 ">New</span>
+          </Button>
+        </AddAccount>
         <Button
           variant={"ghost"}
           className=" bg-transparent hover:bg-background  border "
         >
-          <Plus />
-          <span className="max-sm:hidden me-2 ">New</span>
+          <Edit />
+          <span className="max-sm:hidden me-2 ">Edit</span>
         </Button>
 
         <Button
@@ -158,9 +190,34 @@ export function AccountsTableHeader(props: any) {
           className=" bg-transparent hover:bg-background hover:text-destructive-foreground border"
         >
           <Trash />
-          <span className="max-sm:hidden me-2">Delete</span>
+          <span className="max-sm:hidden me-2 ">Delete</span>
         </Button>
       </CardContent>
     </Card>
+  );
+}
+
+export function AddAccount(props: any) {
+  return (
+    <Drawer direction="right">
+      <form action="">
+        <DrawerTrigger asChild>{props.children}</DrawerTrigger>
+        <DrawerContent className="sm:max-w-[425px]">
+          <DrawerTitle className="flex items-center justify-between w-full p-4 text-lg font-semibold"></DrawerTitle>
+          <SignUpForm className="bg-transparent border-none" />
+          <DrawerFooter>
+            <Button
+              variant="default"
+              className="w-full bg-primary hover:bg-primary/90"
+              onClick={() => {
+                useAccountStore.setState({ selectedAccount: null });
+              }}
+            >
+              Save
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </form>
+    </Drawer>
   );
 }
