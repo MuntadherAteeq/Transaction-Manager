@@ -241,10 +241,7 @@ export function NavMain({
                 isActive={isActive(url)}
                 tooltip={title}
                 size={"lg"}
-                className="flex items-center "
               >
-                {/* icon is lucide-react icons  */}
-
                 <i
                   className={cn(
                     "size-7 shrink-0",

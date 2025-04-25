@@ -146,7 +146,7 @@ export function AccountsTableHeader(props: any) {
     <Card className="flex flex-row p-0 m-0 rounded-b-none">
       <CardContent className="w-full p-3 space-x-3">
         <Button
-          variant={"default"}
+          variant={"ghost"}
           className=" bg-transparent hover:bg-background  border "
         >
           <Plus />

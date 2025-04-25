@@ -20,19 +20,6 @@ datasource db {
 //   directUrl = env("DIRECT_URL")
 // }
 
-model Admin {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  password  String
-  name      String
-  image     String?
-  createdAt DateTime?
-  updatedAt DateTime?
-  Session   Session[]
-
-  @@map("admin")
-}
-
 model User {
   id        String    @id @default(uuid())
   email     String    @unique
@@ -55,7 +42,6 @@ model Session {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   createdAt DateTime @default(now())
-  Admin     Admin?   @relation(fields: [adminId], references: [id])
   adminId   String?
 
   @@index([userId])
@@ -93,4 +79,45 @@ model Transaction {
   date        DateTime @default(now())
   qty         Int      @default(1)
   table       Table    @relation(fields: [tableId], references: [id])
+}
+
+model JobCard {
+  id                 Int      @id @default(autoincrement())
+  date               DateTime
+  km                 Int
+  driverOperator     String
+  siteCodeOrDept     String
+  problemDescription String
+  oilSpareParts      String?
+  parts              Part[]
+  totalAmount        Float
+  nextServiceDate    DateTime
+  nextServiceKm      Int
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  // Foreign key relationship to Vehicle
+  vehicleId Int
+
+  @@index([vehicleId])
+  @@index([date])
+}
+
+model Part {
+  id          Int      @id @default(autoincrement())
+  partCode    String
+  description String
+  quantity    Int
+  rate        Float
+  amount      Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Foreign key relationship to VehicleService
+   serviceId Int
+  JobCard   JobCard? @relation(fields: [jobCardId], references: [id])
+  jobCardId Int?
+
+  @@index([serviceId])
+  @@index([partCode])
 }
