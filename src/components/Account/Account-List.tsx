@@ -3,13 +3,13 @@ import { Plus, Search } from "lucide-react";
 
 import { getAccounts } from "./accounts.actions";
 import { CreateRecordDialog, RecordListItem } from "../Record/Records";
-import AccountTableHeader from "./Account-Table";
+import AccountTable from "./Account-Table";
 
 export async function AccountList(props: { Activity: string }) {
-  const users = await getAccounts();
+  const accounts = await getAccounts();
   return (
     <div className="w-full h-full p-2">
-      <AccountTableHeader users={users} />
+      <AccountTable accounts={accounts} />
     </div>
   );
 }

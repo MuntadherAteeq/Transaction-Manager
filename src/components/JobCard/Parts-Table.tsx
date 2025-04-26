@@ -3,11 +3,10 @@
 import { AgGridReact } from "ag-grid-react";
 import { useState } from "react";
 
-import { Account, Part } from "@prisma/client";
+import { Part } from "@prisma/client";
 
 import { AllCommunityModule, ColDef, ModuleRegistry } from "ag-grid-community";
 import { ClientSideRowModelModule } from "ag-grid-community"; // Import the missing module
-import Image from "next/image";
 import { useTableTheme } from "@/hooks/use-TableTheme";
 
 // Register the required modules
@@ -87,18 +86,76 @@ export default function PartTable() {
       headerName: "Part Code",
       sortable: true,
       filter: true,
+      editable: true,
     },
 
-    { flex: 3, field: "description", sortable: true, filter: true },
-
-    { flex: 1, field: "qty", sortable: true, filter: true },
-    { flex: 1, field: "rate", sortable: true, filter: true },
     {
-      flex: 1,
-      field: "amount",
+      flex: 3,
+      field: "description",
       sortable: true,
       filter: true,
-      resizable: false,
+      editable: true,
+    },
+    // Quantity column
+    {
+      flex: 1,
+      field: "qty",
+      sortable: true,
+      filter: true,
+      editable: true,
+      valueGetter: (params: { data: { qty: number } }) => {
+        return params.data?.qty ? params.data.qty : undefined;
+      },
+      valueSetter: (params: { data: { qty: number }; newValue: number }) => {
+        if (params.data) {
+          params.data.qty = Number(params.newValue);
+          return true;
+        }
+        return false;
+      },
+      onCellValueChanged: (params: { data: { amount: number } }) => {
+        console.log("Value changed", params.data.amount);
+      },
+    },
+    // Rate column
+    {
+      flex: 1,
+      field: "rate",
+      sortable: true,
+      filter: true,
+      editable: true,
+      valueGetter: (params: { data: { amount: number } }) => {
+        return params.data?.amount ? params.data.amount / 1000 : undefined;
+      },
+      valueSetter: (params: { data: { amount: number }; newValue: number }) => {
+        if (params.data) {
+          params.data.amount = Number((params.newValue * 1000).toFixed(0));
+          return true;
+        }
+        return false;
+      },
+      onCellValueChanged: (params: { data: { amount: number } }) => {
+        console.log("Value changed", params.data.amount);
+      },
+    },
+    // amount column
+    {
+      field: "amount",
+      valueGetter: (params: { data: { amount: number; qty: number } }) => {
+        if (params.data?.amount && params.data?.qty) {
+          return `${((params.data.amount / 1000) * params.data.qty).toFixed(
+            3
+          )} BD`;
+        }
+        return "0.000 BD";
+      },
+      valueSetter: (params: { data: { amount: number }; newValue: number }) => {
+        if (params.data) {
+          params.data.amount = Number((params.newValue * 1000).toFixed(0));
+          return true;
+        }
+        return false;
+      },
     },
   ]);
 

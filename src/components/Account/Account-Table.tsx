@@ -1,7 +1,7 @@
 "use client";
 
 import { AgGridReact } from "ag-grid-react";
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   AllCommunityModule,
@@ -19,33 +19,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { z } from "zod";
 
-import { createStore } from "zustand";
 import { AddAccount } from "./Account-Drawer";
-
-const useAccountStore = createStore(() => ({
-  accounts: [] as Account[],
-  setAccounts: (accounts: Account[]) => ({ accounts }),
-  selectedAccount: null as Account | null,
-  setSelectedAccount: (account: Account | null) => ({
-    selectedAccount: account,
-  }),
-  addAccount: (account: Account) => (state: any) => {
-    state.setAccounts([...state.accounts, account]);
-  },
-  removeAccount: (account: Account) => (state: any) => {
-    state.setAccounts(state.accounts.filter((a: Account) => a !== account));
-  },
-}));
+import { Account } from "@prisma/client";
 
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export default function AccountTableHeader({ users }: { users: Account[] }) {
+export default function AccountTable({ accounts }: { accounts: Account[] }) {
   const tableTheme = useTableTheme();
 
   const isMobile = useIsMobile();
 
-  const [rowData, setRowData] = useState<Account[]>(users || []);
+  const [rowData, setRowData] = useState<Account[]>(accounts || []);
   // Column Definitions: Defines the columns to be displayed.
 
   const colDefs: ColDef[] = [
@@ -151,8 +136,6 @@ const account = z.object({
   password: z.string().min(6, { message: "Password is required" }),
   roles: z.array(z.string()).min(1, { message: "Role is required" }),
 });
-
-interface Account extends z.infer<typeof account> {}
 
 export function AccountsTableHeader(props: any) {
   return (

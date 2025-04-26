@@ -10,7 +10,11 @@ export function useTableTheme() {
     headerBackgroundColor: "#2b2b2b",
     oddRowBackgroundColor: "#131313",
     headerColumnResizeHandleColor: "#a1a1aa",
-    wrapperBorderRadius: "0px 0px 15px 15px",
+    wrapperBorderRadius: "0px",
+    columnBorder: {
+      color: "#2b2b2b",
+      width: "1px",
+    },
   });
 
   const light = themeQuartz.withParams({
@@ -20,7 +24,12 @@ export function useTableTheme() {
     headerBackgroundColor: "#f0f0f0",
     oddRowBackgroundColor: "#f9f9f9",
     headerColumnResizeHandleColor: "#000000",
-    wrapperBorderRadius: "0px 0px 15px 15px",
+    wrapperBorderRadius: "0px",
+    columnBorder: {
+      color: "#f0f0f0",
+
+      width: "1px",
+    },
   });
 
   const tableTheme = theme.resolvedTheme === "dark" ? dark : light;

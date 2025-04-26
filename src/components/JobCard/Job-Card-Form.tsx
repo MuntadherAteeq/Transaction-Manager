@@ -182,7 +182,7 @@ export function JobCardForm() {
               name="department"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Department</FormLabel>
+                  <FormLabel>Site / Department</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -216,7 +216,7 @@ export function JobCardForm() {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="h-full w-full bg-card" >
+                      <SelectTrigger className="h-full w-full bg-card">
                         <SelectValue placeholder="Select service type" />
                       </SelectTrigger>
                     </FormControl>
@@ -265,7 +265,7 @@ export function JobCardForm() {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Problem Description</FormLabel>
                     <FormControl>
                       <Textarea rows={3} {...field} className="bg-card" />
                     </FormControl>
