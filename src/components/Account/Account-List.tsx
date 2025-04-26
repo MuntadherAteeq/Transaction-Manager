@@ -8,7 +8,7 @@ import AccountTable from "./Account-Table";
 export async function AccountList(props: { Activity: string }) {
   const accounts = await getAccounts();
   return (
-    <div className="w-full h-full p-2">
+    <div className="w-full h-full">
       <AccountTable accounts={accounts} />
     </div>
   );

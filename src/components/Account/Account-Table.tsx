@@ -139,7 +139,7 @@ const account = z.object({
 
 export function AccountsTableHeader(props: any) {
   return (
-    <Card className="flex flex-row p-0 m-0 rounded-b-none">
+    <Card className="flex flex-row p-0 m-0 rounded-none">
       <CardContent className="w-full p-3 space-x-3">
         <AddAccount />
         <Button
