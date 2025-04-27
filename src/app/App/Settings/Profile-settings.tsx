@@ -23,10 +23,7 @@ export function ProfileSettings() {
         <CardContent className="space-y-6">
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
             <Avatar className="h-16 w-16">
-              <AvatarImage
-                src="/placeholder.svg?height=64&width=64"
-                alt="Profile"
-              />
+              <AvatarImage alt="Profile" />
               <AvatarFallback>JD</AvatarFallback>
             </Avatar>
             <Button variant="outline">Change avatar</Button>

@@ -43,9 +43,9 @@ export default function SettingsPage(props: any) {
 
   return (
     <div className="container mx-auto p-8  h-full">
-      <h1 className="text-3xl font-bold mb-8">Settings</h1>
       <div className="flex flex-col md:flex-row gap-8 ">
         <div className="md:w-64 flex-shrink-0 ">
+          <h1 className="text-3xl font-bold mb-8">Settings</h1>
           <nav className="space-y-1">
             {settingsNavItems.map((item) => {
               const isActive = pathname === item.href;

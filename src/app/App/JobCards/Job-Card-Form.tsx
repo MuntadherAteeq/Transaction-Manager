@@ -188,195 +188,36 @@ export function JobCardForm(props: { editable?: boolean }) {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date</FormLabel>
-                  <FormControl>
-                    <Input readOnly={!editable} type="date" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="km"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Kilometer Reading</FormLabel>
-                  <FormControl>
-                    <Input
-                      readOnly={!editable}
-                      type="number"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        form.clearErrors("km");
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="operator"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Operator</FormLabel>
-                  <FormControl>
-                    <Input
-                      readOnly={!editable}
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        form.clearErrors("operator");
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="department"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Site / Department</FormLabel>
-                  <FormControl>
-                    <Input
-                      readOnly={!editable}
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        form.clearErrors("department");
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="vehicleId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Vehicle ID</FormLabel>
-                  <FormControl>
-                    <Input
-                      readOnly={!editable}
-                      type="number"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        form.clearErrors("vehicleId");
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Service Type</FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                      form.clearErrors("type");
-                    }}
-                    defaultValue={field.value}
-                    disabled={!editable}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="h-full w-full bg-card">
-                        <SelectValue placeholder="Select service type" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="regular">Regular</SelectItem>
-                      <SelectItem value="emergency">Emergency</SelectItem>
-                      <SelectItem value="scheduled">Scheduled</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage className="h-5" />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="nextServiceDate"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Next Service Date</FormLabel>
-                  <FormControl>
-                    <Input
-                      readOnly={!editable}
-                      type="date"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        form.clearErrors("nextServiceDate");
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="nextServiceKm"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Next Service KM</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        form.clearErrors("nextServiceKm");
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="md:col-span-2">
+          <Card>
+            <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <FormField
                 control={form.control}
-                name="description"
+                name="date"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Problem Description</FormLabel>
+                    <FormLabel>Date</FormLabel>
                     <FormControl>
-                      <Textarea
-                        rows={3}
+                      <Input readOnly={!editable} type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="km"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Kilometer Reading</FormLabel>
+                    <FormControl>
+                      <Input
+                        readOnly={!editable}
+                        type="number"
                         {...field}
-                        className="bg-card"
                         onChange={(e) => {
                           field.onChange(e);
-                          form.clearErrors("description");
+                          form.clearErrors("km");
                         }}
                       />
                     </FormControl>
@@ -384,8 +225,168 @@ export function JobCardForm(props: { editable?: boolean }) {
                   </FormItem>
                 )}
               />
-            </div>
-          </div>
+
+              <FormField
+                control={form.control}
+                name="operator"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Operator</FormLabel>
+                    <FormControl>
+                      <Input
+                        readOnly={!editable}
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          form.clearErrors("operator");
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="department"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Site / Department</FormLabel>
+                    <FormControl>
+                      <Input
+                        readOnly={!editable}
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          form.clearErrors("department");
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="vehicleId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Vehicle ID</FormLabel>
+                    <FormControl>
+                      <Input
+                        readOnly={!editable}
+                        type="number"
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          form.clearErrors("vehicleId");
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Service Type</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        form.clearErrors("type");
+                      }}
+                      defaultValue={field.value}
+                      disabled={!editable}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="h-full w-full ">
+                          <SelectValue placeholder="Select service type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="regular">Regular</SelectItem>
+                        <SelectItem value="emergency">Emergency</SelectItem>
+                        <SelectItem value="scheduled">Scheduled</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="h-5" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="nextServiceDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Next Service Date</FormLabel>
+                    <FormControl>
+                      <Input
+                        readOnly={!editable}
+                        type="date"
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          form.clearErrors("nextServiceDate");
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="nextServiceKm"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Next Service KM</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          form.clearErrors("nextServiceKm");
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="md:col-span-2">
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Problem Description</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          rows={3}
+                          {...field}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            form.clearErrors("description");
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </CardContent>
+          </Card>
         </CardContent>
         <PartsTable />
       </form>
