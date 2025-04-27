@@ -139,7 +139,6 @@ export function JobCardForm(props: { editable?: boolean }) {
       };
 
       // Here you would typically send the data to your API
-      console.log("Submitting job card:", jobCardData);
 
       // Show success message
       toast("Job Card Created", {

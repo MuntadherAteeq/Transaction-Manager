@@ -51,10 +51,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Progress } from "@/components/ui/progress";
-import { SalesChart } from "@/components/Dashboard/Sales-Chart";
-import { InventoryChart } from "@/components/Dashboard/Inventory-Chart";
+import { SalesChart } from "./Sales-Chart";
+import { InventoryChart } from "./Inventory-Chart";
 
-export function Dashboard() {
+export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [searchQuery, setSearchQuery] = useState("");
   const [timeRange, setTimeRange] = useState("7d");

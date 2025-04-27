@@ -37,7 +37,7 @@ export default async function RootLayout(props: any) {
           enableSystem={true}
           storageKey={"theme"}
         >
-          <SplashScreen>{props.children}</SplashScreen>
+          {props.children}
         </ThemeProvider>
         <Toaster position="bottom-center" />
       </body>

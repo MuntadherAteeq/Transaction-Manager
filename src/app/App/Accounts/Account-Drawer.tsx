@@ -23,15 +23,15 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 import {
   Drawer,
   DrawerContent,
   DrawerFooter,
   DrawerTitle,
   DrawerTrigger,
-} from "../ui/drawer";
-import { Label } from "../ui/label";
+} from "@/components/ui/drawer";
+import { Label } from "@/components/ui/label";
 import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
 

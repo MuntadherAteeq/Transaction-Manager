@@ -7,7 +7,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { NavPath } from "@/components/Nav-Path";
 import Link from "next/link";
 import { ThemeSwitcher } from "@/components/Theme-Provider";
@@ -74,7 +74,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
         <TeamSwitcher />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={Activities} />
+        <NavMain />
       </SidebarContent>
       <SidebarFooter>
         <NavUser account={props.account} />
@@ -216,34 +216,20 @@ export function NavUser({ account: account }: { account: Account | null }) {
   );
 }
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string;
-    url: string;
-    icon?: string;
-    isActive?: boolean;
-    items?: {
-      title: string;
-      url: string;
-    }[];
-  }[];
-}) {
-  // const [isOpen, setOpen] = useAtom(open);
+export function NavMain() {
+  const path = usePathname();
   const isActive = (Activity: string) => {
-    const currentActivity = useParams().Activity;
-    return currentActivity === Activity.substring(1);
+    return path.split("/")[2] === Activity;
   };
   return (
     <SidebarGroup>
       <SidebarMenuButton disabled></SidebarMenuButton>
       <SidebarMenu>
-        {items.map(({ title, url, icon }) => (
+        {Activities.map(({ title, url, icon }) => (
           <SidebarMenuItem key={title}>
             <Link href={url} className="flex justify-center items-center">
               <SidebarMenuButton
-                isActive={isActive(url)}
+                isActive={isActive(title)}
                 tooltip={title}
                 size={"lg"}
               >
@@ -251,11 +237,13 @@ export function NavMain({
                   className={cn(
                     "size-7 shrink-0",
                     icon,
-                    !isActive(url) && "text-muted-foreground"
+                    !isActive(title) && "text-muted-foreground"
                   )}
                 />
 
-                <span className={cn(!isActive(url) && "text-muted-foreground")}>
+                <span
+                  className={cn(!isActive(title) && "text-muted-foreground")}
+                >
                   {title}
                 </span>
               </SidebarMenuButton>

@@ -13,38 +13,23 @@ import { Button } from "./ui/button";
 
 export const NavPath: React.FC = () => {
   const pathname = usePathname();
-  const pathSegments = pathname?.split("/").filter(Boolean) || []; // Handle undefined pathname
+  const activity = pathname?.split("/")[2] || [];
   const router = useRouter();
   return (
     <Breadcrumb>
       <BreadcrumbList className="flex-nowrap">
-        {pathSegments.map((segment, index) => {
-          const isLast = index === pathSegments.length - 1;
-
-          return (
-            <React.Fragment key={index}>
-              {index === 1 ? (
-                <NavRecordItem title={"Untitled Record"} />
-              ) : (
-                <Button variant="ghost" className=" h-full p-1 px-2">
-                  <BreadcrumbItem>
-                    <BreadcrumbLink
-                      onClick={() => {
-                        router.push(
-                          `/${pathSegments.slice(0, index + 1).join("/")}`
-                        );
-                      }}
-                      className="text-lg"
-                    >
-                      {segment}
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                </Button>
-              )}
-              {!isLast && <BreadcrumbSeparator />}
-            </React.Fragment>
-          );
-        })}
+        <React.Fragment>
+          <Button variant="ghost" className=" h-full p-1 px-2">
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                onClick={() => {
+                  router.push(`/App/${activity}`);
+                }}
+                className="text-lg"
+              ></BreadcrumbLink>
+            </BreadcrumbItem>
+          </Button>
+        </React.Fragment>
       </BreadcrumbList>
     </Breadcrumb>
   );

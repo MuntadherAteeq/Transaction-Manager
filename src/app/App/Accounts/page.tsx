@@ -1,7 +1,7 @@
 "use client";
 
 import { AgGridReact } from "ag-grid-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   AllCommunityModule,
@@ -11,9 +11,8 @@ import {
 } from "ag-grid-community";
 import { useTableTheme } from "@/hooks/use-TableTheme";
 import { Badge } from "@/components/ui/badge";
-import { Edit, MoreHorizontal, Plus, Trash, User2 } from "lucide-react";
+import { Edit, Trash, User2 } from "lucide-react";
 import { AvatarImage } from "@radix-ui/react-avatar";
-import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,16 +20,17 @@ import { z } from "zod";
 
 import { AddAccount } from "./Account-Drawer";
 import { Account } from "@prisma/client";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export default function AccountTable({ accounts }: { accounts: Account[] }) {
+export default function AccountTable() {
   const tableTheme = useTableTheme();
 
   const isMobile = useIsMobile();
 
-  const [rowData, setRowData] = useState<Account[]>(accounts || []);
+  const [rowData, setRowData] = useState<Account[]>();
   // Column Definitions: Defines the columns to be displayed.
 
   const colDefs: ColDef[] = [
