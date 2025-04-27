@@ -9,7 +9,7 @@ export default async function Activity_Layout(props: any) {
   if (!account) redirect("/Auth");
   return (
     <SplashScreen>
-      <App account={account}>{props.children}</App>;
+      <App account={account}>{props.children}</App>
     </SplashScreen>
   );
 }

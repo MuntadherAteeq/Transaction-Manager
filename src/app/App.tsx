@@ -219,13 +219,12 @@ export function NavUser({ account: account }: { account: Account | null }) {
 export function NavMain() {
   const path = usePathname();
   const isActive = (Activity: string) => {
-    // return concat of the two elements in the path
     const url = path.split("/").slice(0, 3).join("/");
     return url === Activity;
   };
   return (
     <SidebarGroup>
-      <SidebarMenuButton disabled></SidebarMenuButton>
+      {/* <SidebarMenuButton disabled></SidebarMenuButton> */}
       <SidebarMenu>
         {Activities.map(({ title, url, icon }) => (
           <SidebarMenuItem key={title}>
