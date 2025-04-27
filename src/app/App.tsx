@@ -219,7 +219,9 @@ export function NavUser({ account: account }: { account: Account | null }) {
 export function NavMain() {
   const path = usePathname();
   const isActive = (Activity: string) => {
-    return path.split("/")[2] === Activity;
+    // return concat of the two elements in the path
+    const url = path.split("/").slice(0, 3).join("/");
+    return url === Activity;
   };
   return (
     <SidebarGroup>
@@ -229,7 +231,7 @@ export function NavMain() {
           <SidebarMenuItem key={title}>
             <Link href={url} className="flex justify-center items-center">
               <SidebarMenuButton
-                isActive={isActive(title)}
+                isActive={isActive(url)}
                 tooltip={title}
                 size={"lg"}
               >
@@ -237,13 +239,11 @@ export function NavMain() {
                   className={cn(
                     "size-7 shrink-0",
                     icon,
-                    !isActive(title) && "text-muted-foreground"
+                    !isActive(url) && "text-muted-foreground"
                   )}
                 />
 
-                <span
-                  className={cn(!isActive(title) && "text-muted-foreground")}
-                >
+                <span className={cn(!isActive(url) && "text-muted-foreground")}>
                   {title}
                 </span>
               </SidebarMenuButton>
