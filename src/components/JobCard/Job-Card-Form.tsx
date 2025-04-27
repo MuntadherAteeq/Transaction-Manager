@@ -1,10 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,8 +37,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import PartsTable from "./Parts-Table";
-import { SendHorizonal } from "lucide-react";
-
+import { File, SendHorizonal } from "lucide-react";
+import Link from "next/link";
 // Define the schema for the form
 const formSchema = z.object({
   date: z.string().min(1, { message: "Date is required" }),
@@ -63,10 +73,16 @@ export type Part = {
   amount: number;
 };
 
-export function JobCardForm() {
+export function JobCardForm(props: { editable?: boolean }) {
+  const [editable, setEditable] = useState(props.editable ?? false);
   const router = useRouter();
   const [parts, setParts] = useState<Part[]>([]);
   const [totalAmount, setTotalAmount] = useState(0);
+
+  // ![TODO] - Delete this useEffect when the form is ready
+  useEffect(() => {
+    setEditable(true);
+  }, []);
 
   // Initialize the form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -142,22 +158,27 @@ export function JobCardForm() {
               </h2>
             </div>
             <div>
-              <Button
-                type="submit"
-                className="mb-4 flex items-center justify-center"
-                variant="default"
-                onClick={() => {
-                  form.trigger();
-                  if (form.formState.isValid) {
-                    toast("Form is valid");
-                  } else {
-                    toast.error("Form is invalid");
-                  }
-                }}
-              >
-                <span>Submit</span>
-                <SendHorizonal className="ml-2 " />
-              </Button>
+              {editable ? (
+                <AreYouSureDialog onSubmit={() => onSubmit(form.getValues())}>
+                  <Button
+                    className="mb-4 flex items-center justify-center"
+                    variant="default"
+                  >
+                    <span>Submit</span>
+                    <SendHorizonal className="ml-2 " />
+                  </Button>
+                </AreYouSureDialog>
+              ) : (
+                <Link href="/jobCards/invoice">
+                  <Button
+                    variant="default"
+                    className="mb-4 flex items-center justify-center"
+                  >
+                    <span>Invoice</span>
+                    <File className="ml-2 " />
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
 
@@ -169,7 +190,7 @@ export function JobCardForm() {
                 <FormItem>
                   <FormLabel>Date</FormLabel>
                   <FormControl>
-                    <Input type="date" {...field} />
+                    <Input readOnly={!editable} type="date" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -183,7 +204,7 @@ export function JobCardForm() {
                 <FormItem>
                   <FormLabel>Kilometer Reading</FormLabel>
                   <FormControl>
-                    <Input type="number" {...field} />
+                    <Input readOnly={!editable} type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -197,7 +218,7 @@ export function JobCardForm() {
                 <FormItem>
                   <FormLabel>Operator</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input readOnly={!editable} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -211,7 +232,7 @@ export function JobCardForm() {
                 <FormItem>
                   <FormLabel>Site / Department</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input readOnly={!editable} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -225,7 +246,7 @@ export function JobCardForm() {
                 <FormItem>
                   <FormLabel>Vehicle ID</FormLabel>
                   <FormControl>
-                    <Input type="number" {...field} />
+                    <Input readOnly={!editable} type="number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -241,6 +262,7 @@ export function JobCardForm() {
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    disabled={!editable}
                   >
                     <FormControl>
                       <SelectTrigger className="h-full w-full bg-card">
@@ -265,7 +287,7 @@ export function JobCardForm() {
                 <FormItem>
                   <FormLabel>Next Service Date</FormLabel>
                   <FormControl>
-                    <Input type="date" {...field} />
+                    <Input readOnly={!editable} type="date" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -306,5 +328,41 @@ export function JobCardForm() {
         <PartsTable />
       </form>
     </Form>
+  );
+}
+
+export function AreYouSureDialog(props: {
+  onSubmit: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+      <Dialog>
+        <DialogTrigger asChild>{props.children}</DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Are you sure?</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to submit this form? This action cannot be
+              undone.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end space-x-2">
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button
+              variant="default"
+              type="submit"
+              onClick={() => {
+                props.onSubmit();
+              }}
+            >
+              Submit
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
