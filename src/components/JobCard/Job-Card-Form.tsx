@@ -134,6 +134,7 @@ export function JobCardForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <CardContent className="pt-6">
+          <h2 className="text-4xl font-bold tracking-tight mb-4">No: 0001</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <FormField
               control={form.control}

@@ -130,11 +130,11 @@ export default function AccountTable({ accounts }: { accounts: Account[] }) {
 }
 
 const account = z.object({
+  image: z.string().optional(),
   name: z.string().min(1, { message: "Name is required" }),
   email: z.string().email({ message: "Email is required" }),
-  image: z.string().optional(),
   password: z.string().min(6, { message: "Password is required" }),
-  roles: z.array(z.string()).min(1, { message: "Role is required" }),
+  role: z.array(z.string()).min(1, { message: "Role is required" }),
 });
 
 export function AccountsTableHeader(props: any) {
