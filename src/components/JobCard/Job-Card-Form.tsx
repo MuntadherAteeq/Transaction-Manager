@@ -27,6 +27,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import PartsTable from "./Parts-Table";
+import { SendHorizonal } from "lucide-react";
 
 // Define the schema for the form
 const formSchema = z.object({
@@ -38,7 +39,7 @@ const formSchema = z.object({
   operator: z.string().min(1, { message: "Operator name is required" }),
   department: z.string().min(1, { message: "Department is required" }),
   description: z.string().min(1, { message: "Description is required" }),
-  type: z.string().optional(),
+  type: z.string().min(1, { message: "Service type is required" }),
   vehicleId: z
     .string()
     .min(1, { message: "Vehicle ID is required" })
@@ -120,7 +121,7 @@ export function JobCardForm() {
       });
 
       // Redirect to job cards list
-      router.push("/job-cards");
+      router.push("/jobCards");
     } catch (error) {
       console.error("Error submitting job card:", error);
       toast.error("Error", {
@@ -134,7 +135,32 @@ export function JobCardForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <CardContent className="pt-6">
-          <h2 className="text-4xl font-bold tracking-tight mb-4">No: 0001</h2>
+          <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+            <div>
+              <h2 className="text-4xl font-bold tracking-tight mb-4">
+                No: 0001
+              </h2>
+            </div>
+            <div>
+              <Button
+                type="submit"
+                className="mb-4 flex items-center justify-center"
+                variant="default"
+                onClick={() => {
+                  form.trigger();
+                  if (form.formState.isValid) {
+                    toast("Form is valid");
+                  } else {
+                    toast.error("Form is invalid");
+                  }
+                }}
+              >
+                <span>Submit</span>
+                <SendHorizonal className="ml-2 " />
+              </Button>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <FormField
               control={form.control}
@@ -227,7 +253,7 @@ export function JobCardForm() {
                       <SelectItem value="scheduled">Scheduled</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage />
+                  <FormMessage className="h-5" />
                 </FormItem>
               )}
             />
