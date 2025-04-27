@@ -115,6 +115,16 @@ export function JobCardForm(props: { editable?: boolean }) {
   // Handle form submission
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      // Validate the form
+      const isValid = await form.trigger();
+      if (!isValid) {
+        toast.error("Error", {
+          description: "Please fill in all required fields.",
+        });
+
+        return;
+      }
+
       // Prepare the data for submission
       const jobCardData = {
         ...values,
@@ -137,7 +147,7 @@ export function JobCardForm(props: { editable?: boolean }) {
       });
 
       // Redirect to job cards list
-      router.push("/jobCards");
+      setEditable(false);
     } catch (error) {
       console.error("Error submitting job card:", error);
       toast.error("Error", {
@@ -160,10 +170,7 @@ export function JobCardForm(props: { editable?: boolean }) {
             <div>
               {editable ? (
                 <AreYouSureDialog onSubmit={() => onSubmit(form.getValues())}>
-                  <Button
-                    className="mb-4 flex items-center justify-center"
-                    variant="default"
-                  >
+                  <Button className="mb-4 flex items-center justify-center">
                     <span>Submit</span>
                     <SendHorizonal className="ml-2 " />
                   </Button>
@@ -171,7 +178,7 @@ export function JobCardForm(props: { editable?: boolean }) {
               ) : (
                 <Link href="/jobCards/invoice">
                   <Button
-                    variant="default"
+                    variant="success"
                     className="mb-4 flex items-center justify-center"
                   >
                     <span>Invoice</span>
@@ -204,7 +211,15 @@ export function JobCardForm(props: { editable?: boolean }) {
                 <FormItem>
                   <FormLabel>Kilometer Reading</FormLabel>
                   <FormControl>
-                    <Input readOnly={!editable} type="number" {...field} />
+                    <Input
+                      readOnly={!editable}
+                      type="number"
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        form.clearErrors("km");
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -218,7 +233,14 @@ export function JobCardForm(props: { editable?: boolean }) {
                 <FormItem>
                   <FormLabel>Operator</FormLabel>
                   <FormControl>
-                    <Input readOnly={!editable} {...field} />
+                    <Input
+                      readOnly={!editable}
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        form.clearErrors("operator");
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -232,7 +254,14 @@ export function JobCardForm(props: { editable?: boolean }) {
                 <FormItem>
                   <FormLabel>Site / Department</FormLabel>
                   <FormControl>
-                    <Input readOnly={!editable} {...field} />
+                    <Input
+                      readOnly={!editable}
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        form.clearErrors("department");
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -246,7 +275,15 @@ export function JobCardForm(props: { editable?: boolean }) {
                 <FormItem>
                   <FormLabel>Vehicle ID</FormLabel>
                   <FormControl>
-                    <Input readOnly={!editable} type="number" {...field} />
+                    <Input
+                      readOnly={!editable}
+                      type="number"
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        form.clearErrors("vehicleId");
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -260,7 +297,10 @@ export function JobCardForm(props: { editable?: boolean }) {
                 <FormItem>
                   <FormLabel>Service Type</FormLabel>
                   <Select
-                    onValueChange={field.onChange}
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      form.clearErrors("type");
+                    }}
                     defaultValue={field.value}
                     disabled={!editable}
                   >
@@ -287,7 +327,15 @@ export function JobCardForm(props: { editable?: boolean }) {
                 <FormItem>
                   <FormLabel>Next Service Date</FormLabel>
                   <FormControl>
-                    <Input readOnly={!editable} type="date" {...field} />
+                    <Input
+                      readOnly={!editable}
+                      type="date"
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        form.clearErrors("nextServiceDate");
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -301,7 +349,14 @@ export function JobCardForm(props: { editable?: boolean }) {
                 <FormItem>
                   <FormLabel>Next Service KM</FormLabel>
                   <FormControl>
-                    <Input type="number" {...field} />
+                    <Input
+                      type="number"
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        form.clearErrors("nextServiceKm");
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -316,7 +371,15 @@ export function JobCardForm(props: { editable?: boolean }) {
                   <FormItem>
                     <FormLabel>Problem Description</FormLabel>
                     <FormControl>
-                      <Textarea rows={3} {...field} className="bg-card" />
+                      <Textarea
+                        rows={3}
+                        {...field}
+                        className="bg-card"
+                        onChange={(e) => {
+                          field.onChange(e);
+                          form.clearErrors("description");
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
