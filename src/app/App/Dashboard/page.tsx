@@ -65,9 +65,6 @@ export default function Dashboard() {
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="text-4xl font-bold tracking-tight">Dashboard</h2>
-            <p className="text-muted-foreground">
-              Welcome back! Here's an overview of your business performance.
-            </p>
           </div>
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" className="h-9">

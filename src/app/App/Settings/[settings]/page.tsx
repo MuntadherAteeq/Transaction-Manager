@@ -1,0 +1,27 @@
+"use client";
+
+import { useParams, usePathname } from "next/navigation";
+
+import { AccountSettings } from "@/app/App/Settings/Account-settings";
+import { AppearanceSettings } from "@/app/App/Settings/Appearance-settings";
+import { NotificationSettings } from "@/app/App/Settings/Notification-settings";
+import { ProfileSettings } from "@/app/App/Settings/Profile-settings";
+import { SecuritySettings } from "@/app/App/Settings/Security-settings";
+
+export default function SettingsTab() {
+  const pathname = useParams();
+  switch (pathname.settings) {
+    case "Account":
+      return <AccountSettings />;
+    case "Notifications":
+      return <NotificationSettings />;
+    case "Security":
+      return <SecuritySettings />;
+    case "Appearance":
+      return <AppearanceSettings />;
+    case "Profile":
+      return <ProfileSettings />;
+    default:
+      return <ProfileSettings />;
+  }
+}

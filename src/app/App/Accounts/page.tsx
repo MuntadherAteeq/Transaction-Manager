@@ -21,6 +21,7 @@ import { z } from "zod";
 import { AddAccount } from "./Account-Drawer";
 import { Account } from "@prisma/client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import useSWR from "swr";
 
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -30,8 +31,17 @@ export default function AccountTable() {
 
   const isMobile = useIsMobile();
 
-  const [rowData, setRowData] = useState<Account[]>();
-  // Column Definitions: Defines the columns to be displayed.
+  const [rowData, setRowData] = useState<Account[]>([]);
+
+  const { data, error, mutate, isLoading } = useSWR("/api/accounts?limit=10", {
+    fetcher: (url: string) => fetch(url).then((res) => res.json()),
+  });
+
+  useMemo(() => {
+    if (data) {
+      setRowData(data);
+    }
+  }, [data]);
 
   const colDefs: ColDef[] = [
     {
