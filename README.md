@@ -2,9 +2,9 @@
 
 <p align="center">
   <picture style="width: 500px">
-    <source media="(prefers-color-scheme: light)" srcset="./src/app/assets/images/Banner-Light.png" />
-    <source media="(prefers-color-scheme: dark)" srcset="./src/app/assets/images/Banner-Dark.png" />
-    <img src="./src/app/assets/images/Banner-Dark.png" width="100%" alt="Transaction Manager logo and name" />
+    <source media="(prefers-color-scheme: light)" srcset="./src/app/Assets/Images/Banner-Light.png" />
+    <source media="(prefers-color-scheme: dark)" srcset="./src/app/Assets/Images/Banner-Dark.png" />
+    <img src="./src/app/Assets/Images/Banner-Dark.png" width="100%" alt="Transaction Manager logo and name" />
   </picture>
 </p>
 
