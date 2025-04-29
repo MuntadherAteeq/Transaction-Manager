@@ -17,7 +17,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-import { Account } from "@prisma/client";
+import { JobCard } from "@prisma/client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useSWR from "swr";
 
@@ -29,9 +29,9 @@ export default function AccountTable() {
 
   const isMobile = useIsMobile();
 
-  const [rowData, setRowData] = useState<Account[]>([]);
+  const [rowData, setRowData] = useState<JobCard[]>([]);
 
-  const { data, error, mutate, isLoading } = useSWR("/api/jobCards", {
+  const { data } = useSWR("/api/jobCards", {
     fetcher: (url: string) => fetch(url).then((res) => res.json()),
   });
 
@@ -43,70 +43,48 @@ export default function AccountTable() {
 
   const colDefs: ColDef[] = [
     {
-      field: "image",
+      field: "date",
       headerName: "",
-      width: 80,
       resizable: false,
       cellClass: "w-full h-full",
       lockPosition: true,
+      flex: isMobile ? 0 : 1,
       filter: false,
-      cellRenderer: (params: { value: string; data: Account }) => {
-        return (
-          <div className="flex items-center justify-center w-full h-full">
-            <Avatar className="size-10">
-              <AvatarImage
-                className="size-10 shrink-0 rounded-full object-cover"
-                src={params.value}
-                alt="Image"
-              />
-              <AvatarFallback>{params.data.name.charAt(0)}</AvatarFallback>
-            </Avatar>
-          </div>
-        );
-      },
     },
     {
-      field: "name",
+      field: "id",
       sortable: true,
-      cellClass: "flex items-center justify-center pt-1",
       lockPosition: true,
       filter: true,
       flex: isMobile ? 0 : 1,
     },
     {
-      field: "email",
+      field: "operator",
       sortable: true,
       filter: true,
-      cellClass: "flex items-center justify-center pt-1",
       lockPosition: true,
       flex: isMobile ? 0 : 1,
     },
     {
-      field: "rules",
+      field: "department",
       sortable: true,
       filter: true,
       lockPosition: true,
       flex: isMobile ? 0 : 1,
-
-      cellRenderer: (params: { value: string }) => {
-        const rules = ["Admin", "User"];
-        return (
-          <div className="flex w-full h-full items-center justify-center gap-2 flex-wrap max-sm:overflow-y-scroll max-sm:overflow-x-hidden ">
-            {rules.map((rule: string, index: number) => {
-              const trimmedRule = rule.trim();
-              return (
-                <Badge
-                  key={index}
-                  variant={trimmedRule === "Admin" ? "destructive" : "default"}
-                >
-                  <User2 className="mr-2 h-4 w-4 " />
-                  {trimmedRule}
-                </Badge>
-              );
-            })}
-          </div>
-        );
-      },
+    },
+    {
+      field: "mechanic",
+      sortable: true,
+      filter: true,
+      lockPosition: true,
+      flex: isMobile ? 0 : 1,
+    },
+    {
+      field: "totalAmount",
+      headerName: "",
+      resizable: false,
+      lockPosition: true,
+      flex: isMobile ? 0 : 1,
     },
   ];
 
