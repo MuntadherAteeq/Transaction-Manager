@@ -114,7 +114,6 @@ export default function PartTable() {
         return false;
       },
       onCellValueChanged: (params: { data: { amount: number } }) => {
-        console.log("Value changed", params.data.amount);
       },
     },
     // Rate column
@@ -135,7 +134,6 @@ export default function PartTable() {
         return false;
       },
       onCellValueChanged: (params: { data: { amount: number } }) => {
-        console.log("Value changed", params.data.amount);
       },
     },
     // amount column

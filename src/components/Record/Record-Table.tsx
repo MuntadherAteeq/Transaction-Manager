@@ -45,7 +45,6 @@ export default function RecordTable({ account }: { account: Account }) {
       field: "image",
 
       cellRenderer: (params: { value: string }) => {
-        console.log(params);
         return (
           <div className="flex items-center justify-center">
             <img

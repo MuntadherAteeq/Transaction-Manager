@@ -13,7 +13,7 @@ import { Button } from "./ui/button";
 
 export const NavPath: React.FC = () => {
   const pathname = usePathname();
-  const activity = pathname?.split("/")[2] || [];
+  const activity = pathname.split("/").slice(2, 3).join("/");
   const router = useRouter();
   return (
     <Breadcrumb>
@@ -26,7 +26,9 @@ export const NavPath: React.FC = () => {
                   router.push(`/App/${activity}`);
                 }}
                 className="text-lg"
-              ></BreadcrumbLink>
+              >
+                {activity}
+              </BreadcrumbLink>
             </BreadcrumbItem>
           </Button>
         </React.Fragment>

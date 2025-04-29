@@ -71,7 +71,6 @@ export function AddAccount() {
 
   // Handle form submission
   const onSubmit = async (data: z.infer<typeof SignInSchema>) => {
-    console.log("Registration data:", data);
     setLoading(true);
 
     // Simulate API call
