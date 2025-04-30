@@ -75,10 +75,15 @@ export function AddAccount(props: {
   const onSubmit = async (data: z.infer<typeof SignInSchema>) => {
     setLoading(true);
 
-    await createAccount(data);
+    const res = await createAccount(data);
 
-    // Simulate API call
-    setTimeout(() => {
+    if ("error" in res) {
+      setLoading(false);
+      toast.error("Error", {
+        description: res.error,
+      });
+    } else {
+      // Simulate API call
       setLoading(false);
       form.reset();
       setOpen(false);
@@ -87,7 +92,7 @@ export function AddAccount(props: {
       toast.success("Account created successfully!", {
         description: "You can now log in with your new account.",
       });
-    }, 1000);
+    }
   };
 
   // Handle role change

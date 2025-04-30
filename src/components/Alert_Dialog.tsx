@@ -43,6 +43,7 @@ export function Alert_Dialog({
   onConfirm,
 }: AlertDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleConfirm = async () => {
     setIsLoading(true);
@@ -52,11 +53,12 @@ export function Alert_Dialog({
       }
     } finally {
       setIsLoading(false);
+      setIsOpen(false);
     }
   };
 
   return (
-    <AlertDialog>
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -71,6 +73,7 @@ export function Alert_Dialog({
             variant={variant}
             onClick={handleConfirm}
             disabled={isLoading}
+            className="border-2 min-w-[77px]"
           >
             {isLoading ? <Loader2 className="animate-spin" /> : confirmText}
           </Button>

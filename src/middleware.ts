@@ -1,5 +1,5 @@
 // import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
 export default async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
@@ -12,18 +12,21 @@ export default async function middleware(request: NextRequest) {
     },
   });
 
-  const role = (await res.json()).account.role;
-  console.log("Role from session:", role);
+  try {
+    const role = (await res.json()).account.role;
+    const userRoutes = ["/App", "/JobCards"];
+    const adminRoutes = [
+      "/",
+      "/Dashboard",
+      "/Accounts",
+      "/Vehicles",
+      "/Settings",
+    ];
+  } catch (error) {
+    return NextResponse.redirect(new URL("/App", request.url));
+  }
 
   // // Define user-only and admin-only routes
-  // const userRoutes = ["/App", "/JobCards"];
-  // const adminRoutes = [
-  //   "/",
-  //   "/Dashboard",
-  //   "/Accounts",
-  //   "/Vehicles",
-  //   "/Settings",
-  // ];
 
   // const isAdmin = role === "Admin";
   // const isUser = role === "User";
