@@ -10,18 +10,13 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "./ui/button";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
-export function Alert_Dialog({
-  title,
-  children,
-  variant,
-  description,
-  dismissText,
-  confirmText,
-  onDismiss,
-  onConfirm,
-}: {
+interface AlertDialogProps {
   title: string;
+  description: string;
+  children: React.ReactNode;
   variant?:
     | "default"
     | "link"
@@ -30,15 +25,36 @@ export function Alert_Dialog({
     | "success"
     | "warning"
     | "outline"
-    | "ghost"
-    | null;
-  description: string;
+    | "ghost";
   dismissText?: string;
   confirmText?: string;
   onDismiss?: () => void;
-  onConfirm?: () => void;
-  children: React.ReactNode;
-}) {
+  onConfirm?: () => Promise<void> | void;
+}
+
+export function Alert_Dialog({
+  title,
+  description,
+  children,
+  variant = "default",
+  dismissText = "Cancel",
+  confirmText = "Confirm",
+  onDismiss,
+  onConfirm,
+}: AlertDialogProps) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleConfirm = async () => {
+    setIsLoading(true);
+    try {
+      if (onConfirm) {
+        await onConfirm();
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -49,17 +65,15 @@ export function Alert_Dialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onDismiss}>
-            {dismissText ?? "Cancel"}
+            {dismissText}
           </AlertDialogCancel>
-          <AlertDialogAction asChild>
-            <Button
-              onClick={onConfirm}
-              className="w-full border-2 sm:w-auto"
-              variant={variant ?? "default"}
-            >
-              {confirmText ?? "Confirm"}
-            </Button>
-          </AlertDialogAction>
+          <Button
+            variant={variant}
+            onClick={handleConfirm}
+            disabled={isLoading}
+          >
+            {isLoading ? <Loader2 className="animate-spin" /> : confirmText}
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

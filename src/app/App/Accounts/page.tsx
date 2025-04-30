@@ -26,7 +26,7 @@ import { Account } from "@prisma/client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useSWR from "swr";
 import { Alert_Dialog } from "@/components/Alert_Dialog";
-import { deleteAccount } from "./accounts.actions";
+import { deleteAccount } from "./Accounts.actions";
 
 // Register the required modules
 ModuleRegistry.registerModules([
