@@ -134,6 +134,13 @@ export async function signUp(formData: z.infer<typeof SignUpSchema>) {
   const name = formData.name as string;
   const image = formData.image as string;
   const role = formData.role as string;
+  const secretKey = formData.secretKey as string;
+
+  if (secretKey !== process.env.SECRET_KEY) {
+    return {
+      error: "Invalid secret key",
+    };
+  }
 
   if (!email || !password) {
     return {

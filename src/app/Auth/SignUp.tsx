@@ -28,7 +28,7 @@ export const SignUpSchema = z
       .string()
       .min(6, "Password must be at least 6 characters"),
     image: z.string().optional(),
-    secretKey: z.string().optional(),
+    secretKey: z.string().min(6, "Secret Key is required"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
