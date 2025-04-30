@@ -9,6 +9,11 @@ export const Activities = [
     url: "/App/Accounts",
     icon: "icon-[hugeicons--user-account]",
   },
+  {
+    title: "Vehicles",
+    url: "/App/Vehicles",
+    icon: "icon-[hugeicons--car-01]",
+  },
   // {
   //   title: "Archive",
   //   url: "/App/Archive",

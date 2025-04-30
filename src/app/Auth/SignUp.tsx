@@ -10,10 +10,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Loader2, User } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { z } from "zod";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { signUp } from "./auth.actions";
@@ -29,6 +28,7 @@ export const SignUpSchema = z
       .string()
       .min(6, "Password must be at least 6 characters"),
     image: z.string().optional(),
+    secretKey: z.string().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -110,7 +110,7 @@ export const SignUpForm = (props: any) => {
           <CardDescription>Create an account to get started</CardDescription>
         </div>
 
-        <div className="flex flex-col items-center space-y-2">
+        {/* <div className="flex flex-col items-center space-y-2">
           <div
             className="relative group cursor-pointer hover:outline-5 hover:outline-blue-500 rounded-full"
             onClick={handleAvatarClick}
@@ -144,7 +144,7 @@ export const SignUpForm = (props: any) => {
           />
 
           <p className="text-xs text-center text-gray-500">Max size: 1MB</p>
-        </div>
+        </div> */}
       </div>
 
       <CardContent className="pt-6">
@@ -212,6 +212,23 @@ export const SignUpForm = (props: any) => {
               <p className="text-sm text-red-500">
                 {errors.confirmPassword.message}
               </p>
+            )}
+          </div>
+          {/* secretKey Field */}
+          <div className="grid gap-2">
+            <Label htmlFor="secretKey">Secret Key</Label>
+            <Input
+              id="secretKey"
+              type="password"
+              {...register("secretKey")}
+              className={`border-1 ${
+                errors.secretKey
+                  ? "border-red-500"
+                  : "border-muted-foreground/50"
+              }`}
+            />
+            {errors.secretKey && (
+              <p className="text-sm text-red-500">{errors.secretKey.message}</p>
             )}
           </div>
 
