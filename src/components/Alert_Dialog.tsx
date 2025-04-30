@@ -14,6 +14,7 @@ import { Button } from "./ui/button";
 export function Alert_Dialog({
   title,
   children,
+  variant,
   description,
   dismissText,
   confirmText,
@@ -21,6 +22,16 @@ export function Alert_Dialog({
   onConfirm,
 }: {
   title: string;
+  variant?:
+    | "default"
+    | "link"
+    | "secondary"
+    | "destructive"
+    | "success"
+    | "warning"
+    | "outline"
+    | "ghost"
+    | null;
   description: string;
   dismissText?: string;
   confirmText?: string;
@@ -42,8 +53,8 @@ export function Alert_Dialog({
           </AlertDialogCancel>
           <Button
             onClick={onConfirm}
-            className="w-full border-2"
-            variant={"destructive"}
+            className="w-full border-2 sm:w-auto"
+            variant={variant ?? "default"}
           >
             {confirmText ?? "Confirm"}
           </Button>

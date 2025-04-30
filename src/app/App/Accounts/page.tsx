@@ -5,9 +5,12 @@ import { useMemo, useState } from "react";
 
 import {
   AllCommunityModule,
+  ClientSideRowModelModule,
   ColDef,
   ModuleRegistry,
+  NumberFilterModule,
   RowSelectionOptions,
+  ValidationModule,
 } from "ag-grid-community";
 import { useTableTheme } from "@/hooks/use-TableTheme";
 import { Badge } from "@/components/ui/badge";
@@ -16,7 +19,6 @@ import { AvatarImage } from "@radix-ui/react-avatar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { z } from "zod";
 
 import { AddAccount } from "./Account-Dialog";
 import { Account } from "@prisma/client";
@@ -25,7 +27,12 @@ import useSWR from "swr";
 import { Alert_Dialog } from "@/components/Alert_Dialog";
 
 // Register the required modules
-ModuleRegistry.registerModules([AllCommunityModule]);
+ModuleRegistry.registerModules([
+  AllCommunityModule,
+  ClientSideRowModelModule,
+  NumberFilterModule,
+  ValidationModule /* Development Only */,
+]);
 
 export default function AccountTable() {
   const tableTheme = useTableTheme();
@@ -51,8 +58,9 @@ export default function AccountTable() {
       width: 80,
       resizable: false,
       cellClass: "w-full h-full",
-      lockPosition: true,
       filter: false,
+      sortable: true,
+      lockPosition: true,
       cellRenderer: (params: { value: string; data: Account }) => {
         return (
           <div className="flex items-center justify-center w-full h-full">
@@ -71,26 +79,26 @@ export default function AccountTable() {
     {
       field: "name",
       sortable: true,
-      cellClass: "flex items-center justify-center pt-1",
       lockPosition: true,
-      filter: true,
       flex: isMobile ? 0 : 1,
+      filter: true,
+      floatingFilter: true,
     },
     {
       field: "email",
       sortable: true,
-      filter: true,
-      cellClass: "flex items-center justify-center pt-1",
       lockPosition: true,
       flex: isMobile ? 0 : 1,
+      filter: true,
+      floatingFilter: true,
     },
     {
       field: "role",
       sortable: true,
-      filter: true,
       lockPosition: true,
       flex: isMobile ? 0 : 1,
-
+      filter: true,
+      floatingFilter: true,
       cellRenderer: (params: { value: string }) => {
         return (
           <div className="flex w-full h-full items-center justify-center gap-2 flex-wrap max-sm:overflow-y-scroll max-sm:overflow-x-hidden ">
@@ -122,8 +130,8 @@ export default function AccountTable() {
         <CardContent className="w-full p-3 space-x-3">
           <AddAccount mutate={mutate}>
             <Button
-              variant="ghost"
-              className="bg-transparent hover:bg-background border"
+              variant="default"
+              // className="bg-transparent hover:bg-background border-2"
               aria-label="Add New Account"
             >
               <Plus />
@@ -132,7 +140,7 @@ export default function AccountTable() {
           </AddAccount>
           <Button
             variant={"ghost"}
-            className=" bg-transparent hover:bg-background  border "
+            className=" bg-transparent hover:bg-background  border-2 "
           >
             <Edit />
             <span className="max-sm:hidden me-2 ">Edit</span>
@@ -140,6 +148,7 @@ export default function AccountTable() {
 
           <Alert_Dialog
             title={"Are You Sure ?"}
+            variant="destructive"
             description={
               "This action will remove the user and cannot be undone. "
             }
@@ -147,7 +156,7 @@ export default function AccountTable() {
           >
             <Button
               variant={"destructive"}
-              className=" bg-transparent hover:bg-background hover:text-destructive-foreground border"
+              className=" bg-transparent hover:bg-background hover:text-destructive-foreground border-2"
             >
               <Trash />
               <span className=" max-sm:hidden me-2 ">Delete</span>

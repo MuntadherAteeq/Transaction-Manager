@@ -7,7 +7,7 @@ import AppLogo from "@/Assets/Icons/Logo";
 
 export default async function Auth(props: any) {
   const session = await getAccount();
-  if (session) redirect("/Archive");
+  if (session) redirect("/App");
 
   return (
     <div className="  relative  h-screen items-center justify-center lg:grid  lg:grid-cols-2 ">
