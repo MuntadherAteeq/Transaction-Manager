@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAccount } from "../Auth/auth.actions";
 
-export function authorization(
+export function Authorization(
   handler: (req: NextRequest) => Promise<NextResponse>,
   role: string[]
 ) {

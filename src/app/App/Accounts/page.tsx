@@ -56,7 +56,7 @@ export default function AccountTable() {
     }
   }
 
-  const { data, error, mutate, isLoading } = useSWR("/api/accounts?limit=10", {
+  const { data, error, mutate, isLoading } = useSWR("/api/accounts", {
     fetcher: (url: string) => fetch(url).then((res) => res.json()),
   });
 

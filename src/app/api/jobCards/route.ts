@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { authorization } from "../Authorization";
+import { Authorization } from "../Authorization";
 import prisma from "@/lib/prisma"; // Ensure prisma is properly imported
 
-export const GET = authorization(
+export const GET = Authorization(
   async (req: NextRequest) => {
     try {
       const accounts = await prisma.jobCard.findMany({
