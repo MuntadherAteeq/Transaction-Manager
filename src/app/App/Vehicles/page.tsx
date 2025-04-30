@@ -18,7 +18,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { z } from "zod";
 
-import { AddAccount } from "./Account-Dialog";
 import { Account } from "@prisma/client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useSWR from "swr";
@@ -27,14 +26,14 @@ import { Alert_Dialog } from "@/components/Alert_Dialog";
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export default function AccountTable() {
+export default function VehiclesTable() {
   const tableTheme = useTableTheme();
 
   const isMobile = useIsMobile();
 
   const [rowData, setRowData] = useState<Account[]>([]);
 
-  const { data, error, mutate, isLoading } = useSWR("/api/accounts?limit=10", {
+  const { data, error, mutate, isLoading } = useSWR("/api/accounts", {
     fetcher: (url: string) => fetch(url).then((res) => res.json()),
   });
 
@@ -120,16 +119,14 @@ export default function AccountTable() {
       {/* Table Header */}
       <Card className="flex flex-row p-0 m-0 rounded-none">
         <CardContent className="w-full p-3 space-x-3">
-          <AddAccount mutate={mutate}>
-            <Button
-              variant="ghost"
-              className="bg-transparent hover:bg-background border"
-              aria-label="Add New Account"
-            >
-              <Plus />
-              <span className="max-sm:hidden me-2">New</span>
-            </Button>
-          </AddAccount>
+          <Button
+            variant="ghost"
+            className="bg-transparent hover:bg-background border"
+            aria-label="Add New Account"
+          >
+            <Plus />
+            <span className="max-sm:hidden me-2">New</span>
+          </Button>
           <Button
             variant={"ghost"}
             className=" bg-transparent hover:bg-background  border "

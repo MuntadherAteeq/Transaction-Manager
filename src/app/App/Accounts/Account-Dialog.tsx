@@ -5,10 +5,8 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
 import {
   Form,
   FormControl,
@@ -25,15 +23,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Drawer,
-  DrawerContent,
-  DrawerFooter,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
+import { createAccount } from "./accounts.actions";
 
 // Validation schema using Zod
 export const SignInSchema = z
@@ -44,7 +43,7 @@ export const SignInSchema = z
     confirmPassword: z
       .string()
       .min(6, "Password must be at least 6 characters"),
-    role: z.enum(["User", "Admin"]).optional(),
+    role: z.enum(["User", "Admin"]),
     image: z.string().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -52,7 +51,10 @@ export const SignInSchema = z
     path: ["confirmPassword"],
   });
 
-export function AddAccount() {
+export function AddAccount(props: {
+  mutate: () => void;
+  children: React.ReactNode;
+}) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -73,13 +75,15 @@ export function AddAccount() {
   const onSubmit = async (data: z.infer<typeof SignInSchema>) => {
     setLoading(true);
 
+    await createAccount(data);
+
     // Simulate API call
     setTimeout(() => {
       setLoading(false);
       form.reset();
       setOpen(false);
 
-      router.refresh(); // Refresh the page or navigate as needed
+      props.mutate(); // Call the mutate function to refresh data
       toast.success("Account created successfully!", {
         description: "You can now log in with your new account.",
       });
@@ -92,21 +96,12 @@ export function AddAccount() {
   };
 
   return (
-    <Drawer direction="right" open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button
-          variant="ghost"
-          className="bg-transparent hover:bg-background border"
-          aria-label="Add New Account"
-        >
-          <Plus />
-          <span className="max-sm:hidden me-2">New</span>
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent className="sm:max-w-[425px]">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{props.children}</DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <DrawerTitle>Add New Account</DrawerTitle>
+            <DialogTitle>Create New Account</DialogTitle>
 
             <div className="flex flex-col gap-4 h-full p-4">
               {/* Full Name */}
@@ -214,24 +209,23 @@ export function AddAccount() {
                   <SelectItem value="User">User</SelectItem>
                 </SelectContent>
               </Select>
+              <DialogFooter className="mt-5">
+                <Button
+                  disabled={loading}
+                  type="submit"
+                  className="w-full font-bold"
+                >
+                  {loading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    "Save"
+                  )}
+                </Button>
+              </DialogFooter>
             </div>
-
-            <DrawerFooter className="mt-5">
-              <Button
-                disabled={loading}
-                type="submit"
-                className="w-full font-bold"
-              >
-                {loading ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  "Save"
-                )}
-              </Button>
-            </DrawerFooter>
           </form>
         </Form>
-      </DrawerContent>
-    </Drawer>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -1,6 +1,8 @@
 "use server";
 
 import { Account } from "@prisma/client";
+import { SignInSchema } from "./Account-Dialog";
+import { z } from "zod";
 
 export async function getAccounts(): Promise<Account[]> {
   const account = await prisma.account.findMany({});
@@ -16,7 +18,7 @@ export async function getAccountByEmail(
   return account;
 }
 
-export async function createAccount(data: Account) {
+export async function createAccount(data: z.infer<typeof SignInSchema>) {
   const account = await getAccountByEmail(data.email);
   if (account) {
     return { error: "Account already exists" };
