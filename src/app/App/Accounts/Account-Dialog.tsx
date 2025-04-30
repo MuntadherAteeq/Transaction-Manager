@@ -32,7 +32,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
-import { createAccount } from "./accounts.actions";
+import { createAccount } from "./Accounts.actions";
 
 // Validation schema using Zod
 export const SignInSchema = z

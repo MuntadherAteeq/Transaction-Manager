@@ -51,13 +51,15 @@ export function Alert_Dialog({
           <AlertDialogCancel onClick={onDismiss}>
             {dismissText ?? "Cancel"}
           </AlertDialogCancel>
-          <Button
-            onClick={onConfirm}
-            className="w-full border-2 sm:w-auto"
-            variant={variant ?? "default"}
-          >
-            {confirmText ?? "Confirm"}
-          </Button>
+          <AlertDialogAction asChild>
+            <Button
+              onClick={onConfirm}
+              className="w-full border-2 sm:w-auto"
+              variant={variant ?? "default"}
+            >
+              {confirmText ?? "Confirm"}
+            </Button>
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

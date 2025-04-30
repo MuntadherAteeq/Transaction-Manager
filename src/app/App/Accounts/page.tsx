@@ -9,6 +9,7 @@ import {
   ColDef,
   ModuleRegistry,
   NumberFilterModule,
+  RowSelectedEvent,
   RowSelectionOptions,
   ValidationModule,
 } from "ag-grid-community";
@@ -25,6 +26,7 @@ import { Account } from "@prisma/client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useSWR from "swr";
 import { Alert_Dialog } from "@/components/Alert_Dialog";
+import { deleteAccount } from "./Accounts.actions";
 
 // Register the required modules
 ModuleRegistry.registerModules([
@@ -40,6 +42,19 @@ export default function AccountTable() {
   const isMobile = useIsMobile();
 
   const [rowData, setRowData] = useState<Account[]>([]);
+
+  const [selectedAccount, setSelectedAccount] = useState<Account | undefined>(
+    undefined
+  );
+
+  function onRowSelected(event: RowSelectedEvent<any, any>) {
+    const selectedRows = event.api.getSelectedRows() as Account[];
+    if (selectedRows.length > 0) {
+      setSelectedAccount(selectedRows[0]);
+    } else {
+      setSelectedAccount(undefined);
+    }
+  }
 
   const { data, error, mutate, isLoading } = useSWR("/api/accounts?limit=10", {
     fetcher: (url: string) => fetch(url).then((res) => res.json()),
@@ -152,6 +167,12 @@ export default function AccountTable() {
             description={
               "This action will remove the user and cannot be undone. "
             }
+            onConfirm={async () => {
+              if (selectedAccount) {
+                await deleteAccount(selectedAccount.id);
+                mutate();
+              }
+            }}
             confirmText={"Delete"}
           >
             <Button
@@ -175,6 +196,7 @@ export default function AccountTable() {
         suppressDragLeaveHidesColumns
         // this will allow us to select multiple rows
         rowSelection={rowSelection}
+        onRowSelected={onRowSelected}
       />
     </div>
   );
