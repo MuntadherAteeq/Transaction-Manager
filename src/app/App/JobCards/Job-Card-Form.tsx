@@ -295,7 +295,7 @@ export function JobCardForm(props: { editable?: boolean }) {
                 name="type"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Service Type</FormLabel>
+                    <FormLabel>Vehicle Type</FormLabel>
                     <Select
                       onValueChange={(value) => {
                         field.onChange(value);
@@ -310,9 +310,14 @@ export function JobCardForm(props: { editable?: boolean }) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="regular">Regular</SelectItem>
-                        <SelectItem value="emergency">Emergency</SelectItem>
-                        <SelectItem value="scheduled">Scheduled</SelectItem>
+                        <SelectItem value="Passenger Car">
+                          Passenger Car
+                        </SelectItem>
+                        <SelectItem value="Motorcycle">Motorcycle</SelectItem>
+                        <SelectItem value="Bus">Bus</SelectItem>
+                        <SelectItem value="Commercial Vehicle">
+                          Commercial Vehicle
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage className="h-5" />
