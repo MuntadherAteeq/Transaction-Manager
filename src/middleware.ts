@@ -13,15 +13,23 @@ export default async function middleware(request: NextRequest) {
   });
 
   try {
+    const pathname = request.nextUrl.pathname;
     const role = (await res.json()).account.role;
-    const userRoutes = ["/App", "/JobCards"];
+    const userRoutes = ["/App", "/App/JobCards"];
     const adminRoutes = [
-      "/",
-      "/Dashboard",
-      "/Accounts",
-      "/Vehicles",
-      "/Settings",
+      "/App/Dashboard",
+      "/App/Accounts",
+      "/App/Vehicles",
+      "/App/Settings",
     ];
+
+    if (role === "User") {
+      // Check if the user is trying to access admin-only routes or their nested paths
+      if (adminRoutes.some((route) => pathname.startsWith(route))) {
+        console.log("User trying to access admin route:", pathname);
+        return NextResponse.redirect(new URL("/App", request.url));
+      }
+    }
   } catch (error) {
     return NextResponse.redirect(new URL("/App", request.url));
   }

@@ -143,6 +143,7 @@ export default function AccountTable() {
       {/* Table Header */}
       <Card className="flex flex-row p-0 m-0 rounded-none">
         <CardContent className="w-full p-3 space-x-3">
+          {/* Add Button */}
           <AddAccount mutate={mutate}>
             <Button
               variant="default"
@@ -153,36 +154,41 @@ export default function AccountTable() {
               <span className="max-sm:hidden me-2">New</span>
             </Button>
           </AddAccount>
-          <Button
-            variant={"ghost"}
-            className=" bg-transparent hover:bg-background  border-2 "
-          >
-            <Edit />
-            <span className="max-sm:hidden me-2 ">Edit</span>
-          </Button>
-
-          <Alert_Dialog
-            title={"Are You Sure ?"}
-            variant="destructive"
-            description={
-              "This action will remove the user and cannot be undone. "
-            }
-            onConfirm={async () => {
-              if (selectedAccount) {
-                await deleteAccount(selectedAccount.id);
-                mutate();
-              }
-            }}
-            confirmText={"Delete"}
-          >
+          {/* Edit Button */}
+          {selectedAccount && (
             <Button
-              variant={"destructive"}
-              className=" bg-transparent hover:bg-background hover:text-destructive-foreground border-2"
+              variant={"ghost"}
+              className=" bg-transparent hover:bg-background  border-2 "
             >
-              <Trash />
-              <span className=" max-sm:hidden me-2 ">Delete</span>
+              <Edit />
+              <span className="max-sm:hidden me-2 ">Edit</span>
             </Button>
-          </Alert_Dialog>
+          )}
+          {/* Delete Button */}
+          {selectedAccount && (
+            <Alert_Dialog
+              title={"Are You Sure ?"}
+              variant="destructive"
+              description={
+                "This action will remove the user and cannot be undone. "
+              }
+              onConfirm={async () => {
+                if (selectedAccount) {
+                  await deleteAccount(selectedAccount.id);
+                  mutate();
+                }
+              }}
+              confirmText={"Delete"}
+            >
+              <Button
+                variant={"destructive"}
+                className=" bg-transparent hover:bg-background hover:text-destructive-foreground border-2"
+              >
+                <Trash />
+                <span className=" max-sm:hidden me-2 ">Delete</span>
+              </Button>
+            </Alert_Dialog>
+          )}
         </CardContent>
       </Card>
       <AgGridReact

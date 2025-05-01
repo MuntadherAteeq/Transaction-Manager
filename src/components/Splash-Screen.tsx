@@ -97,7 +97,7 @@ export function SplashScreen(props: {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background"
+            className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background"
           >
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
