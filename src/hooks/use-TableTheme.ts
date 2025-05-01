@@ -24,10 +24,10 @@ export function useTableTheme() {
     headerBackgroundColor: "#f0f0f0",
     oddRowBackgroundColor: "#f9f9f9",
     headerColumnResizeHandleColor: "#000000",
+    borderColor: "#cccccc",
     wrapperBorderRadius: "0px",
     columnBorder: {
-      color: "#f0f0f0",
-
+      color: "#cccccc",
       width: "1px",
     },
   });

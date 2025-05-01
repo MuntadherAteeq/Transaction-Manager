@@ -130,12 +130,13 @@ model Vehicle {
 }
 
 model Part {
-  id          Int      @id @default(autoincrement())
-  partCode    String
-  description String
-  qty         Int
-  rate        Float
-  amount      Float
+  id Int @id @default(autoincrement())
+
+  partCode    String?
+  description String?
+  qty         Int?
+  rate        Float?
+  amount      Float?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

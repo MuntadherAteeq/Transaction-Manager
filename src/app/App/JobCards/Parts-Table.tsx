@@ -1,11 +1,14 @@
 "use client";
 
 import { AgGridReact } from "ag-grid-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-import { Part } from "@prisma/client";
-
-import { AllCommunityModule, ColDef, ModuleRegistry } from "ag-grid-community";
+import {
+  AllCommunityModule,
+  ColDef,
+  ModuleRegistry,
+  RowSelectionOptions,
+} from "ag-grid-community";
 import { ClientSideRowModelModule } from "ag-grid-community"; // Import the missing module
 import { useTableTheme } from "@/hooks/use-TableTheme";
 import { Card } from "@/components/ui/card";
@@ -18,13 +21,43 @@ ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 export default function PartTable() {
   const tableTheme = useTableTheme();
 
-  const [rowData, setRowData] = useState<Part[]>([]);
+  const row = {
+    partCode: null,
+    rate: null,
+    description: null,
+    qty: null,
+    amount: null,
+  };
+
+  const rowSelection = useMemo<RowSelectionOptions>(() => {
+    return {
+      mode: "multiRow",
+    };
+  }, []);
+
+  function onCellValueChanged(params: any) {
+    //  get last element of the row data
+    const lastElement = rowData[rowData.length - 1];
+    console.log("lastElement", lastElement);
+    // check if the last all fields are filled
+    if (
+      lastElement.partCode &&
+      lastElement.rate &&
+      lastElement.description &&
+      lastElement.qty
+    ) {
+      // add new empty row data
+      setRowData((prevRowData) => [...prevRowData, row]);
+    }
+  }
+
+  const [rowData, setRowData] = useState<(typeof row)[]>([row]);
 
   // Column Definitions: Defines the columns to be displayed.
   const [colDefs, setColDefs] = useState<ColDef[]>([
     {
       flex: 1,
-      field: "id",
+      field: "partCode",
       headerName: "Part Code",
       sortable: true,
       filter: true,
@@ -64,17 +97,17 @@ export default function PartTable() {
       sortable: true,
       filter: true,
       editable: true,
-      valueGetter: (params: { data: { amount: number } }) => {
-        return params.data?.amount ? params.data.amount / 1000 : undefined;
+      valueGetter: (params: { data: { rate: number } }) => {
+        return params.data?.rate ? params.data.rate / 1000 : undefined;
       },
-      valueSetter: (params: { data: { amount: number }; newValue: number }) => {
+      valueSetter: (params: { data: { rate: number }; newValue: number }) => {
         if (params.data) {
-          params.data.amount = Number((params.newValue * 1000).toFixed(0));
+          params.data.rate = Number((params.newValue * 1000).toFixed(0));
           return true;
         }
         return false;
       },
-      onCellValueChanged: (params: { data: { amount: number } }) => {},
+      onCellValueChanged: (params: { data: { rate: number } }) => {},
     },
     // amount column
     {
@@ -98,8 +131,8 @@ export default function PartTable() {
   ]);
 
   return (
-    <div className="w-full h-full">
-      <Card className="rounded-none p-3 flex flex-row gap-3">
+    <div className="w-full h-full p-6">
+      {/* <Card className="rounded-b-none p-3 flex flex-row gap-3">
         <Button
           type="button"
           variant={"ghost"}
@@ -116,12 +149,13 @@ export default function PartTable() {
           <Trash />
           Delete
         </Button>
-      </Card>
+      </Card> */}
       <AgGridReact
         theme={tableTheme}
-        className="h-full w-full"
         rowData={rowData}
         columnDefs={colDefs}
+        onCellValueChanged={onCellValueChanged}
+        rowSelection={rowSelection}
       />
     </div>
   );
