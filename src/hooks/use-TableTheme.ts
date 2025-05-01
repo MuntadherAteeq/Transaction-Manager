@@ -1,4 +1,4 @@
-import { colorSchemeLightWarm, themeQuartz } from "ag-grid-community";
+import { themeQuartz } from "ag-grid-community";
 import { useTheme } from "next-themes";
 
 export function useTableTheme() {

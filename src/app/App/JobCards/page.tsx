@@ -10,9 +10,7 @@ import {
   RowSelectionOptions,
 } from "ag-grid-community";
 import { useTableTheme } from "@/hooks/use-TableTheme";
-import { Badge } from "@/components/ui/badge";
-import { Edit, PlusCircle, Trash, User2 } from "lucide-react";
-import { AvatarImage } from "@radix-ui/react-avatar";
+import { Edit, Plus, Trash } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -113,7 +111,7 @@ export default function AccountTable() {
             variant={"default"}
             onClick={() => router.push("/App/JobCards/New")}
           >
-            <PlusCircle />
+            <Plus />
             New Job Card
           </Button>
           <Button

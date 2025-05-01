@@ -112,17 +112,17 @@ export default function PartTable() {
     // amount column
     {
       field: "amount",
-      valueGetter: (params: { data: { amount: number; qty: number } }) => {
-        if (params.data?.amount && params.data?.qty) {
-          return `${((params.data.amount / 1000) * params.data.qty).toFixed(
+      valueGetter: (params: { data: { rate: number; qty: number } }) => {
+        if (params.data?.rate && params.data?.qty) {
+          return `${((params.data.rate / 1000) * params.data.qty).toFixed(
             3
           )} BD`;
         }
         return "0.000 BD";
       },
-      valueSetter: (params: { data: { amount: number }; newValue: number }) => {
+      valueSetter: (params: { data: { rate: number }; newValue: number }) => {
         if (params.data) {
-          params.data.amount = Number((params.newValue * 1000).toFixed(0));
+          params.data.rate = Number((params.newValue * 1000).toFixed(0));
           return true;
         }
         return false;
