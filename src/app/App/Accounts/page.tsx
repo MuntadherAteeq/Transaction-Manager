@@ -146,8 +146,8 @@ export default function AccountTable() {
           {/* Add Button */}
           <AddAccount mutate={mutate}>
             <Button
-              variant="default"
-              // className="bg-transparent hover:bg-background border-2"
+              variant="ghost"
+              className="border-2"
               aria-label="Add New Account"
             >
               <Plus />
