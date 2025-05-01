@@ -33,7 +33,7 @@ export default function VehiclesTable() {
 
   const [rowData, setRowData] = useState<Account[]>([]);
 
-  const { data, error, mutate, isLoading } = useSWR("/api/accounts", {
+  const { data, error, mutate, isLoading } = useSWR("/api/vehicles", {
     fetcher: (url: string) => fetch(url).then((res) => res.json()),
   });
 

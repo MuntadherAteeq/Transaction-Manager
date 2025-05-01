@@ -184,7 +184,7 @@ export function NavUser({ account: account }: { account: Account | null }) {
                 </CommandShortcut>
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Settings />
@@ -198,7 +198,7 @@ export function NavUser({ account: account }: { account: Account | null }) {
                 <Bell />
                 Notifications
               </DropdownMenuItem>
-            </DropdownMenuGroup>
+            </DropdownMenuGroup> */}
             <DropdownMenuSeparator />
 
             <DropdownMenuItem
