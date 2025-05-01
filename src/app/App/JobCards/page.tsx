@@ -11,7 +11,7 @@ import {
 } from "ag-grid-community";
 import { useTableTheme } from "@/hooks/use-TableTheme";
 import { Badge } from "@/components/ui/badge";
-import { Edit, Trash, User2 } from "lucide-react";
+import { Edit, PlusCircle, Trash, User2 } from "lucide-react";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { JobCard } from "@prisma/client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useSWR from "swr";
+import { useRouter } from "next/navigation";
 
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -30,6 +31,14 @@ export default function AccountTable() {
   const isMobile = useIsMobile();
 
   const [rowData, setRowData] = useState<JobCard[]>([]);
+
+  const [selectedRow, setSelectedRow] = useState<JobCard | null>(null);
+
+  const router = useRouter();
+
+  const onRowSelected = (event: any) => {
+    setSelectedRow(event.data);
+  };
 
   const { data } = useSWR("/api/jobCards", {
     fetcher: (url: string) => fetch(url).then((res) => res.json()),
@@ -98,7 +107,32 @@ export default function AccountTable() {
 
   return (
     <div className=" flex flex-col w-full h-full">
-      <AccountsTableHeader />
+      <Card className="flex flex-row p-0 m-0 rounded-none">
+        <CardContent className="w-full p-3 space-x-3">
+          <Button
+            variant={"default"}
+            onClick={() => router.push("/App/JobCards/New")}
+          >
+            <PlusCircle />
+            New Job Card
+          </Button>
+          <Button
+            variant={"ghost"}
+            className=" bg-transparent hover:bg-background  border "
+          >
+            <Edit />
+            <span className="max-sm:hidden me-2 ">Edit</span>
+          </Button>
+
+          <Button
+            variant={"destructive"}
+            className=" bg-transparent hover:bg-background hover:text-destructive-foreground border"
+          >
+            <Trash />
+            <span className="max-sm:hidden me-2 ">Delete</span>
+          </Button>
+        </CardContent>
+      </Card>
       <AgGridReact
         theme={tableTheme}
         className="h-full w-full"
@@ -110,31 +144,8 @@ export default function AccountTable() {
         suppressDragLeaveHidesColumns
         // this will allow us to select multiple rows
         rowSelection={rowSelection}
+        onRowSelected={onRowSelected}
       />
     </div>
-  );
-}
-
-export function AccountsTableHeader(props: any) {
-  return (
-    <Card className="flex flex-row p-0 m-0 rounded-none">
-      <CardContent className="w-full p-3 space-x-3">
-        <Button
-          variant={"ghost"}
-          className=" bg-transparent hover:bg-background  border "
-        >
-          <Edit />
-          <span className="max-sm:hidden me-2 ">Edit</span>
-        </Button>
-
-        <Button
-          variant={"destructive"}
-          className=" bg-transparent hover:bg-background hover:text-destructive-foreground border"
-        >
-          <Trash />
-          <span className="max-sm:hidden me-2 ">Delete</span>
-        </Button>
-      </CardContent>
-    </Card>
   );
 }

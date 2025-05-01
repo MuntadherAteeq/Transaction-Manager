@@ -39,6 +39,7 @@ import { toast } from "sonner";
 import PartsTable from "./Parts-Table";
 import { File, SendHorizonal } from "lucide-react";
 import Link from "next/link";
+import { JobCard } from "@prisma/client";
 // Define the schema for the form
 const formSchema = z.object({
   date: z.string().min(1, { message: "Date is required" }),
@@ -73,7 +74,7 @@ export type Part = {
   amount: number;
 };
 
-export function JobCardForm(props: { editable?: boolean }) {
+export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
   const [editable, setEditable] = useState(props.editable ?? false);
   const router = useRouter();
   const [parts, setParts] = useState<Part[]>([]);
