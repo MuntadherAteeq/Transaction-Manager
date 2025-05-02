@@ -10,18 +10,15 @@ import {
   RowSelectionOptions,
 } from "ag-grid-community";
 import { useTableTheme } from "@/hooks/use-TableTheme";
-import { Badge } from "@/components/ui/badge";
 import { Edit, Plus, Trash, User2 } from "lucide-react";
-import { AvatarImage } from "@radix-ui/react-avatar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { z } from "zod";
 
 import { Account } from "@prisma/client";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useSWR from "swr";
 import { Alert_Dialog } from "@/components/Alert_Dialog";
+import { AddVehicle } from "./Vehicles-Dialog";
 
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -45,64 +42,35 @@ export default function VehiclesTable() {
 
   const colDefs: ColDef[] = [
     {
-      field: "image",
-      headerName: "",
-      width: 80,
-      resizable: false,
-      cellClass: "w-full h-full",
-      lockPosition: true,
-      filter: false,
-      cellRenderer: (params: { value: string; data: Account }) => {
-        return (
-          <div className="flex items-center justify-center w-full h-full">
-            <Avatar className="size-10">
-              <AvatarImage
-                className="size-10 shrink-0 rounded-full object-cover"
-                src={params.value}
-                alt="Image"
-              />
-              <AvatarFallback>{params.data.name.charAt(0)}</AvatarFallback>
-            </Avatar>
-          </div>
-        );
-      },
-    },
-    {
-      field: "name",
+      field: "vehicleNo",
+      headerName: "Vehicle No",
       sortable: true,
-      cellClass: "flex items-center justify-center pt-1",
       lockPosition: true,
       filter: true,
       flex: isMobile ? 0 : 1,
     },
     {
-      field: "email",
+      field: "type",
+      headerName: "Type",
       sortable: true,
-      filter: true,
-      cellClass: "flex items-center justify-center pt-1",
       lockPosition: true,
+      filter: true,
       flex: isMobile ? 0 : 1,
     },
     {
-      field: "role",
+      field: "driver",
+      headerName: "Driver / Operator",
       sortable: true,
-      filter: true,
       lockPosition: true,
+      filter: true,
       flex: isMobile ? 0 : 1,
-
-      cellRenderer: (params: { value: string }) => {
-        return (
-          <div className="flex w-full h-full items-center justify-center gap-2 flex-wrap max-sm:overflow-y-scroll max-sm:overflow-x-hidden ">
-            <Badge
-              key={params.value}
-              variant={params.value === "Admin" ? "destructive" : "default"}
-            >
-              <User2 className="mr-2 h-4 w-4 " />
-              {params.value}
-            </Badge>
-          </div>
-        );
-      },
+    },
+    {
+      field: "mechanic",
+      sortable: true,
+      lockPosition: true,
+      filter: true,
+      flex: isMobile ? 0 : 1,
     },
   ];
 
@@ -119,14 +87,16 @@ export default function VehiclesTable() {
       {/* Table Header */}
       <Card className="flex flex-row p-0 m-0 rounded-none">
         <CardContent className="w-full p-3 space-x-3">
-          <Button
-            variant="ghost"
-            className="bg-transparent hover:bg-background border"
-            aria-label="Add New Account"
-          >
-            <Plus />
-            <span className="max-sm:hidden me-2">New</span>
-          </Button>
+          <AddVehicle mutate={mutate}>
+            <Button
+              variant="ghost"
+              className="bg-transparent hover:bg-background border"
+              aria-label="Add New Account"
+            >
+              <Plus />
+              <span className="max-sm:hidden me-2">New</span>
+            </Button>
+          </AddVehicle>
           <Button
             variant={"ghost"}
             className=" bg-transparent hover:bg-background  border "

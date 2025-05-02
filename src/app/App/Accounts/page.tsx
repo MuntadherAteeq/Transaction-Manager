@@ -21,7 +21,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-import { AddAccount } from "./Account-Dialog";
+import { AddAccount, DeleteAccount } from "./Account-Dialog";
 import { Account } from "@prisma/client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useSWR from "swr";
@@ -166,28 +166,7 @@ export default function AccountTable() {
           )}
           {/* Delete Button */}
           {selectedAccount && (
-            <Alert_Dialog
-              title={"Are You Sure ?"}
-              variant="destructive"
-              description={
-                "This action will remove the user and cannot be undone. "
-              }
-              onConfirm={async () => {
-                if (selectedAccount) {
-                  await deleteAccount(selectedAccount.id);
-                  mutate();
-                }
-              }}
-              confirmText={"Delete"}
-            >
-              <Button
-                variant={"destructive"}
-                className=" bg-transparent hover:bg-background hover:text-destructive-foreground border-2"
-              >
-                <Trash />
-                <span className=" max-sm:hidden me-2 ">Delete</span>
-              </Button>
-            </Alert_Dialog>
+            <DeleteAccount mutate={mutate} selectedAccount={selectedAccount} />
           )}
         </CardContent>
       </Card>

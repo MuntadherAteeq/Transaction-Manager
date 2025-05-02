@@ -30,9 +30,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, Plus, Trash } from "lucide-react";
 import { toast } from "sonner";
-import { createAccount } from "./Accounts.actions";
+import { createAccount, deleteAccount } from "./Accounts.actions";
+import { Alert_Dialog } from "@/components/Alert_Dialog";
+import { Account } from "@prisma/client";
 
 // Validation schema using Zod
 export const SignInSchema = z
@@ -232,5 +234,36 @@ export function AddAccount(props: {
         </Form>
       </DialogContent>
     </Dialog>
+  );
+}
+
+export function DeleteAccount({
+  mutate,
+  selectedAccount,
+}: {
+  mutate: () => void;
+  selectedAccount: Account;
+}) {
+  return (
+    <Alert_Dialog
+      title={"Are You Sure ?"}
+      variant="destructive"
+      description={"This action will remove the user and cannot be undone. "}
+      onConfirm={async () => {
+        if (selectedAccount) {
+          await deleteAccount(selectedAccount.id);
+          mutate();
+        }
+      }}
+      confirmText={"Delete"}
+    >
+      <Button
+        variant={"destructive"}
+        className=" bg-transparent hover:bg-background hover:text-destructive-foreground border-2"
+      >
+        <Trash />
+        <span className=" max-sm:hidden me-2 ">Delete</span>
+      </Button>
+    </Alert_Dialog>
   );
 }
