@@ -90,14 +90,10 @@ model Transaction {
 }
 
 model JobCard {
-  id          Int      @id @default(autoincrement())
-  date        DateTime
-  km          Int
-  operator    String
-  department  String
-  description String
-
-  type            String?
+  id              Int      @id @default(autoincrement())
+  date            DateTime @default(now())
+  department      String?
+  description     String?
   parts           Part[]
   totalAmount     Float
   nextServiceDate DateTime
@@ -106,7 +102,7 @@ model JobCard {
   updatedAt       DateTime @updatedAt
 
   // Foreign key relationship to Vehicle
-  vehicleId Int
+  vehicleId String
   Vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
 
   @@index([vehicleId])
@@ -114,19 +110,20 @@ model JobCard {
 }
 
 model Vehicle {
-  id          Int      @id @default(autoincrement())
-  vehicleCode String   @unique
-  make        String?
-  model       String?
-  year        Int?
-  mechanic    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(uuid())
+  vehicleNo String   @unique
+  type      String?
+  km        Int?
+  // ! Make sure Does the driver is recorded in Vehicle table? or in JobCard table?
+  driver    String?
+  mechanic  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Foreign key relationship to JobCard
   jobCards JobCard[]
 
-  @@index([vehicleCode])
+  @@index([vehicleNo])
 }
 
 model Part {
