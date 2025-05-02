@@ -163,23 +163,39 @@ export function AddVehicle(props: {
                 )}
               />
 
-              {/* Type */}
-              <Label htmlFor="type">Type</Label>
-              <Select
-                onValueChange={handleTypeChange}
-                defaultValue={form.getValues("type")}
-              >
-                <SelectTrigger
-                  id="type"
-                  className="w-full bg-card border-1 border-muted-foreground/50"
-                >
-                  <SelectValue placeholder="Select a role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Car">Car</SelectItem>
-                  <SelectItem value="Bus">Bus</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Vehicle Type</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        form.clearErrors("type");
+                      }}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="h-full w-full ">
+                          <SelectValue placeholder="Select service type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="Passenger Car">
+                          Passenger Car
+                        </SelectItem>
+                        <SelectItem value="Motorcycle">Motorcycle</SelectItem>
+                        <SelectItem value="Bus">Bus</SelectItem>
+                        <SelectItem value="Commercial Vehicle">
+                          Commercial Vehicle
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="h-5" />
+                  </FormItem>
+                )}
+              />
               <DialogFooter className="mt-5">
                 <Button
                   disabled={loading}
