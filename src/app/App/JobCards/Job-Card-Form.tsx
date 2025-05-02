@@ -40,6 +40,7 @@ import PartsTable from "./Parts-Table";
 import { File, SendHorizonal } from "lucide-react";
 import Link from "next/link";
 import { JobCard } from "@prisma/client";
+import { AutocompleteInput } from "@/components/Autocomplete";
 // Define the schema for the form
 const formSchema = z.object({
   date: z.string().min(1, { message: "Date is required" }),
@@ -276,7 +277,18 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                   <FormItem>
                     <FormLabel>Vehicle ID</FormLabel>
                     <FormControl>
-                      <Input
+                      <AutocompleteInput
+                        {...field}
+                        value={String(field.value)} // Convert value to string
+                        onChange={(e) => {
+                          field.onChange(e);
+                          form.clearErrors("vehicleId");
+                        }}
+                        readOnly={!editable}
+                        suggestions={["123", "456", "789"]} // Ensure suggestions are provided
+                      />
+
+                      {/* <Input
                         readOnly={!editable}
                         type="number"
                         {...field}
@@ -284,7 +296,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                           field.onChange(e);
                           form.clearErrors("vehicleId");
                         }}
-                      />
+                      /> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
