@@ -159,7 +159,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} >
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <CardContent className="pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">
             <div>
@@ -384,6 +384,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                             field.onChange(e);
                             form.clearErrors("description");
                           }}
+                          readOnly={!editable}
                         />
                       </FormControl>
                       <FormMessage />
