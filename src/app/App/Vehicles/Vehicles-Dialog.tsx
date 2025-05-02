@@ -141,6 +141,28 @@ export function AddVehicle(props: {
                 )}
               />
 
+              {/* mechanic */}
+              <FormField
+                control={form.control}
+                name="mechanic"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Mechanic</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="mechanic"
+                        type="text"
+                        className="border-1 border-muted-foreground/50"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage>
+                      {form.formState.errors.mechanic?.message}
+                    </FormMessage>
+                  </FormItem>
+                )}
+              />
+
               {/* Type */}
               <Label htmlFor="type">Type</Label>
               <Select
@@ -154,8 +176,8 @@ export function AddVehicle(props: {
                   <SelectValue placeholder="Select a role" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Admin">Car</SelectItem>
-                  <SelectItem value="User">Bus</SelectItem>
+                  <SelectItem value="Car">Car</SelectItem>
+                  <SelectItem value="Bus">Bus</SelectItem>
                 </SelectContent>
               </Select>
               <DialogFooter className="mt-5">
