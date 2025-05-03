@@ -42,21 +42,27 @@ import Link from "next/link";
 import { JobCard, Vehicle } from "@prisma/client";
 import { AutoComplete } from "@/components/Autocomplete";
 // Define the schema for the form
-const formSchema = z.object({
-  date: z.string().min(1, { message: "Date is required" }),
-  km: z.string().min(0, { message: "Kilometer reading is required" }),
-  operator: z.string().min(1, { message: "Operator name is required" }),
-  department: z.string().min(1, { message: "Department is required" }),
-  description: z.string().min(1, { message: "Description is required" }),
-  type: z.string().min(1, { message: "Service type is required" }),
-  vehicleId: z.string().min(1, { message: "Vehicle ID is required" }),
-  nextServiceDate: z
-    .string()
-    .min(0, { message: "Next service date is required" }),
-  nextServiceKm: z
-    .string()
-    .min(1, { message: "Next service kilometer is required" }),
-});
+const formSchema = z
+  .object({
+    date: z.string().min(1, { message: "Date is required" }),
+    km: z.number().min(1, { message: "Kilometer reading is required" }),
+    operator: z.string().min(1, { message: "Operator name is required" }),
+    department: z.string().min(1, { message: "Department is required" }),
+    description: z.string().min(1, { message: "Description is required" }),
+    type: z.string().min(1, { message: "Service type is required" }),
+    vehicleId: z.string().min(1, { message: "Vehicle ID is required" }),
+    nextServiceDate: z
+      .string()
+      .min(1, { message: "Next service date is required" }),
+    nextServiceKm: z
+      .number()
+      .min(1, { message: "Next service kilometer is required" }),
+  })
+  .refine((data) => data.nextServiceKm > data.km, {
+    message:
+      "Next service kilometer must be greater than current kilometer reading",
+    path: ["nextServiceKm"], // This targets the error to the nextServiceKm field
+  });
 
 // Define the part type
 export type Part = {
@@ -114,14 +120,14 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       date: new Date().toISOString().split("T")[0],
-      km: "",
+      km: 0,
       operator: "",
       department: "",
       description: "",
       type: "",
       vehicleId: "",
       nextServiceDate: "",
-      nextServiceKm: "",
+      nextServiceKm: 0,
     },
   });
 
@@ -238,11 +244,12 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                     <FormControl>
                       <Input
                         disabled={!editable}
-                        type="number"
+                        type="text"
                         {...field}
                         onChange={(e) => {
-                          field.onChange(e);
-                          form.clearErrors("km");
+                          const intValue = parseInt(e.target.value, 10) || ""; // Convert to integer
+                          field.onChange(intValue); // Update the form value
+                          form.clearErrors("km"); // Clear any validation errors
                         }}
                       />
                     </FormControl>
@@ -357,9 +364,9 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                     <FormLabel>Next Service Date</FormLabel>
                     <FormControl>
                       <Input
+                        {...field}
                         disabled={!editable}
                         type="date"
-                        {...field}
                         onChange={(e) => {
                           field.onChange(e);
                           form.clearErrors("nextServiceDate");
@@ -379,12 +386,13 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                     <FormLabel>Next Service KM</FormLabel>
                     <FormControl>
                       <Input
-                        type="number"
-                        disabled={!editable}
                         {...field}
+                        type="text"
+                        disabled={!editable}
                         onChange={(e) => {
-                          field.onChange(e);
-                          form.clearErrors("nextServiceKm");
+                          const intValue = parseInt(e.target.value, 10) || ""; // Convert to integer
+                          field.onChange(intValue); // Update the form value
+                          form.clearErrors("nextServiceKm"); // Clear any validation errors
                         }}
                       />
                     </FormControl>

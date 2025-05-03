@@ -43,23 +43,15 @@ export function AutoComplete({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
+        <Input
+          type="text"
+          role="combobox"
+          value={value}
+          readOnly={true}
           disabled={disabled}
-          variant={"ghost"}
-          className="h-full w-full p-0 m-0"
-        >
-          <Input
-            type="text"
-            role="combobox"
-            aria-expanded={open}
-            value={value}
-            readOnly={true}
-            onChange={(e) => !disabled && onChange(e.target.value)}
-            disabled={disabled}
-            placeholder="Select Vehicle"
-            {...props}
-          />
-        </Button>
+          placeholder="Select Vehicle"
+          {...props}
+        />
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
