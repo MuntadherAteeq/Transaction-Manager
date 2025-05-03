@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -39,30 +39,23 @@ import { toast } from "sonner";
 import PartsTable from "./Parts-Table";
 import { File, SendHorizonal } from "lucide-react";
 import Link from "next/link";
-import { JobCard } from "@prisma/client";
-import { AutocompleteInput } from "@/components/Autocomplete";
+import { JobCard, Vehicle } from "@prisma/client";
+import { AutoComplete } from "@/components/Autocomplete";
 // Define the schema for the form
 const formSchema = z.object({
   date: z.string().min(1, { message: "Date is required" }),
-  km: z
-    .string()
-    .min(1, { message: "Kilometer reading is required" })
-    .transform(Number),
+  km: z.string().min(0, { message: "Kilometer reading is required" }),
   operator: z.string().min(1, { message: "Operator name is required" }),
   department: z.string().min(1, { message: "Department is required" }),
   description: z.string().min(1, { message: "Description is required" }),
   type: z.string().min(1, { message: "Service type is required" }),
-  vehicleId: z
-    .string()
-    .min(1, { message: "Vehicle ID is required" })
-    .transform(Number),
+  vehicleId: z.string().min(1, { message: "Vehicle ID is required" }),
   nextServiceDate: z
     .string()
-    .min(1, { message: "Next service date is required" }),
+    .min(0, { message: "Next service date is required" }),
   nextServiceKm: z
     .string()
-    .min(1, { message: "Next service kilometer is required" })
-    .transform(Number),
+    .min(1, { message: "Next service kilometer is required" }),
 });
 
 // Define the part type
@@ -81,6 +74,36 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
   const [parts, setParts] = useState<Part[]>([]);
   const [totalAmount, setTotalAmount] = useState(0);
 
+  const [vehicles, setVehicles] = useState<Vehicle[] | undefined>(undefined);
+  const vehiclesNo = useMemo(() => {
+    if (!vehicles) return undefined;
+    return vehicles.map((vehicle) => vehicle.vehicleNo);
+  }, [vehicles]);
+
+  // Fetch vehicles from the API
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const response = await fetch("/api/vehicles", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch vehicles");
+        }
+        const data = await response.json();
+        console.log("Fetched vehicles:", data);
+        setVehicles(data);
+      } catch (error) {
+        console.error("Error fetching vehicles:", error);
+      }
+    };
+
+    fetchVehicles();
+  }, []);
+
   // ![TODO] - Delete this useEffect when the form is ready
   useEffect(() => {
     setEditable(true);
@@ -91,14 +114,14 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       date: new Date().toISOString().split("T")[0],
-      km: 0,
+      km: "",
       operator: "",
       department: "",
       description: "",
       type: "",
-      vehicleId: 0,
+      vehicleId: "",
       nextServiceDate: "",
-      nextServiceKm: 0,
+      nextServiceKm: "",
     },
   });
 
@@ -199,7 +222,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                   <FormItem>
                     <FormLabel>Date</FormLabel>
                     <FormControl>
-                      <Input readOnly={!editable} type="date" {...field} />
+                      <Input disabled={!editable} type="date" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -214,7 +237,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                     <FormLabel>Kilometer Reading</FormLabel>
                     <FormControl>
                       <Input
-                        readOnly={!editable}
+                        disabled={!editable}
                         type="number"
                         {...field}
                         onChange={(e) => {
@@ -236,7 +259,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                     <FormLabel>Operator</FormLabel>
                     <FormControl>
                       <Input
-                        readOnly={!editable}
+                        disabled={!editable}
                         {...field}
                         onChange={(e) => {
                           field.onChange(e);
@@ -257,7 +280,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                     <FormLabel>Site / Department</FormLabel>
                     <FormControl>
                       <Input
-                        readOnly={!editable}
+                        disabled={!editable}
                         {...field}
                         onChange={(e) => {
                           field.onChange(e);
@@ -277,26 +300,14 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                   <FormItem>
                     <FormLabel>Vehicle ID</FormLabel>
                     <FormControl>
-                      <AutocompleteInput
+                      <AutoComplete
                         {...field}
-                        value={String(field.value)} // Convert value to string
                         onChange={(e) => {
                           field.onChange(e);
                           form.clearErrors("vehicleId");
                         }}
-                        readOnly={!editable}
-                        suggestions={["123", "456", "789"]} // Ensure suggestions are provided
+                        disabled={!editable}
                       />
-
-                      {/* <Input
-                        readOnly={!editable}
-                        type="number"
-                        {...field}
-                        onChange={(e) => {
-                          field.onChange(e);
-                          form.clearErrors("vehicleId");
-                        }}
-                      /> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -346,7 +357,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                     <FormLabel>Next Service Date</FormLabel>
                     <FormControl>
                       <Input
-                        readOnly={!editable}
+                        disabled={!editable}
                         type="date"
                         {...field}
                         onChange={(e) => {
@@ -369,6 +380,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                     <FormControl>
                       <Input
                         type="number"
+                        disabled={!editable}
                         {...field}
                         onChange={(e) => {
                           field.onChange(e);
@@ -392,11 +404,11 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                         <Textarea
                           rows={3}
                           {...field}
+                          disabled={!editable}
                           onChange={(e) => {
                             field.onChange(e);
                             form.clearErrors("description");
                           }}
-                          readOnly={!editable}
                         />
                       </FormControl>
                       <FormMessage />
