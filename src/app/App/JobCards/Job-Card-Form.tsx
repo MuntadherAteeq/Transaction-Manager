@@ -427,7 +427,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
             </CardContent>
           </Card>
         </CardContent>
-        <PartsTable />
+        <PartsTable editable={editable} />
       </form>
     </Form>
   );
