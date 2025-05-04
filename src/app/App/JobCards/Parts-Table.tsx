@@ -41,6 +41,16 @@ export default function PartTable(props: {
   }, []);
 
   function onCellValueChanged(params: any) {
+    // check if the cell value is changed and the row is empty and not the last row then remove the row
+    if (params.data.qty === 0 && params.data.rate === 0) {
+      const updatedRowData = [...rowData];
+      const index = updatedRowData.findIndex((row) => row === params.data);
+      if (index > -1) {
+        updatedRowData.splice(index, 1);
+        setRowData(updatedRowData);
+      }
+    }
+
     //  get last element of the row data
     const lastElement = rowData[rowData.length - 1];
     console.log("lastElement", lastElement);
