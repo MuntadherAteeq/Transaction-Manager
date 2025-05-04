@@ -53,7 +53,6 @@ export default function PartTable(props: {
 
     //  get last element of the row data
     const lastElement = rowData[rowData.length - 1];
-    console.log("lastElement", lastElement);
     // check if the last all fields are filled
     if (
       lastElement.partCode &&
