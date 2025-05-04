@@ -40,7 +40,6 @@ import PartsTable from "./Parts-Table";
 import { File, SendHorizonal } from "lucide-react";
 import Link from "next/link";
 import { JobCard, Vehicle } from "@prisma/client";
-import { AutoComplete } from "@/components/Autocomplete";
 // Define the schema for the form
 const formSchema = z
   .object({
@@ -307,13 +306,13 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                   <FormItem>
                     <FormLabel>Vehicle ID</FormLabel>
                     <FormControl>
-                      <AutoComplete
+                      <Input
+                        disabled={!editable}
                         {...field}
                         onChange={(e) => {
                           field.onChange(e);
                           form.clearErrors("vehicleId");
                         }}
-                        disabled={!editable}
                       />
                     </FormControl>
                     <FormMessage />
