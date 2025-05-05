@@ -12,6 +12,7 @@ export default async function JobCardPreview(props: any) {
     },
     include: {
       Vehicle: true,
+      parts: true,
     },
   });
 
@@ -19,5 +20,5 @@ export default async function JobCardPreview(props: any) {
     redirect("/App/JobCards");
   }
 
-  return <JobCardForm editable={false} />;
+  return <JobCardForm editable={false} jobCard={jobCard} />;
 }

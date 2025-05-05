@@ -151,30 +151,11 @@ export default function PartTable(props: {
 
   return (
     <div className="w-full h-full p-6">
-      {/* <Card className="rounded-b-none p-3 flex flex-row gap-3">
-        <Button
-          type="button"
-          variant={"ghost"}
-          className="border-1 hover:border-1 hover:text-primary"
-        >
-          <PlusCircleIcon className="w-4 h-4 " />
-          New
-        </Button>
-        <Button
-          variant={"ghost"}
-          className="border-1 hover:border-1 hover:text-destructive-foreground"
-          type="button"
-        >
-          <Trash />
-          Delete
-        </Button>
-      </Card> */}
       <AgGridReact
         theme={tableTheme}
         rowData={rowData}
         columnDefs={colDefs}
         onCellValueChanged={onCellValueChanged}
-        // rowSelection={rowSelection}
       />
     </div>
   );

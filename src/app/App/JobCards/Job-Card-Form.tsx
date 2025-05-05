@@ -109,11 +109,6 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
     fetchVehicles();
   }, []);
 
-  // ![TODO] - Delete this useEffect when the form is ready
-  useEffect(() => {
-    setEditable(true);
-  }, []);
-
   // Initialize the form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -168,6 +163,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
         })),
       };
 
+      console.log("Job Card Data:", jobCardData);
       // Here you would typically send the data to your API
 
       // Show success message
@@ -426,7 +422,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
             </CardContent>
           </Card>
         </CardContent>
-        <PartsTable editable={editable} />
+        <PartsTable rowData={parts} setRowData={setParts} editable={editable} />
       </form>
     </Form>
   );
