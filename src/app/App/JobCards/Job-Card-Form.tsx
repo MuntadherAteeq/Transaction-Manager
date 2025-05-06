@@ -40,6 +40,7 @@ import PartsTable from "./Parts-Table";
 import { File, SendHorizonal } from "lucide-react";
 import Link from "next/link";
 import { JobCard, Vehicle } from "@prisma/client";
+import { useJobCardForm } from "./form-store";
 // Define the schema for the form
 const formSchema = z
   .object({
@@ -75,39 +76,9 @@ export type Part = {
 
 export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
   const [editable, setEditable] = useState(props.editable ?? false);
-  const router = useRouter();
-  const [parts, setParts] = useState<Part[]>([]);
-  const [totalAmount, setTotalAmount] = useState(0);
-
-  const [vehicles, setVehicles] = useState<Vehicle[] | undefined>(undefined);
-  const vehiclesNo = useMemo(() => {
-    if (!vehicles) return undefined;
-    return vehicles.map((vehicle) => vehicle.vehicleNo);
-  }, [vehicles]);
-
+  const { parts, setParts, totalAmount, formValues, setFormValues } =
+    useJobCardForm();
   // Fetch vehicles from the API
-  useEffect(() => {
-    const fetchVehicles = async () => {
-      try {
-        const response = await fetch("/api/vehicles", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch vehicles");
-        }
-        const data = await response.json();
-        console.log("Fetched vehicles:", data);
-        setVehicles(data);
-      } catch (error) {
-        console.error("Error fetching vehicles:", error);
-      }
-    };
-
-    fetchVehicles();
-  }, []);
 
   // Initialize the form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -124,18 +95,6 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
       nextServiceKm: 0,
     },
   });
-
-  // Update total amount when parts change
-  const updateTotalAmount = (newParts: Part[]) => {
-    const total = newParts.reduce((sum, part) => sum + part.amount, 0);
-    setTotalAmount(total);
-  };
-
-  // Handle parts changes
-  const handlePartsChange = (newParts: Part[]) => {
-    setParts(newParts);
-    updateTotalAmount(newParts);
-  };
 
   // Handle form submission
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -422,7 +381,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
             </CardContent>
           </Card>
         </CardContent>
-        <PartsTable rowData={parts} setRowData={setParts} editable={editable} />
+        <PartsTable editable={editable} />
       </form>
     </Form>
   );

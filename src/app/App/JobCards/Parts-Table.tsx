@@ -15,15 +15,7 @@ import { useTableTheme } from "@/hooks/use-TableTheme";
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 
-export default function PartTable(props: {
-  editable?: boolean;
-  onRowDataChange?: (rowData: any) => void;
-  rowData?: any[];
-  setRowData?: (rowData: any[]) => void;
-  onCellValueChanged?: (params: any) => void;
-  onRowSelected?: (params: any) => void;
-  onRowDataUpdated?: (params: any) => void;
-}) {
+export default function PartTable(props: { editable?: boolean }) {
   const tableTheme = useTableTheme();
 
   const row = {
