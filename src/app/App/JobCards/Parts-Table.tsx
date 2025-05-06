@@ -1,7 +1,7 @@
 "use client";
 
 import { AgGridReact } from "ag-grid-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   AllCommunityModule,
@@ -11,19 +11,22 @@ import {
 } from "ag-grid-community";
 import { ClientSideRowModelModule } from "ag-grid-community"; // Import the missing module
 import { useTableTheme } from "@/hooks/use-TableTheme";
+import { useJobCardForm } from "./form-store";
 
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 
 export default function PartTable(props: { editable?: boolean }) {
+  const { parts, setParts, formValues, setFormValues, totalAmount } =
+    useJobCardForm();
   const tableTheme = useTableTheme();
 
   const row = {
-    partCode: null,
-    rate: null,
-    description: null,
-    qty: null,
-    amount: null,
+    partCode: "",
+    description: "",
+    quantity: 0,
+    rate: 0,
+    amount: 0,
   };
 
   const rowSelection = useMemo<RowSelectionOptions>(() => {
@@ -34,30 +37,34 @@ export default function PartTable(props: { editable?: boolean }) {
 
   function onCellValueChanged(params: any) {
     // check if the cell value is changed and the row is empty and not the last row then remove the row
-    if (params.data.qty === 0 && params.data.rate === 0) {
-      const updatedRowData = [...rowData];
+    if (
+      params.data.quantity === 0 &&
+      params.data.rate === 0 &&
+      params.data.description === null &&
+      params.data.partCode === null
+    ) {
+      const updatedRowData = [...parts];
       const index = updatedRowData.findIndex((row) => row === params.data);
       if (index > -1) {
         updatedRowData.splice(index, 1);
-        setRowData(updatedRowData);
+        setParts(updatedRowData);
       }
     }
 
     //  get last element of the row data
-    const lastElement = rowData[rowData.length - 1];
+    const lastElement = parts[parts.length - 1];
     // check if the last all fields are filled
     if (
       lastElement.partCode &&
       lastElement.rate &&
       lastElement.description &&
-      lastElement.qty
+      lastElement.quantity
     ) {
       // add new empty row data
-      setRowData((prevRowData) => [...prevRowData, row]);
+      setParts((prev) => [...prev, row]);
     }
+    console.log(parts);
   }
-
-  const [rowData, setRowData] = useState<(typeof row)[]>([row]);
 
   // Column Definitions: Defines the columns to be displayed.
   const colDefs = useMemo<ColDef[]>(
@@ -82,22 +89,25 @@ export default function PartTable(props: { editable?: boolean }) {
       // Quantity column
       {
         flex: 1,
-        field: "qty",
+        field: "quantity",
+        headerName: "Qty",
         editable: props?.editable !== undefined ? props.editable : true,
         sortable: true,
         filter: true,
 
-        valueGetter: (params: { data: { qty: number } }) => {
-          return params.data?.qty ? params.data.qty : undefined;
+        valueGetter: (params: { data: { quantity: number } }) => {
+          return params.data?.quantity ? params.data.quantity : undefined;
         },
-        valueSetter: (params: { data: { qty: number }; newValue: number }) => {
+        valueSetter: (params: {
+          data: { quantity: number };
+          newValue: number;
+        }) => {
           if (params.data) {
-            params.data.qty = Number(params.newValue);
+            params.data.quantity = Number(params.newValue);
             return true;
           }
           return false;
         },
-        onCellValueChanged: (params: { data: { amount: number } }) => {},
       },
       // Rate column
       {
@@ -116,7 +126,6 @@ export default function PartTable(props: { editable?: boolean }) {
           }
           return false;
         },
-        onCellValueChanged: (params: { data: { rate: number } }) => {},
       },
       // amount column
       {
@@ -145,7 +154,7 @@ export default function PartTable(props: { editable?: boolean }) {
     <div className="w-full h-full p-6">
       <AgGridReact
         theme={tableTheme}
-        rowData={rowData}
+        rowData={parts}
         columnDefs={colDefs}
         onCellValueChanged={onCellValueChanged}
       />

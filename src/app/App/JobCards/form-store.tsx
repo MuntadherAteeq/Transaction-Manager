@@ -18,6 +18,7 @@ const formSchema = z.object({
   nextServiceKm: z
     .number()
     .min(1, { message: "Next service kilometer is required" }),
+  totalAmount: z.number().min(0, { message: "Total amount is required" }),
 });
 
 // Define the part type
@@ -63,9 +64,18 @@ export function JobCardFormProvider({
     vehicleId: "",
     nextServiceDate: "",
     nextServiceKm: 0,
+    totalAmount: 0,
   });
 
-  const [parts, setParts] = useState<Part[]>([]);
+  const [parts, setParts] = useState<Part[]>([
+    {
+      partCode: "",
+      description: "",
+      quantity: 0,
+      rate: 0,
+      amount: 0,
+    },
+  ]);
   const [totalAmount, setTotalAmount] = useState(0);
 
   const updateTotalAmount = (newParts: Part[]) => {
