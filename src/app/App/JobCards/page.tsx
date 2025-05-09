@@ -10,7 +10,7 @@ import {
   RowSelectionOptions,
 } from "ag-grid-community";
 import { useTableTheme } from "@/hooks/use-TableTheme";
-import { Edit, Plus, Trash } from "lucide-react";
+import { Edit, FileText, Plus, Trash } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,13 +29,13 @@ export default function AccountTable() {
 
   const [rowData, setRowData] = useState<JobCard[]>([]);
 
-  const [selectedRow, setSelectedRow] = useState<JobCard | null>(null);
+  // const [selectedRow, setSelectedRow] = useState<JobCard | null>(null);
 
   const router = useRouter();
 
-  const onRowSelected = (event: any) => {
-    setSelectedRow(event.data);
-  };
+  // const onRowSelected = (event: any) => {
+  //   setSelectedRow(event.data);
+  // };
 
   const { data } = useSWR("/api/jobCards", {
     fetcher: (url: string) => fetch(url).then((res) => res.json()),
@@ -50,11 +50,12 @@ export default function AccountTable() {
   const colDefs: ColDef[] = [
     {
       field: "id",
+      headerName: "Card No",
       sortable: true,
       lockPosition: true,
       filter: true,
       flex: isMobile ? 0 : undefined,
-      width: !isMobile ? 100 : undefined,
+      width: !isMobile ? 105 : undefined,
     },
     {
       field: "date",
@@ -73,6 +74,7 @@ export default function AccountTable() {
     },
     {
       field: "operator",
+      headerName: "Driver Name",
       sortable: true,
       filter: true,
       lockPosition: true,
@@ -80,6 +82,7 @@ export default function AccountTable() {
     },
     {
       field: "department",
+      headerName: "Site/Department",
       sortable: true,
       filter: true,
       lockPosition: true,
@@ -93,11 +96,45 @@ export default function AccountTable() {
       flex: isMobile ? 0 : 1,
     },
     {
-      field: "totalAmount",
-      headerName: "",
+      field: "type",
+      headerName: "Vehicle Type",
       resizable: false,
       lockPosition: true,
       flex: isMobile ? 0 : 1,
+    },
+    {
+      field: "totalAmount",
+      headerName: "Total Amount",
+      resizable: false,
+      lockPosition: true,
+      flex: isMobile ? 0 : 1,
+      cellRenderer: (params: any) => {
+        return (
+          <div className="flex flex-row items-center justify-center w-full h-full space-x-2">
+            <span>{Number(params.value).toFixed(3) + " BD"}</span>
+          </div>
+        );
+      },
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      cellRenderer: (params: any) => {
+        return (
+          <div className="flex flex-row items-center justify-center w-full h-full space-x-2">
+            <Button
+              variant={"ghost"}
+              className=" bg-transparent hover:bg-background  border "
+              onClick={() => {
+                router.push(`/App/JobCards/${params.data.id}`);
+              }}
+            >
+              <FileText />
+              <span className="max-sm:hidden me-2 ">View</span>
+            </Button>
+          </div>
+        );
+      },
     },
   ];
 
@@ -147,8 +184,8 @@ export default function AccountTable() {
         // This will prevent the column from removed when dragged out
         suppressDragLeaveHidesColumns
         // this will allow us to select multiple rows
-        rowSelection={rowSelection}
-        onRowSelected={onRowSelected}
+        // rowSelection={rowSelection}
+        // onRowSelected={onRowSelected}
       />
     </div>
   );

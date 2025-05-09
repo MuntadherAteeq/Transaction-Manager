@@ -108,17 +108,6 @@ model JobCard {
   @@index([date])
 }
 
-model Vehicle {
-  id        String   @id @default(uuid())
-  vehicleNo String   @unique
-  type      String?
-  km        Int?
-  driver    String?
-  mechanic  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model Part {
   id          String   @id @default(uuid())
   partCode    String?
@@ -133,4 +122,15 @@ model Part {
   jobCardId Int?
 
   @@index([partCode])
+}
+
+model Vehicle {
+  id        String   @id @default(uuid())
+  vehicleNo String   @unique
+  type      String?
+  km        Int?
+  driver    String?
+  mechanic  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

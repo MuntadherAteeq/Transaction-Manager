@@ -115,7 +115,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">
             <div>
               <h2 className="text-4xl font-bold tracking-tight mb-4">
-                No: 0001
+                No: {props.jobCard?.id.toString().padStart(5, "0")}
               </h2>
             </div>
             <div>
@@ -166,7 +166,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                   </DialogContent>
                 </Dialog>
               ) : (
-                <Link href="/jobCards/invoice">
+                <Link href={`/App/JobCards/${props.jobCard?.id}/Invoice`}>
                   <Button
                     variant="success"
                     className="mb-4 flex items-center justify-center"
@@ -188,7 +188,17 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                   <FormItem>
                     <FormLabel>Date</FormLabel>
                     <FormControl>
-                      <Input disabled={!editable} type="date" {...field} />
+                      {props.jobCard?.date ? (
+                        <Input
+                          disabled={true}
+                          type="text"
+                          value={new Date(
+                            props.jobCard.date
+                          ).toLocaleDateString("en-GB")}
+                        />
+                      ) : (
+                        <Input disabled={!editable} type="date" {...field} />
+                      )}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
