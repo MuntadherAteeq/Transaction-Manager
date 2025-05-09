@@ -10,7 +10,7 @@ import {
   RowSelectionOptions,
 } from "ag-grid-community";
 import { useTableTheme } from "@/hooks/use-TableTheme";
-import { Edit, FileText, Plus, Trash } from "lucide-react";
+import { Edit, FileText, Menu, Plus, Trash } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,6 +18,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { JobCard } from "@prisma/client";
 import useSWR from "swr";
 import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -63,7 +69,6 @@ export default function AccountTable() {
       cellClass: "w-full h-full",
       lockPosition: true,
       flex: isMobile ? 0 : 1,
-      filter: false,
       cellRenderer: (params: any) => {
         return new Date(params.value).toLocaleDateString("en-GB", {
           year: "numeric",
@@ -119,19 +124,41 @@ export default function AccountTable() {
     {
       field: "actions",
       headerName: "Actions",
+      width: 100,
       cellRenderer: (params: any) => {
         return (
           <div className="flex flex-row items-center justify-center w-full h-full space-x-2">
-            <Button
-              variant={"ghost"}
-              className=" bg-transparent hover:bg-background  border "
-              onClick={() => {
-                router.push(`/App/JobCards/${params.data.id}`);
-              }}
-            >
-              <FileText />
-              <span className="max-sm:hidden me-2 ">View</span>
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="p-0">
+                  <Menu size={20} />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  onClick={() => router.push(`/App/JobCards/${params.data.id}`)}
+                >
+                  <FileText size={20} className="mr-2" />
+                  View
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() =>
+                    router.push(`/App/JobCards/${params.data.id}/edit`)
+                  }
+                >
+                  <Edit size={20} className="mr-2" />
+                  Edit
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    // handle delete
+                  }}
+                >
+                  <Trash size={20} className="mr-2" />
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         );
       },
