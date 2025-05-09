@@ -90,16 +90,16 @@ model Transaction {
 }
 
 model JobCard {
-  id              Int      @id @default(autoincrement())
-  date            DateTime @default(now())
+  id              Int       @id @default(autoincrement())
+  date            DateTime  @default(now())
   department      String?
   description     String?
   parts           Part[]
-  totalAmount     Float
-  nextServiceDate DateTime
-  nextServiceKm   Int
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  totalAmount     Float?
+  nextServiceDate DateTime?
+  nextServiceKm   Int?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   // Foreign key relationship to Vehicle
   vehicleId String

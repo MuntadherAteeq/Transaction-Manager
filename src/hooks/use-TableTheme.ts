@@ -11,6 +11,7 @@ export function useTableTheme() {
     oddRowBackgroundColor: "#131313",
     headerColumnResizeHandleColor: "#a1a1aa",
     wrapperBorderRadius: "0px",
+    listItemHeight: "30px",
     columnBorder: {
       color: "#2b2b2b",
       width: "1px",

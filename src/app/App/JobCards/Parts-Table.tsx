@@ -17,8 +17,7 @@ import { useJobCardForm } from "./form-store";
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 
 export default function PartTable(props: { editable?: boolean }) {
-  const { parts, setParts, formValues, setFormValues, totalAmount } =
-    useJobCardForm();
+  const { parts, setParts, formValues, setFormValues } = useJobCardForm();
   const tableTheme = useTableTheme();
 
   const row = {
@@ -45,6 +44,11 @@ export default function PartTable(props: { editable?: boolean }) {
     ) {
       const updatedRowData = [...parts];
       const index = updatedRowData.findIndex((row) => row === params.data);
+      parts.forEach((part) => {
+        const updatedAmount =
+          part.rate && part.quantity ? (part.rate / 1000) * part.quantity : 0;
+        part.amount = updatedAmount;
+      });
       if (index > -1) {
         updatedRowData.splice(index, 1);
         setParts(updatedRowData);
@@ -63,8 +67,11 @@ export default function PartTable(props: { editable?: boolean }) {
       // add new empty row data
       setParts((prev) => [...prev, row]);
     }
-    console.log(parts);
   }
+
+  useEffect(() => {
+    console.log("parts", parts);
+  }, [parts]);
 
   // Column Definitions: Defines the columns to be displayed.
   const colDefs = useMemo<ColDef[]>(
@@ -130,17 +137,23 @@ export default function PartTable(props: { editable?: boolean }) {
       // amount column
       {
         field: "amount",
-        valueGetter: (params: { data: { rate: number; qty: number } }) => {
-          if (params.data?.rate && params.data?.qty) {
-            return `${((params.data.rate / 1000) * params.data.qty).toFixed(
-              3
-            )} BD`;
+        valueGetter: (params: { data: { rate: number; quantity: number } }) => {
+          if (params.data?.rate && params.data?.quantity) {
+            return `${(
+              (params.data.rate / 1000) *
+              params.data.quantity
+            ).toFixed(3)} BD`;
           }
           return "0.000 BD";
         },
-        valueSetter: (params: { data: { rate: number }; newValue: number }) => {
+        valueSetter: (params: {
+          data: { rate: number; quantity: number; amount: number };
+          newValue: number;
+        }) => {
           if (params.data) {
-            params.data.rate = Number((params.newValue * 1000).toFixed(0));
+            params.data.amount = Number(
+              (params.data.rate / 1000) * params.data.quantity
+            );
             return true;
           }
           return false;
@@ -152,6 +165,14 @@ export default function PartTable(props: { editable?: boolean }) {
 
   return (
     <div className="w-full h-full p-6">
+      <div className="grid grid-cols-5 bg-card p-4 border  rounded-t-2xl">
+        <div className="col-span-3"></div>
+        <div className="col-span-3"></div>
+        <div className="font-semibold text-right">Total Amount:</div>
+        <div className="text-right font-medium">
+          {formValues.totalAmount} BD
+        </div>
+      </div>
       <AgGridReact
         theme={tableTheme}
         rowData={parts}

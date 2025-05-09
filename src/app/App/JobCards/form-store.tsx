@@ -1,24 +1,61 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { z } from "zod";
 
 // Define the schema for the form
-const formSchema = z.object({
-  date: z.string().min(1, { message: "Date is required" }),
-  km: z.number().min(1, { message: "Kilometer reading is required" }),
-  operator: z.string().min(1, { message: "Operator name is required" }),
-  department: z.string().min(1, { message: "Department is required" }),
-  description: z.string().min(1, { message: "Description is required" }),
-  type: z.string().min(1, { message: "Service type is required" }),
-  vehicleId: z.string().min(1, { message: "Vehicle ID is required" }),
+export const formSchema = z.object({
+  date: z.string().min(1, { message: "Date is required" }).optional(),
+  km: z
+    .number()
+    .min(1, { message: "Kilometer reading is required" })
+    .optional(),
+  operator: z
+    .string()
+    .min(1, { message: "Operator name is required" })
+    .optional(),
+  department: z
+    .string()
+    .min(1, { message: "Department is required" })
+    .optional(),
+  description: z
+    .string()
+    .min(1, { message: "Description is required" })
+    .optional(),
+  type: z.string().min(1, { message: "Service type is required" }).optional(),
+  vehicleId: z
+    .string()
+    .min(1, { message: "Vehicle ID is required" })
+    .optional(),
+  totalAmount: z
+    .number()
+    .min(0, { message: "Total amount is required" })
+    .optional(),
   nextServiceDate: z
     .string()
-    .min(1, { message: "Next service date is required" }),
+    .min(1, { message: "Next service date is required" })
+    .optional(),
   nextServiceKm: z
     .number()
-    .min(1, { message: "Next service kilometer is required" }),
-  totalAmount: z.number().min(0, { message: "Total amount is required" }),
+    .min(1, { message: "Next service kilometer is required" })
+    .optional(),
+  parts: z.array(
+    z
+      .object({
+        partCode: z.string().min(1, { message: "Part code is required" }),
+        description: z.string().min(1, { message: "Description is required" }),
+        quantity: z.number().min(1, { message: "Quantity is required" }),
+        rate: z.number().min(1, { message: "Rate is required" }),
+        amount: z.number().min(1, { message: "Amount is required" }),
+      })
+      .optional()
+  ),
 });
 
 // Define the part type
@@ -39,8 +76,6 @@ interface JobCardFormContextType {
   >;
   parts: Part[];
   setParts: React.Dispatch<React.SetStateAction<Part[]>>;
-  totalAmount: number;
-  updateTotalAmount: (newParts: Part[]) => void;
 }
 
 // Create the context
@@ -65,6 +100,7 @@ export function JobCardFormProvider({
     nextServiceDate: "",
     nextServiceKm: 0,
     totalAmount: 0,
+    parts: [],
   });
 
   const [parts, setParts] = useState<Part[]>([
@@ -76,12 +112,26 @@ export function JobCardFormProvider({
       amount: 0,
     },
   ]);
-  const [totalAmount, setTotalAmount] = useState(0);
+  useEffect(() => {
+    let total = 0;
+    parts.forEach((part) => {
+      const updatedAmount =
+        part.rate && part.quantity ? (part.rate / 1000) * part.quantity : 0;
+      part.amount = updatedAmount;
+      total += updatedAmount;
+    });
 
-  const updateTotalAmount = (newParts: Part[]) => {
-    const total = newParts.reduce((sum, part) => sum + part.amount, 0);
-    setTotalAmount(total);
-  };
+    setFormValues((prev) => ({
+      ...prev,
+      totalAmount: total,
+      parts: parts,
+    }));
+  }, [parts]);
+
+  // ! Remove this useEffect when you are done with the form
+  useEffect(() => {
+    console.log(formValues);
+  }, [formValues]);
 
   return (
     <JobCardFormContext.Provider
@@ -90,8 +140,6 @@ export function JobCardFormProvider({
         setFormValues,
         parts,
         setParts,
-        totalAmount,
-        updateTotalAmount,
       }}
     >
       {children}

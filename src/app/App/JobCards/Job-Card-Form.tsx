@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -39,45 +38,13 @@ import { toast } from "sonner";
 import PartsTable from "./Parts-Table";
 import { File, SendHorizonal } from "lucide-react";
 import Link from "next/link";
-import { JobCard, Vehicle } from "@prisma/client";
-import { useJobCardForm } from "./form-store";
+import { JobCard } from "@prisma/client";
+import { formSchema, useJobCardForm } from "./form-store";
 // Define the schema for the form
-const formSchema = z
-  .object({
-    date: z.string().min(1, { message: "Date is required" }),
-    km: z.number().min(1, { message: "Kilometer reading is required" }),
-    operator: z.string().min(1, { message: "Operator name is required" }),
-    department: z.string().min(1, { message: "Department is required" }),
-    description: z.string().min(1, { message: "Description is required" }),
-    type: z.string().min(1, { message: "Service type is required" }),
-    vehicleId: z.string().min(1, { message: "Vehicle ID is required" }),
-    nextServiceDate: z
-      .string()
-      .min(1, { message: "Next service date is required" }),
-    nextServiceKm: z
-      .number()
-      .min(1, { message: "Next service kilometer is required" }),
-  })
-  .refine((data) => data.nextServiceKm > data.km, {
-    message:
-      "Next service kilometer must be greater than current kilometer reading",
-    path: ["nextServiceKm"], // This targets the error to the nextServiceKm field
-  });
-
-// Define the part type
-export type Part = {
-  id?: number;
-  partCode: string;
-  description: string;
-  quantity: number;
-  rate: number;
-  amount: number;
-};
 
 export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
   const [editable, setEditable] = useState(props.editable ?? false);
-  const { parts, setParts, totalAmount, formValues, setFormValues } =
-    useJobCardForm();
+  const { parts, setParts, formValues, setFormValues } = useJobCardForm();
   // Fetch vehicles from the API
 
   // Initialize the form
@@ -93,12 +60,20 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
       vehicleId: "",
       nextServiceDate: "",
       nextServiceKm: 0,
+      totalAmount: 0,
+      parts: [],
     },
   });
 
   // Handle form submission
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // set the form value parts to the parts state and remove the last part
+    form.setValue("parts", parts.slice(0, -1));
+    form.setValue("totalAmount", formValues.totalAmount); // Set the total amount in the form values
+    console.log("Form values:", form.getValues());
     try {
+      // Prepare the data for submission
+
       // Validate the form
       const isValid = await form.trigger();
       if (!isValid) {
@@ -108,22 +83,6 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
 
         return;
       }
-
-      // Prepare the data for submission
-      const jobCardData = {
-        ...values,
-        totalAmount,
-        parts: parts.map((part) => ({
-          partCode: part.partCode,
-          description: part.description,
-          quantity: part.quantity,
-          rate: part.rate,
-          amount: part.amount,
-        })),
-      };
-
-      console.log("Job Card Data:", jobCardData);
-      // Here you would typically send the data to your API
 
       // Show success message
       toast("Job Card Created", {

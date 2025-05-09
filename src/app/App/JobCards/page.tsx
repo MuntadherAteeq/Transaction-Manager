@@ -113,21 +113,21 @@ export default function AccountTable() {
             <Plus />
             New Job Card
           </Button>
-          <Button
+          {/* <Button
             variant={"ghost"}
             className=" bg-transparent hover:bg-background  border "
           >
             <Edit />
             <span className="max-sm:hidden me-2 ">Edit</span>
-          </Button>
+          </Button> */}
 
-          <Button
+          {/* <Button
             variant={"destructive"}
             className=" bg-transparent hover:bg-background hover:text-destructive-foreground border"
           >
             <Trash />
             <span className="max-sm:hidden me-2 ">Delete</span>
-          </Button>
+          </Button> */}
         </CardContent>
       </Card>
       <AgGridReact
