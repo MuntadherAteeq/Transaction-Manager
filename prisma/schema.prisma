@@ -127,7 +127,7 @@ model Vehicle {
 }
 
 model Part {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
 
   partCode    String?
   description String?

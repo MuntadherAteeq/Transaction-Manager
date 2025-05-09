@@ -74,7 +74,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
         <TeamSwitcher />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain />
+        <NavMain role={props.account?.role} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser account={props.account} />
@@ -124,7 +124,7 @@ import { Account } from "@prisma/client";
 import { Activities } from "@/lib/Activities";
 import { cn } from "@/lib/utils";
 
-export function NavUser({ account: account }: { account: Account | null }) {
+export function NavUser({ account }: { account: Account | null }) {
   const { isMobile } = useSidebar();
 
   return (
@@ -216,7 +216,7 @@ export function NavUser({ account: account }: { account: Account | null }) {
   );
 }
 
-export function NavMain() {
+export function NavMain(props: { role: string | undefined }) {
   const path = usePathname();
   const isActive = (Activity: string) => {
     const url = path.split("/").slice(0, 3).join("/");
@@ -226,7 +226,7 @@ export function NavMain() {
     <SidebarGroup>
       {/* <SidebarMenuButton disabled></SidebarMenuButton> */}
       <SidebarMenu>
-        {Activities.map(({ title, url, icon }) => (
+        {Activities(props.role).map(({ title, url, icon }) => (
           <SidebarMenuItem key={title}>
             <Link href={url} className="flex justify-center items-center">
               <SidebarMenuButton
