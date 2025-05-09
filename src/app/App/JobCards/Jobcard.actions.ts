@@ -1,6 +1,9 @@
 "use server";
 
 import { getAccount } from "@/app/Auth/auth.actions";
+import { z } from "zod";
+import { JobCardSchema } from "./form-store";
+import { redirect } from "next/navigation";
 
 export async function getJobCards() {
   try {
@@ -23,5 +26,50 @@ export async function deleteJobCard(id: number) {
     return { success: true };
   } catch (error) {
     throw new Error("Failed to delete job card");
+  }
+}
+
+export async function createJobCard(jobCard: z.infer<typeof JobCardSchema>) {
+  console.log("Creating job card", jobCard);
+  const account = await getAccount();
+  if (!account) return { error: "Unauthorized: No account found" };
+  if (jobCard && jobCard.parts) {
+    try {
+      const jobCardData = await prisma.jobCard.create({
+        data: {
+          date: jobCard.date ? new Date(jobCard.date).toISOString() : undefined,
+          km: jobCard.km?.toString(),
+          operator: jobCard.operator,
+          department: jobCard.department,
+          description: jobCard.description,
+          type: jobCard.type,
+          mechanic: jobCard.mechanic,
+          nextServiceDate: jobCard.nextServiceDate
+            ? new Date(jobCard.nextServiceDate).toISOString()
+            : undefined,
+          nextServiceKm: jobCard.nextServiceKm?.toString(),
+          totalAmount: jobCard.totalAmount,
+        },
+      });
+
+      const parts = await Promise.all(
+        jobCard.parts.map(async (part) => {
+          return await prisma.part.create({
+            data: {
+              partCode: part.partCode,
+              description: part.description,
+              quantity: part.quantity,
+              rate: part.rate,
+              amount: part.amount,
+              jobCardId: jobCardData.id,
+            },
+          });
+        })
+      );
+      return { jobCard: jobCardData };
+    } catch (error) {
+      console.log("Error creating job card", error);
+      return { error: `Failed to create Job Card ` };
+    }
   }
 }

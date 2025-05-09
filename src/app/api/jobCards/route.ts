@@ -5,11 +5,7 @@ import prisma from "@/lib/prisma"; // Ensure prisma is properly imported
 export const GET = Authorization(
   async (req: NextRequest) => {
     try {
-      const accounts = await prisma.jobCard.findMany({
-        include: {
-          Vehicle: true,
-        },
-      });
+      const accounts = await prisma.jobCard.findMany({});
 
       return NextResponse.json(accounts, { status: 200 });
     } catch (error) {

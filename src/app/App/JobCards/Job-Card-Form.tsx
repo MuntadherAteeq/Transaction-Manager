@@ -36,20 +36,24 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import PartsTable from "./Parts-Table";
-import { File, SendHorizonal } from "lucide-react";
+import { File, Loader2, SendHorizonal } from "lucide-react";
 import Link from "next/link";
 import { JobCard } from "@prisma/client";
-import { formSchema, useJobCardForm } from "./form-store";
+import { JobCardSchema, useJobCardForm } from "./form-store";
+import { createJobCard } from "./Jobcard.actions";
+import { useRouter } from "next/navigation";
 // Define the schema for the form
 
 export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
   const [editable, setEditable] = useState(props.editable ?? false);
   const { parts, setParts, formValues, setFormValues } = useJobCardForm();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   // Fetch vehicles from the API
 
   // Initialize the form
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof JobCardSchema>>({
+    resolver: zodResolver(JobCardSchema),
     defaultValues: {
       date: new Date().toISOString().split("T")[0],
       km: 0,
@@ -66,7 +70,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
   });
 
   // Handle form submission
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof JobCardSchema>) => {
     // set the form value parts to the parts state and remove the last part
     form.setValue("parts", parts.slice(0, -1));
     form.setValue("totalAmount", formValues.totalAmount); // Set the total amount in the form values
@@ -84,13 +88,17 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
         return;
       }
 
-      // Show success message
-      toast("Job Card Created", {
-        description: "The job card has been successfully created.",
-      });
-
-      // Redirect to job cards list
-      setEditable(false);
+      const res = await createJobCard(form.getValues());
+      if (res && "error" in res) {
+        toast.error("Error", {
+          description: res.error,
+        });
+        return;
+      }
+      if (res && "jobCard" in res) {
+        router.push(`/App/JobCards/${res.jobCard.id}`);
+        setLoading(true);
+      }
     } catch (error) {
       console.error("Error submitting job card:", error);
       toast.error("Error", {
@@ -112,12 +120,51 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
             </div>
             <div>
               {editable ? (
-                <AreYouSureDialog onSubmit={() => onSubmit(form.getValues())}>
-                  <Button className="mb-4 flex items-center justify-center">
-                    <span>Submit</span>
-                    <SendHorizonal className="ml-2 " />
-                  </Button>
-                </AreYouSureDialog>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      disabled={loading}
+                      className="mb-4 flex items-center justify-center"
+                    >
+                      {loading ? (
+                        <Loader2 className="mx-2 h-4 w-4 animate-spin" />
+                      ) : (
+                        <>
+                          <span>Submit</span>
+                          <SendHorizonal className="ml-2 " />
+                        </>
+                      )}
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Are you sure?</DialogTitle>
+                      <DialogDescription>
+                        Are you sure you want to submit this form? This action
+                        cannot be undone.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex justify-end space-x-2">
+                      <DialogClose asChild>
+                        <Button variant="outline">Cancel</Button>
+                      </DialogClose>
+                      <Button
+                        disabled={loading}
+                        variant="default"
+                        type="submit"
+                        onClick={() => {
+                          onSubmit(form.getValues());
+                        }}
+                      >
+                        {loading ? (
+                          <Loader2 className="mx-2 h-4 w-4 animate-spin" />
+                        ) : (
+                          <span>Submit</span>
+                        )}
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               ) : (
                 <Link href="/jobCards/invoice">
                   <Button
@@ -350,34 +397,5 @@ export function AreYouSureDialog(props: {
   onSubmit: () => void;
   children: React.ReactNode;
 }) {
-  return (
-    <>
-      <Dialog>
-        <DialogTrigger asChild>{props.children}</DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Are you sure?</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to submit this form? This action cannot be
-              undone.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex justify-end space-x-2">
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            <Button
-              variant="default"
-              type="submit"
-              onClick={() => {
-                props.onSubmit();
-              }}
-            >
-              Submit
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
-  );
+  return <></>;
 }

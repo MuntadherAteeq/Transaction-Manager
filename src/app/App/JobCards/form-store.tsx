@@ -10,8 +10,9 @@ import React, {
 import { z } from "zod";
 
 // Define the schema for the form
-export const formSchema = z.object({
+export const JobCardSchema = z.object({
   date: z.string().min(1, { message: "Date is required" }).optional(),
+  mechanic: z.string().optional(),
   km: z
     .number()
     .min(1, { message: "Kilometer reading is required" })
@@ -46,15 +47,13 @@ export const formSchema = z.object({
     .min(1, { message: "Next service kilometer is required" })
     .optional(),
   parts: z.array(
-    z
-      .object({
-        partCode: z.string().min(1, { message: "Part code is required" }),
-        description: z.string().min(1, { message: "Description is required" }),
-        quantity: z.number().min(1, { message: "Quantity is required" }),
-        rate: z.number().min(1, { message: "Rate is required" }),
-        amount: z.number().min(1, { message: "Amount is required" }),
-      })
-      .optional()
+    z.object({
+      partCode: z.string().min(1, { message: "Part code is required" }),
+      description: z.string().min(1, { message: "Description is required" }),
+      quantity: z.number().min(1, { message: "Quantity is required" }),
+      rate: z.number().min(1, { message: "Rate is required" }),
+      amount: z.number().min(1, { message: "Amount is required" }),
+    })
   ),
 });
 
@@ -70,9 +69,9 @@ export type Part = {
 
 // Define the context type
 interface JobCardFormContextType {
-  formValues: z.infer<typeof formSchema>;
+  formValues: z.infer<typeof JobCardSchema>;
   setFormValues: React.Dispatch<
-    React.SetStateAction<z.infer<typeof formSchema>>
+    React.SetStateAction<z.infer<typeof JobCardSchema>>
   >;
   parts: Part[];
   setParts: React.Dispatch<React.SetStateAction<Part[]>>;
@@ -89,7 +88,7 @@ export function JobCardFormProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [formValues, setFormValues] = useState<z.infer<typeof formSchema>>({
+  const [formValues, setFormValues] = useState<z.infer<typeof JobCardSchema>>({
     date: new Date().toISOString().split("T")[0],
     km: 0,
     operator: "",

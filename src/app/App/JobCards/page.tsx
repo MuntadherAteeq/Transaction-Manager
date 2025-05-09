@@ -49,20 +49,27 @@ export default function AccountTable() {
 
   const colDefs: ColDef[] = [
     {
+      field: "id",
+      sortable: true,
+      lockPosition: true,
+      filter: true,
+      flex: isMobile ? 0 : undefined,
+      width: !isMobile ? 100 : undefined,
+    },
+    {
       field: "date",
-      headerName: "",
       resizable: false,
       cellClass: "w-full h-full",
       lockPosition: true,
       flex: isMobile ? 0 : 1,
       filter: false,
-    },
-    {
-      field: "id",
-      sortable: true,
-      lockPosition: true,
-      filter: true,
-      flex: isMobile ? 0 : 1,
+      cellRenderer: (params: any) => {
+        return new Date(params.value).toLocaleDateString("en-GB", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        });
+      },
     },
     {
       field: "operator",

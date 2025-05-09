@@ -1,24 +1,23 @@
+"use server";
 import { redirect } from "next/navigation";
 import { JobCardForm } from "../Job-Card-Form";
+import { JobCardFormProvider } from "../form-store";
 
 export default async function JobCardPreview(props: any) {
   const id = (await props.params).id;
 
-  console.log("id", id);
-
   const jobCard = await prisma.jobCard.findUnique({
     where: {
       id: Number(id),
-    },
-    include: {
-      Vehicle: true,
-      parts: true,
     },
   });
 
   if (!jobCard) {
     redirect("/App/JobCards");
   }
-
-  return <JobCardForm editable={false} jobCard={jobCard} />;
+  return (
+    <JobCardFormProvider>
+      <JobCardForm editable={false} jobCard={jobCard} />
+    </JobCardFormProvider>
+  );
 }
