@@ -1,6 +1,5 @@
 "use client";
 import { useRef, useState } from "react";
-import { format } from "date-fns";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { Button } from "@/components/ui/button";
@@ -14,73 +13,26 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Download, Loader2 } from "lucide-react";
-
-// This would be replaced with your actual data fetching logic
-function getJobCard(id: string) {
-  // Mock data based on the schema
-  return {
-    id: Number.parseInt(id),
-    date: new Date(),
-    km: "45,000",
-    operator: "John Doe",
-    department: "Maintenance",
-    description: "Regular maintenance and oil change",
-    mechanic: "Mike Smith",
-    type: "Scheduled Maintenance",
-    totalAmount: 1250.75,
-    nextServiceDate: new Date(new Date().setMonth(new Date().getMonth() + 3)),
-    nextServiceKm: "50,000",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    Part: [
-      {
-        id: "part-1",
-        partCode: "OIL-5W30",
-        description: "Synthetic Engine Oil 5W30",
-        quantity: 5,
-        rate: 45.99,
-        amount: 229.95,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: "part-2",
-        partCode: "FIL-OIL",
-        description: "Oil Filter",
-        quantity: 1,
-        rate: 15.5,
-        amount: 15.5,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: "part-3",
-        partCode: "FIL-AIR",
-        description: "Air Filter",
-        quantity: 1,
-        rate: 25.3,
-        amount: 25.3,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        id: "part-4",
-        partCode: "LABOR",
-        description: "Labor Charges",
-        quantity: 4,
-        rate: 245.0,
-        amount: 980.0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ],
-  };
-}
+import { useParams } from "next/navigation";
+import useSWR from "swr";
+import InvoiceLoading from "./invoice-loading";
 
 export default function InvoicePage() {
-  const jobCard = getJobCard("1");
+  const params = useParams();
 
-  return <JobCardInvoice jobCard={jobCard} />;
+  const { data, error, isLoading } = useSWR(`/api/JobCard?id=${params.id}`, {
+    fetcher: (url: string) => fetch(url).then((res) => res.json()),
+  });
+
+  if (isLoading) {
+    return <InvoiceLoading />;
+  }
+
+  if (error || !data) {
+    return <div>Error loading job card data</div>;
+  }
+
+  return <JobCardInvoice jobCard={data} />;
 }
 
 interface Part {
@@ -94,7 +46,7 @@ interface Part {
 
 interface JobCard {
   id: number;
-  date?: Date;
+  date?: string;
   km?: string;
   operator?: string;
   department?: string;
@@ -102,7 +54,7 @@ interface JobCard {
   mechanic?: string;
   type?: string;
   totalAmount?: number;
-  nextServiceDate?: Date;
+  nextServiceDate?: string;
   nextServiceKm?: string;
   Part: Part[];
 }
@@ -145,7 +97,7 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCard }) {
 
   return (
     <div className="container mx-auto py-8 text-black">
-      <div className="flex justify-end  mb-4 print:hidden px-6">
+      <div className="flex justify-end mb-4 print:hidden px-6">
         <Button onClick={generatePDF} disabled={isGenerating}>
           {isGenerating ? (
             <>
@@ -163,7 +115,7 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCard }) {
 
       <div
         ref={invoiceRef}
-        className="bg-white shadow-[0px_0px_50px_25px_rgba(0,_0,_0,_0.1)] mx-auto"
+        className="invoice bg-white shadow-[0px_0px_50px_25px_rgba(0,_0,_0,_0.1)] mx-auto"
         style={{
           width: "210mm",
           minHeight: "297mm",
@@ -193,12 +145,15 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCard }) {
         </div>
 
         <div className="grid grid-cols-2 gap-6 mb-8">
-          <Card className="p-4 bg-white text-black">
+          <Card className="p-4 bg-white text-black ">
             <h3 className="font-semibold mb-2">Job Details</h3>
             <div className="grid grid-cols-2 gap-2 text-sm">
               <div className="text-muted-foreground">Date:</div>
+
               <div>
-                {jobCard.date ? format(jobCard.date, "dd/MM/yyyy") : "N/A"}
+                {jobCard.date
+                  ? new Date(jobCard.date).toLocaleDateString("en-GB")
+                  : "N/A"}
               </div>
 
               <div className="text-muted-foreground">Type:</div>
@@ -210,7 +165,7 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCard }) {
               <div className="text-muted-foreground">Operator:</div>
               <div>{jobCard.operator || "N/A"}</div>
 
-              <div className="text-muted-foreground">Department:</div>
+              <div className="text-muted-foreground">Site/Department:</div>
               <div>{jobCard.department || "N/A"}</div>
             </div>
           </Card>
@@ -227,10 +182,11 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCard }) {
               <div className="text-muted-foreground">Next Service Date:</div>
               <div>
                 {jobCard.nextServiceDate
-                  ? format(jobCard.nextServiceDate, "dd/MM/yyyy")
+                  ? new Date(jobCard.nextServiceDate).toLocaleDateString(
+                      "en-GB"
+                    )
                   : "N/A"}
               </div>
-
               <div className="text-muted-foreground">Next Service KM:</div>
               <div>{jobCard.nextServiceKm || "N/A"}</div>
             </div>
@@ -271,7 +227,7 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCard }) {
 
         <div className="flex justify-end mb-8">
           <div className="w-1/3">
-            <div className="flex justify-between py-2 font-medium">
+            {/* <div className="flex justify-between py-2 font-medium">
               <span>Subtotal:</span>
               <span>
                 {jobCard.Part.reduce(
@@ -279,11 +235,11 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCard }) {
                   0
                 ).toFixed(2)}
               </span>
-            </div>
-            <div className="flex justify-between py-2 font-medium">
+            </div> */}
+            {/* <div className="flex justify-between py-2 font-medium">
               <span>Tax (10%):</span>
               <span>0.00</span>
-            </div>
+            </div> */}
             <div className="flex justify-between py-2 border-t border-t-border font-bold">
               <span>Total:</span>
               <span>
@@ -299,20 +255,12 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCard }) {
 
         <div className="mt-12 border-t pt-8 grid grid-cols-2 gap-8">
           <div>
-            <p className="font-semibold mb-8">Customer Signature</p>
-            <div className="border-b border-gray-300 h-0 w-48"></div>
+            <p className="font-semibold mb-12">Customer Signature</p>
+            <div className="border-b h-0 w-48"></div>
           </div>
           <div>
-            <p className="font-semibold mb-8">Mechanic Signature</p>
-            <div className="border-b border-gray-300 h-0 w-48"></div>
-          </div>
-          <div>
-            <p className="font-semibold mb-8">Customer Signature</p>
-            <div className="border-b border-gray-300 h-0 w-48"></div>
-          </div>
-          <div>
-            <p className="font-semibold mb-8">Mechanic Signature</p>
-            <div className="border-b border-gray-300 h-0 w-48"></div>
+            <p className="font-semibold mb-12">Mechanic Signature</p>
+            <div className="border-b h-0 w-48"></div>
           </div>
         </div>
       </div>
