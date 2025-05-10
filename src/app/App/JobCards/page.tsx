@@ -10,7 +10,7 @@ import {
   RowSelectionOptions,
 } from "ag-grid-community";
 import { useTableTheme } from "@/hooks/use-TableTheme";
-import { Edit, FileText, Menu, Plus, Trash } from "lucide-react";
+import { Edit, File, FileText, Menu, Plus, Trash } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -139,6 +139,14 @@ export default function AccountTable() {
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() =>
+                    router.push(`/App/JobCards/${params.data.id}/Invoice`)
+                  }
+                >
+                  <File size={20} className="mr-2" />
+                  Invoice
+                </DropdownMenuItem>
+                {/* <DropdownMenuItem
+                  onClick={() =>
                     router.push(`/App/JobCards/${params.data.id}/edit`)
                   }
                 >
@@ -152,7 +160,7 @@ export default function AccountTable() {
                 >
                   <Trash size={20} className="mr-2" />
                   Delete
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
