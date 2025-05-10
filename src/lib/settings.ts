@@ -1,4 +1,4 @@
-import { Bell, CreditCard, User, Lock, Palette } from "lucide-react";
+import { CreditCard, User, Lock, Palette, CarFront } from "lucide-react";
 
 export const settingsNavItems = [
   {
@@ -12,9 +12,9 @@ export const settingsNavItems = [
     icon: CreditCard,
   },
   {
-    title: "Notifications",
-    href: "/App/Settings/Notifications",
-    icon: Bell,
+    title: "Vehicles",
+    href: "/App/Settings/Vehicles",
+    icon: CarFront,
   },
   {
     title: "Security",

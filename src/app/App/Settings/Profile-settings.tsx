@@ -8,56 +8,47 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function ProfileSettings() {
   return (
     <div className="space-y-6">
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Company Profile Settings
+          </h1>
+          <p className="text-muted-foreground">
+            Manage job card types for vehicle maintenance and repairs.
+          </p>
+        </div>
+      </div>
       <Card>
-        <CardHeader>
-          <CardTitle>Profile</CardTitle>
-          <CardDescription>Manage your profile information.</CardDescription>
-        </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-            <Avatar className="h-16 w-16">
+            <Avatar className="h-16 w-16 border-1">
               <AvatarImage alt="Profile" />
               <AvatarFallback>JD</AvatarFallback>
             </Avatar>
-            <Button variant="outline">Change avatar</Button>
+            <Button variant="outline">Change Logo</Button>
           </div>
 
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="firstName">First name</Label>
-                <Input id="firstName" defaultValue="John" />
+                <Label htmlFor="firstName">Company Name</Label>
+                <Input id="firstName" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName">Last name</Label>
-                <Input id="lastName" defaultValue="Doe" />
+                <Label htmlFor="lastName">Company Address</Label>
+                <Input id="lastName" />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                defaultValue="john.doe@example.com"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="bio">Bio</Label>
-              <Textarea
-                id="bio"
-                placeholder="Tell us about yourself"
-                className="min-h-[100px]"
-                defaultValue="Product designer and developer based in New York."
-              />
+              <Label htmlFor="email">Contact Number</Label>
+              <Input id="contact" type="text" placeholder="+973 173789" />
             </div>
           </div>
         </CardContent>

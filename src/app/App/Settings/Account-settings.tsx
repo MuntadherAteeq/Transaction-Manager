@@ -74,24 +74,6 @@ export function AccountSettings() {
           <Button>Save changes</Button>
         </CardFooter>
       </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Subscription</CardTitle>
-          <CardDescription>
-            Manage your subscription and billing information.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium">Pro Plan</p>
-              <p className="text-sm text-muted-foreground">$9.99/month</p>
-            </div>
-            <Button variant="outline">Manage</Button>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }
