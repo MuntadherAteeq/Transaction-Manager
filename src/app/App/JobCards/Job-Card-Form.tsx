@@ -123,9 +123,11 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
         <CardContent className="pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center mb-6">
             <div>
-              <h2 className="text-4xl font-bold tracking-tight mb-4">
-                No: {props.jobCard?.id.toString().padStart(5, "0")}
-              </h2>
+              {!editable && (
+                <h2 className="text-4xl font-bold tracking-tight mb-4">
+                  No: {props.jobCard?.id.toString().padStart(5, "0")}
+                </h2>
+              )}
             </div>
             <div>
               {editable ? (
