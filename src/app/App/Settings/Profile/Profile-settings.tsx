@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +13,7 @@ import useSWR from "swr";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { updateSettings } from "./Profile.actions";
 
 const CompanyProfileSchema = z.object({
   name: z.string().min(1, "Company name is required"),
@@ -29,22 +30,58 @@ export function ProfileSettings() {
     error,
     mutate,
     isLoading: isFetching,
-  } = useSWR<CompanyProfile>(`/api/CompanyProfile`, (url: string) =>
+  } = useSWR<CompanyProfile>(`/api/settings`, (url: string) =>
     fetch(url).then((res) => res.json())
   );
+  console.log("Company Profile Data:", data);
+
+  useLayoutEffect(() => {
+    if (data && Array.isArray(data)) {
+      const name =
+        data.find((item) => item.name === "companyName")?.value || "";
+      const address =
+        data.find((item) => item.name === "companyAddress")?.value || "";
+      const contactNumber =
+        data.find((item) => item.name === "companyPhone")?.value || "";
+      const currency =
+        data.find((item) => item.name === "companyCurrency")?.value || "";
+
+      setValue("name", name);
+      setValue("address", address);
+      setValue("contactNumber", contactNumber);
+      setValue("currency", currency);
+    }
+  }, [data]);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
+    setValue,
+    getValues,
   } = useForm<CompanyProfile>({
     resolver: zodResolver(CompanyProfileSchema),
     defaultValues: data,
   });
 
   const onSubmit = async (formData: CompanyProfile) => {
+    const formattedData = [
+      { name: "companyName", value: formData.name },
+      { name: "companyAddress", value: formData.address },
+      { name: "companyPhone", value: formData.contactNumber },
+      { name: "companyCurrency", value: formData.currency },
+    ];
 
+    try {
+      const res = await updateSettings(formattedData);
+
+      toast.success("Profile settings updated successfully");
+      reset();
+      mutate();
+    } catch (error) {
+      toast.error("Error updating profile settings");
+    }
   };
 
   if (isFetching) {
@@ -89,6 +126,8 @@ export function ProfileSettings() {
                     id="name"
                     placeholder="Enter company name"
                     {...register("name")}
+                    autoComplete="off"
+                    autoCorrect="off"
                   />
                   {errors.name && (
                     <p className="text-red-500">{errors.name.message}</p>
@@ -100,6 +139,8 @@ export function ProfileSettings() {
                     id="address"
                     placeholder="Enter company address"
                     {...register("address")}
+                    autoComplete="off"
+                    autoCorrect="off"
                   />
                   {errors.address && (
                     <p className="text-red-500">{errors.address.message}</p>
@@ -115,6 +156,8 @@ export function ProfileSettings() {
                     type="text"
                     placeholder="+973 173789"
                     {...register("contactNumber")}
+                    autoComplete="off"
+                    autoCorrect="off"
                   />
                   {errors.contactNumber && (
                     <p className="text-red-500">
@@ -125,9 +168,9 @@ export function ProfileSettings() {
                 <div className="space-y-2">
                   <Label>Company Currency</Label>
                   <CurrencySelector
-                    value={data?.currency || ""} // Provide a default empty string
+                    value={getValues("currency")}
                     onChange={(value) => {
-                      reset((prev) => ({ ...prev, currency: value }));
+                      setValue("currency", value);
                     }}
                   />
                   {errors.currency && (

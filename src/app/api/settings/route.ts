@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Authorization } from "../Authorization";
 
-const GET = Authorization(
+export const GET = Authorization(
   async (req: NextRequest) => {
     try {
       const settings = await prisma.settings.findMany({});

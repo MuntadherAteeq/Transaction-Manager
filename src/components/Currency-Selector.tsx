@@ -171,7 +171,7 @@ export function CurrencySelector({ value, onChange }: CurrencySelectorProps) {
 // Simple component to display flag icons
 function FlagIcon({ code }: { code: string }) {
   return (
-    <div className="relative w-5 h-5 rounded-full overflow-hidden flex items-center justify-center bg-muted">
+    <div className="relative w-5 h-5 overflow-hidden flex items-center justify-center bg-transparent">
       {code === "btc" ? (
         <span className="text-xs">₿</span>
       ) : (

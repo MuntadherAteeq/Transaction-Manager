@@ -22,7 +22,7 @@ export const getSettings = async () => {
   }
 };
 
-export const updateSettings = async (data: any) => {
+export const updateSettings = async (data: any[]) => {
   try {
     if ((await getAccount())?.role !== "Admin") {
       return {
@@ -31,11 +31,17 @@ export const updateSettings = async (data: any) => {
         error: "Unauthorized",
       };
     }
-    const settings = await prisma.settings.updateMany({
-      where: { id: data.id },
-      data: { value: data.value },
-    });
-    return { success: true, data: settings, error: null };
+
+    const updatePromises = data.map((item) =>
+      prisma.settings.updateMany({
+        where: { name: item.name },
+        data: { value: item.value },
+      })
+    );
+
+    await Promise.all(updatePromises);
+
+    return { success: true, data: null, error: null };
   } catch (error) {
     return {
       success: false,
@@ -44,7 +50,3 @@ export const updateSettings = async (data: any) => {
     };
   }
 };
-
-
-
-
