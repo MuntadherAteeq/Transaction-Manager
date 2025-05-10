@@ -4,9 +4,9 @@ import { useParams } from "next/navigation";
 
 import { AccountSettings } from "@/app/App/Settings/Account-settings";
 import { AppearanceSettings } from "@/app/App/Settings/Appearance-settings";
-import { ProfileSettings } from "@/app/App/Settings/Profile-settings";
+import { ProfileSettings } from "@/app/App/Settings/Profile/Profile-settings";
 import { SecuritySettings } from "@/app/App/Settings/Security-settings";
-import VehiclesSettings from "../Vehicles-Settings/Vehicles-Settings";
+import VehiclesSettings from "../Vehicles/Vehicles-Settings";
 
 export default function SettingsTab() {
   const pathname = useParams();

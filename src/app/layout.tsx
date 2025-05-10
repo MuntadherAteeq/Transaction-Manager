@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/Theme-Provider";
 import { Toaster } from "@/components/ui/sonner";
-import { SplashScreen } from "@/components/Splash-Screen";
+import { initializeSettings } from "@/lib/initSettings";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +26,9 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout(props: any) {
+  if (typeof window === "undefined") {
+    await initializeSettings();
+  }
   return (
     <html lang="en" suppressHydrationWarning>
       <body
