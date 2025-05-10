@@ -25,8 +25,6 @@ import { AddAccount, DeleteAccount } from "./Account-Dialog";
 import { Account } from "@prisma/client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useSWR from "swr";
-import { Alert_Dialog } from "@/components/Alert_Dialog";
-import { deleteAccount } from "./Accounts.actions";
 
 // Register the required modules
 ModuleRegistry.registerModules([
@@ -97,7 +95,6 @@ export default function AccountTable() {
       lockPosition: true,
       flex: isMobile ? 0 : 1,
       filter: true,
-      floatingFilter: true,
     },
     {
       field: "email",
@@ -105,7 +102,6 @@ export default function AccountTable() {
       lockPosition: true,
       flex: isMobile ? 0 : 1,
       filter: true,
-      floatingFilter: true,
     },
     {
       field: "role",
@@ -113,7 +109,6 @@ export default function AccountTable() {
       lockPosition: true,
       flex: isMobile ? 0 : 1,
       filter: true,
-      floatingFilter: true,
       cellRenderer: (params: { value: string }) => {
         return (
           <div className="flex w-full h-full items-center justify-center gap-2 flex-wrap max-sm:overflow-y-scroll max-sm:overflow-x-hidden ">

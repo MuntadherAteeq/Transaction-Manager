@@ -38,10 +38,11 @@ import { toast } from "sonner";
 import PartsTable from "./Parts-Table";
 import { File, Loader2, SendHorizonal } from "lucide-react";
 import Link from "next/link";
-import { JobCard } from "@prisma/client";
+import { JobCard, VehicleType } from "@prisma/client";
 import { JobCardSchema, useJobCardForm } from "./form-store";
 import { createJobCard } from "./Jobcard.actions";
 import { useRouter } from "next/navigation";
+import useSWR from "swr";
 // Define the schema for the form
 
 export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
@@ -49,6 +50,14 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
   const { parts, setParts, formValues, setFormValues } = useJobCardForm();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const {
+    data: VehiclesTypes = [],
+    error,
+    mutate,
+    isLoading,
+  } = useSWR<VehicleType[]>("/api/vehicleTypes", {
+    fetcher: (url: string) => fetch(url).then((res) => res.json()),
+  });
   // Fetch vehicles from the API
 
   // Initialize the form
@@ -309,18 +318,19 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                     >
                       <FormControl>
                         <SelectTrigger className="h-full w-full ">
-                          <SelectValue placeholder="Select service type" />
+                          <SelectValue
+                            placeholder={
+                              isLoading ? "loading..." : "Select type"
+                            }
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Passenger Car">
-                          Passenger Car
-                        </SelectItem>
-                        <SelectItem value="Motorcycle">Motorcycle</SelectItem>
-                        <SelectItem value="Bus">Bus</SelectItem>
-                        <SelectItem value="Commercial Vehicle">
-                          Commercial Vehicle
-                        </SelectItem>
+                        {VehiclesTypes.map((type) => (
+                          <SelectItem key={type.id} value={type.id}>
+                            {type.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage className="h-5" />

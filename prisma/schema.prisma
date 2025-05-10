@@ -137,5 +137,5 @@ model Vehicle {
 
 model VehicleType {
   id   String @id @default(uuid())
-  name String
+  name String @unique
 }

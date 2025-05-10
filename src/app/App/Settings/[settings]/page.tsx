@@ -6,7 +6,7 @@ import { AccountSettings } from "@/app/App/Settings/Account-settings";
 import { AppearanceSettings } from "@/app/App/Settings/Appearance-settings";
 import { ProfileSettings } from "@/app/App/Settings/Profile-settings";
 import { SecuritySettings } from "@/app/App/Settings/Security-settings";
-import VehiclesSettings from "../Vehicles-settings";
+import VehiclesSettings from "../Vehicles-Settings/Vehicles-Settings";
 
 export default function SettingsTab() {
   const pathname = useParams();
