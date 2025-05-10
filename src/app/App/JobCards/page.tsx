@@ -33,8 +33,6 @@ export default function AccountTable() {
 
   const isMobile = useIsMobile();
 
-  const [rowData, setRowData] = useState<JobCard[]>([]);
-
   // const [selectedRow, setSelectedRow] = useState<JobCard | null>(null);
 
   const router = useRouter();
@@ -42,6 +40,7 @@ export default function AccountTable() {
   // const onRowSelected = (event: any) => {
   //   setSelectedRow(event.data);
   // };
+  const [rowData, setRowData] = useState<JobCard[]>([]);
 
   const { data } = useSWR("/api/jobCards", {
     fetcher: (url: string) => fetch(url).then((res) => res.json()),
@@ -65,17 +64,12 @@ export default function AccountTable() {
     },
     {
       field: "date",
+      headerName: "Date",
+      filter: "agDateColumnFilter",
+      sortable: true,
       resizable: false,
-      cellClass: "w-full h-full",
       lockPosition: true,
       flex: isMobile ? 0 : 1,
-      cellRenderer: (params: any) => {
-        return new Date(params.value).toLocaleDateString("en-GB", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-        });
-      },
     },
     {
       field: "operator",
@@ -103,6 +97,7 @@ export default function AccountTable() {
     {
       field: "type",
       headerName: "Vehicle Type",
+      filter: true,
       resizable: false,
       lockPosition: true,
       flex: isMobile ? 0 : 1,
@@ -111,6 +106,7 @@ export default function AccountTable() {
       field: "totalAmount",
       headerName: "Total Amount",
       resizable: false,
+      filter: true,
       lockPosition: true,
       flex: isMobile ? 0 : 1,
       cellRenderer: (params: any) => {

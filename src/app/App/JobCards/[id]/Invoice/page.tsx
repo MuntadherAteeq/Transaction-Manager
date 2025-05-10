@@ -1,5 +1,4 @@
 "use client";
-import { notFound } from "next/navigation";
 import { useRef, useState } from "react";
 import { format } from "date-fns";
 import html2canvas from "html2canvas-pro";
@@ -14,7 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Printer, Download, Loader2 } from "lucide-react";
+import { Download, Loader2 } from "lucide-react";
 
 // This would be replaced with your actual data fetching logic
 function getJobCard(id: string) {
@@ -108,7 +107,7 @@ interface JobCard {
   Part: Part[];
 }
 
-export function JobCardInvoice({ jobCard }: { jobCard: JobCard }) {
+function JobCardInvoice({ jobCard }: { jobCard: JobCard }) {
   const invoiceRef = useRef<HTMLDivElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
