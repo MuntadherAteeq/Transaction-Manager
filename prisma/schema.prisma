@@ -101,6 +101,7 @@ model JobCard {
   totalAmount     Float?
   nextServiceDate DateTime?
   nextServiceKm   String?
+  vehicleId       String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   Part            Part[]

@@ -201,23 +201,48 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                   <FormItem>
                     <FormLabel>Date</FormLabel>
                     <FormControl>
-                      {props.jobCard?.date ? (
-                        <Input
-                          disabled={true}
-                          type="text"
-                          value={new Date(
-                            props.jobCard.date
-                          ).toLocaleDateString("en-GB")}
-                        />
-                      ) : (
-                        <Input disabled={!editable} type="date" {...field} />
-                      )}
+                      <Input
+                        disabled={!editable || !!props.jobCard?.date}
+                        type={props.jobCard?.date ? "text" : "date"}
+                        value={
+                          props.jobCard?.date
+                            ? new Date(props.jobCard.date).toLocaleDateString(
+                                "en-GB"
+                              )
+                            : field.value
+                        }
+                        {...(!props.jobCard?.date && field)}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
+              <FormField
+                control={form.control}
+                name="vehicleId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Vehicle ID</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={!editable}
+                        value={
+                          props.jobCard?.vehicleId
+                            ? props.jobCard?.vehicleId
+                            : field.value
+                        }
+                        {...(!props.jobCard?.date && field)}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          form.clearErrors("vehicleId");
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="km"
@@ -275,27 +300,6 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                         onChange={(e) => {
                           field.onChange(e);
                           form.clearErrors("department");
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="vehicleId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Vehicle ID</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={!editable}
-                        {...field}
-                        onChange={(e) => {
-                          field.onChange(e);
-                          form.clearErrors("vehicleId");
                         }}
                       />
                     </FormControl>

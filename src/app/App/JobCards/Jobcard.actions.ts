@@ -44,6 +44,7 @@ export async function createJobCard(jobCard: z.infer<typeof JobCardSchema>) {
           description: jobCard.description,
           type: jobCard.type,
           mechanic: jobCard.mechanic,
+          vehicleId: jobCard.vehicleId,
           nextServiceDate: jobCard.nextServiceDate
             ? new Date(jobCard.nextServiceDate).toISOString()
             : undefined,

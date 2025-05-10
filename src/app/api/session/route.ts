@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma"; // Ensure prisma is properly imported
 import { Authorization } from "../Authorization";
+import prisma from "@/lib/prisma"; 
 
 export const GET = Authorization(
   async (req: NextRequest) => {
