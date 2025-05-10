@@ -10,6 +10,9 @@ export default async function JobCardPreview(props: any) {
     where: {
       id: Number(id),
     },
+    include: {
+      Part: true,
+    },
   });
 
   if (!jobCard) {

@@ -55,7 +55,6 @@ export async function addVehicleType(name: string): Promise<{
       data: type,
     };
   } catch (error) {
-    console.log(error);
     return {
       success: false,
       error: "Error adding vehicle type",

@@ -112,11 +112,6 @@ export function JobCardFormProvider({
     }));
   }, [parts]);
 
-  // ! Remove this useEffect when you are done with the form
-  useEffect(() => {
-    console.log(formValues);
-  }, [formValues]);
-
   return (
     <JobCardFormContext.Provider
       value={{

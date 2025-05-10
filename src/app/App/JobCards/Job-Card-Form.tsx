@@ -83,7 +83,6 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
     // set the form value parts to the parts state and remove the last part
     form.setValue("parts", parts.slice(0, -1));
     form.setValue("totalAmount", formValues.totalAmount); // Set the total amount in the form values
-    console.log("Form values:", form.getValues());
     try {
       // Prepare the data for submission
 
@@ -212,6 +211,10 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                             : field.value
                         }
                         {...(!props.jobCard?.date && field)}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          form.clearErrors("nextServiceDate");
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -232,7 +235,7 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                             ? props.jobCard?.vehicleId
                             : field.value
                         }
-                        {...(!props.jobCard?.date && field)}
+                        {...(!props.jobCard?.vehicleId && field)}
                         onChange={(e) => {
                           field.onChange(e);
                           form.clearErrors("vehicleId");
@@ -253,7 +256,10 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                       <Input
                         disabled={!editable}
                         type="text"
-                        {...field}
+                        value={
+                          props.jobCard?.km ? props.jobCard?.km : field.value
+                        }
+                        {...(!props.jobCard?.km && field)}
                         onChange={(e) => {
                           const intValue = parseInt(e.target.value, 10) || ""; // Convert to integer
                           field.onChange(intValue); // Update the form value
@@ -275,7 +281,12 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                     <FormControl>
                       <Input
                         disabled={!editable}
-                        {...field}
+                        value={
+                          props.jobCard?.operator
+                            ? props.jobCard?.operator
+                            : field.value
+                        }
+                        {...(!props.jobCard?.operator && field)}
                         onChange={(e) => {
                           field.onChange(e);
                           form.clearErrors("operator");
@@ -296,7 +307,12 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                     <FormControl>
                       <Input
                         disabled={!editable}
-                        {...field}
+                        value={
+                          props.jobCard?.department
+                            ? props.jobCard?.department
+                            : field.value
+                        }
+                        {...(!props.jobCard?.department && field)}
                         onChange={(e) => {
                           field.onChange(e);
                           form.clearErrors("department");
@@ -319,14 +335,17 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                         field.onChange(value);
                         form.clearErrors("type");
                       }}
-                      defaultValue={field.value}
                       disabled={!editable}
                     >
                       <FormControl>
-                        <SelectTrigger className="h-full w-full ">
+                        <SelectTrigger className="h-full w-full !cursor-default">
                           <SelectValue
                             placeholder={
-                              isLoading ? "loading..." : "Select type"
+                              props.jobCard?.type
+                                ? props.jobCard?.type
+                                : isLoading
+                                ? "Loading..."
+                                : "Select a vehicle type"
                             }
                           />
                         </SelectTrigger>
@@ -352,9 +371,16 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                     <FormLabel>Next Service Date</FormLabel>
                     <FormControl>
                       <Input
-                        {...field}
+                        type={props.jobCard?.date ? "text" : "date"}
+                        value={
+                          props.jobCard?.nextServiceDate
+                            ? new Date(
+                                props.jobCard.nextServiceDate
+                              ).toLocaleDateString("en-GB")
+                            : field.value
+                        }
+                        {...(!props.jobCard?.nextServiceDate && field)}
                         disabled={!editable}
-                        type="date"
                         onChange={(e) => {
                           field.onChange(e);
                           form.clearErrors("nextServiceDate");
@@ -374,7 +400,12 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                     <FormLabel>Next Service KM</FormLabel>
                     <FormControl>
                       <Input
-                        {...field}
+                        value={
+                          props.jobCard?.nextServiceKm
+                            ? props.jobCard?.nextServiceKm
+                            : field.value
+                        }
+                        {...(!props.jobCard?.nextServiceDate && field)}
                         type="text"
                         disabled={!editable}
                         onChange={(e) => {
@@ -399,7 +430,12 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                       <FormControl>
                         <Textarea
                           rows={3}
-                          {...field}
+                          value={
+                            props.jobCard?.description
+                              ? props.jobCard?.description
+                              : field.value
+                          }
+                          {...(!props.jobCard?.description && field)}
                           disabled={!editable}
                           onChange={(e) => {
                             field.onChange(e);
@@ -419,11 +455,4 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
       </form>
     </Form>
   );
-}
-
-export function AreYouSureDialog(props: {
-  onSubmit: () => void;
-  children: React.ReactNode;
-}) {
-  return <></>;
 }

@@ -30,7 +30,6 @@ export async function deleteJobCard(id: number) {
 }
 
 export async function createJobCard(jobCard: z.infer<typeof JobCardSchema>) {
-  console.log("Creating job card", jobCard);
   const account = await getAccount();
   if (!account) return { error: "Unauthorized: No account found" };
   if (jobCard && jobCard.parts) {
@@ -69,7 +68,6 @@ export async function createJobCard(jobCard: z.infer<typeof JobCardSchema>) {
       );
       return { jobCard: jobCardData };
     } catch (error) {
-      console.log("Error creating job card", error);
       return { error: `Failed to create Job Card ` };
     }
   }

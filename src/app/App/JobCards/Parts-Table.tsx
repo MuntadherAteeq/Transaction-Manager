@@ -12,11 +12,15 @@ import {
 import { ClientSideRowModelModule } from "ag-grid-community"; // Import the missing module
 import { useTableTheme } from "@/hooks/use-TableTheme";
 import { useJobCardForm } from "./form-store";
+import { Part } from "@prisma/client";
 
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 
-export default function PartTable(props: { editable?: boolean }) {
+export default function PartTable(props: {
+  editable?: boolean;
+  parts?: Part[];
+}) {
   const { parts, setParts, formValues, setFormValues } = useJobCardForm();
   const tableTheme = useTableTheme();
 
@@ -68,10 +72,6 @@ export default function PartTable(props: { editable?: boolean }) {
       setParts((prev) => [...prev, row]);
     }
   }
-
-  useEffect(() => {
-    console.log("parts", parts);
-  }, [parts]);
 
   // Column Definitions: Defines the columns to be displayed.
   const colDefs = useMemo<ColDef[]>(
