@@ -13,39 +13,24 @@ import { z } from "zod";
 export const JobCardSchema = z.object({
   date: z.string().min(1, { message: "Date is required" }).optional(),
   mechanic: z.string().optional(),
-  km: z
-    .number()
-    .min(1, { message: "Kilometer reading is required" })
-    .optional(),
-  operator: z
-    .string()
-    .min(1, { message: "Operator name is required" })
-    .optional(),
-  department: z
-    .string()
-    .min(1, { message: "Department is required" })
-    .optional(),
-  description: z
-    .string()
-    .min(1, { message: "Description is required" })
-    .optional(),
-  type: z.string().min(1, { message: "Service type is required" }).optional(),
-  vehicleId: z
-    .string()
-    .min(1, { message: "Vehicle ID is required" })
-    .optional(),
-  totalAmount: z
-    .number()
-    .min(0, { message: "Total amount is required" })
-    .optional(),
-  nextServiceDate: z
-    .string()
-    .min(1, { message: "Next service date is required" })
-    .optional(),
-  nextServiceKm: z
-    .number()
-    .min(1, { message: "Next service kilometer is required" })
-    .optional(),
+  km: z.number().optional(),
+  // .min(1, { message: "Kilometer reading is required" })
+  operator: z.string().optional(),
+  // .min(1, { message: "Operator name is required" })
+  department: z.string().optional(),
+  // .min(1, { message: "Department is required" })
+  description: z.string().optional(),
+  // .min(1, { message: "Description is required" })
+  type: z.string().optional(),
+  // .min(1, { message: "Service type is required" })
+  vehicleId: z.string().optional(),
+  // .min(1, { message: "Vehicle ID is required" })
+  totalAmount: z.number().optional(),
+  // .min(0, { message: "Total amount is required" })
+  nextServiceDate: z.string().optional(),
+  // .min(1, { message: "Next service date is required" })
+  nextServiceKm: z.number().optional(),
+  // .min(1, { message: "Next service kilometer is required" })
   parts: z.array(
     z.object({
       partCode: z.string().min(1, { message: "Part code is required" }),

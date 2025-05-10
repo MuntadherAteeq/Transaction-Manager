@@ -1,6 +1,8 @@
+import { JobCard } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { Authorization } from "../Authorization";
 import prisma from "@/lib/prisma"; // Ensure prisma is properly imported
+
 
 export const GET = Authorization(
   async (req: NextRequest) => {
@@ -18,3 +20,5 @@ export const GET = Authorization(
   },
   ["Admin", "User"]
 );
+
+

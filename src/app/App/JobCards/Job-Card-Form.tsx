@@ -148,20 +148,22 @@ export function JobCardForm(props: { editable?: boolean; jobCard?: JobCard }) {
                       <DialogClose asChild>
                         <Button variant="outline">Cancel</Button>
                       </DialogClose>
-                      <Button
-                        disabled={loading}
-                        variant="default"
-                        type="submit"
-                        onClick={() => {
-                          onSubmit(form.getValues());
-                        }}
-                      >
-                        {loading ? (
-                          <Loader2 className="mx-2 h-4 w-4 animate-spin" />
-                        ) : (
-                          <span>Submit</span>
-                        )}
-                      </Button>
+                      <DialogClose asChild>
+                        <Button
+                          disabled={loading}
+                          variant="default"
+                          type="submit"
+                          onClick={() => {
+                            onSubmit(form.getValues());
+                          }}
+                        >
+                          {loading ? (
+                            <Loader2 className="mx-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            <span>Submit</span>
+                          )}
+                        </Button>
+                      </DialogClose>
                     </div>
                   </DialogContent>
                 </Dialog>
