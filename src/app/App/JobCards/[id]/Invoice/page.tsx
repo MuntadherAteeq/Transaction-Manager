@@ -37,6 +37,7 @@ export default function InvoicePage() {
 
   const settingsMap = useMemo(() => {
     const map = new Map<string, string>();
+    if (!settings) return map;
     settings?.forEach((setting) => {
       map.set(setting.name, setting.value);
     });
