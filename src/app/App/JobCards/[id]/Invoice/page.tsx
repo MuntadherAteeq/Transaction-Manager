@@ -43,6 +43,7 @@ export default function InvoicePage() {
       );
     },
   });
+  console.log("settings", settings);
 
   if (isJobCard || isCompany) {
     return <InvoiceLoading />;
@@ -146,12 +147,12 @@ function JobCardInvoice({
             </div>
             <div className="text-start">
               <h2 className="text-2xl font-bold uppercase mb-2">
-                {settingsMap?.get("companyName") || ""}
+                {/* {settingsMap?.get("companyName") || ""} */}
               </h2>
               <address className="text-muted-foreground font-semibold">
-                {settingsMap?.get("companyAddress") || ""}
+                {/* {settingsMap?.get("companyAddress") || ""} */}
                 <br />
-                {settingsMap?.get("companyPhone") || ""}
+                {/* {settingsMap?.get("companyPhone") || ""} */}
               </address>
             </div>
           </div>
