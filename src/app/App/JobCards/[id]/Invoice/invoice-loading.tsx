@@ -26,7 +26,7 @@ export default function InvoiceLoading() {
           boxSizing: "border-box",
         }}
       >
-        <div className="invoice-header border-b pb-4 mb-6">
+        <div className=" border-b pb-4 mb-6">
           <div className="flex justify-between items-start">
             <div>
               <Skeleton className="h-8 w-48 mb-2" />

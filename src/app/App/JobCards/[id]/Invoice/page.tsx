@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -16,6 +16,7 @@ import { Download, Loader2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 import InvoiceLoading from "./invoice-loading";
+import { Prisma } from "@prisma/client";
 
 export default function InvoicePage() {
   const params = useParams();
@@ -35,31 +36,11 @@ export default function InvoicePage() {
   return <JobCardInvoice jobCard={data} />;
 }
 
-interface Part {
-  id: string;
-  partCode?: string;
-  description?: string;
-  quantity?: number;
-  rate?: number;
-  amount?: number;
-}
+type JobCardWithParts = Prisma.JobCardGetPayload<{
+  include: { Part: true };
+}>;
 
-interface JobCard {
-  id: number;
-  date?: string;
-  km?: string;
-  operator?: string;
-  department?: string;
-  description?: string;
-  mechanic?: string;
-  type?: string;
-  totalAmount?: number;
-  nextServiceDate?: string;
-  nextServiceKm?: string;
-  Part: Part[];
-}
-
-function JobCardInvoice({ jobCard }: { jobCard: JobCard }) {
+function JobCardInvoice({ jobCard }: { jobCard: JobCardWithParts }) {
   const invoiceRef = useRef<HTMLDivElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -124,73 +105,91 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCard }) {
         }}
       >
         <div className="invoice-header border-b pb-4 mb-6">
-          <div className="flex justify-between items-start">
-            <div>
-              <h1 className="text-2xl font-bold">Job Card Invoice</h1>
-              <p className="text-muted-foreground">
-                #{jobCard.id.toString().padStart(5, "0")}
-              </p>
-            </div>
+          <div className="flex flex-row-reverse justify-between items-start text-end">
             <div className="text-right">
+              <h1 className="text-2xl font-bold uppercase mb-2">
+                Job Card Invoice
+              </h1>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                <p className="text-muted-foreground font-semibold">IVN:</p>
+                <span className="font-medium">
+                  {jobCard.id.toString().padStart(5, "0")}
+                </span>
+                <p className="text-muted-foreground font-semibold">Date:</p>
+                <span className="font-medium">
+                  {jobCard.date
+                    ? new Date(jobCard.date).toLocaleDateString("en-GB")
+                    : "N/A"}
+                </span>
+              </div>
+            </div>
+            <div className="text-start">
               <h2 className="text-xl font-semibold">Your Company Name</h2>
-              <p className="text-sm text-muted-foreground">
+              <address className="not-italic text-sm text-muted-foreground">
                 123 Business Street
-              </p>
-              <p className="text-sm text-muted-foreground">City, State, ZIP</p>
-              <p className="text-sm text-muted-foreground">
+                <br />
+                City, State, ZIP
+                <br />
                 Phone: (123) 456-7890
-              </p>
+              </address>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-6 mb-8">
-          <Card className="p-4 bg-white text-black ">
-            <h3 className="font-semibold mb-2">Job Details</h3>
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="text-muted-foreground">Date:</div>
-
-              <div>
-                {jobCard.date
-                  ? new Date(jobCard.date).toLocaleDateString("en-GB")
-                  : "N/A"}
+        <div className="grid grid-cols-2 gap-6 mb-6 ">
+          <div className=" bg-white gap-2 text-black rounded-xl border overflow-hidden">
+            <h3 className="font-semibold p-2 bg-gray-100">Vehicle Details</h3>
+            <hr />
+            <div className="p-2">
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                <div className="text-muted-foreground">Vehicle No:</div>
+                <div>{jobCard.vehicleNo || "N/A"}</div>
+                <div className="text-muted-foreground">Manufacturer:</div>
+                <div>{jobCard.manufacturer || "N/A"}</div>
+                <div className="text-muted-foreground">Model:</div>
+                <div>{jobCard.model || "N/A"}</div>
+                <div className="text-muted-foreground">Type:</div>
+                <div>{jobCard.type || "N/A"}</div>
+                <div className="text-muted-foreground">Current KM:</div>
+                <div>{jobCard.km || "N/A"}</div>
               </div>
-
-              <div className="text-muted-foreground">Type:</div>
-              <div>{jobCard.type || "N/A"}</div>
-
-              <div className="text-muted-foreground">Mechanic:</div>
-              <div>{jobCard.mechanic || "N/A"}</div>
-
-              <div className="text-muted-foreground">Operator:</div>
-              <div>{jobCard.operator || "N/A"}</div>
-
-              <div className="text-muted-foreground">Site/Department:</div>
-              <div>{jobCard.department || "N/A"}</div>
             </div>
-          </Card>
+          </div>
+          <div className=" bg-white text-black gap-2 border rounded-xl overflow-hidden">
+            <h3 className="font-semibold bg-gray-100 p-2">Job Details</h3>
+            <hr />
+            <div className="p-2">
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                <div className="text-muted-foreground">Mechanic:</div>
+                <div>{jobCard.mechanic || "N/A"}</div>
 
-          <Card className="p-4 bg-white text-black">
-            <h3 className="font-semibold mb-2">Vehicle Information</h3>
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="text-muted-foreground">Current KM:</div>
-              <div>{jobCard.km || "N/A"}</div>
+                <div className="text-muted-foreground">Operator:</div>
+                <div>{jobCard.operator || "N/A"}</div>
 
-              <div className="text-muted-foreground">Description:</div>
-              <div>{jobCard.description || "N/A"}</div>
-
-              <div className="text-muted-foreground">Next Service Date:</div>
-              <div>
-                {jobCard.nextServiceDate
-                  ? new Date(jobCard.nextServiceDate).toLocaleDateString(
-                      "en-GB"
-                    )
-                  : "N/A"}
+                <div className="text-muted-foreground">Site/Department:</div>
+                <div>{jobCard.department || "N/A"}</div>
+                <div className="text-muted-foreground">Next Service Date:</div>
+                <div>
+                  {jobCard.nextServiceDate
+                    ? new Date(jobCard.nextServiceDate).toLocaleDateString(
+                        "en-GB"
+                      )
+                    : "N/A"}
+                </div>
+                <div className="text-muted-foreground">Next Service KM:</div>
+                <div>{jobCard.nextServiceKm || "N/A"}</div>
               </div>
-              <div className="text-muted-foreground">Next Service KM:</div>
-              <div>{jobCard.nextServiceKm || "N/A"}</div>
             </div>
-          </Card>
+          </div>
+        </div>
+
+        <div className="mb-6 bg-white invoice-header border-b  overflow-hidden border rounded-xl">
+          <div>
+            <div className="p-2 font-semibold bg-gray-100">
+              Problem Description
+            </div>
+            <p className="p-2">{jobCard.description}</p>
+          </div>
         </div>
 
         <div className="mb-8">
