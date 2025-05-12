@@ -1,12 +1,7 @@
 "use client";
 
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { Part } from "@prisma/client";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { z } from "zod";
 
 // Define the schema for the form
@@ -14,6 +9,8 @@ export const JobCardSchema = z.object({
   date: z.string().min(1, { message: "Date is required" }).optional(),
   mechanic: z.string().optional(),
   km: z.number().optional(),
+  model: z.string().optional(),
+  manufacturer: z.string().optional(),
   // .min(1, { message: "Kilometer reading is required" })
   operator: z.string().optional(),
   // .min(1, { message: "Operator name is required" })
@@ -23,7 +20,7 @@ export const JobCardSchema = z.object({
   // .min(1, { message: "Description is required" })
   type: z.string().optional(),
   // .min(1, { message: "Service type is required" })
-  vehicleId: z.string().optional(),
+  vehicleNo: z.string().optional(),
   // .min(1, { message: "Vehicle ID is required" })
   totalAmount: z.number().optional(),
   // .min(0, { message: "Total amount is required" })
@@ -33,6 +30,7 @@ export const JobCardSchema = z.object({
   // .min(1, { message: "Next service kilometer is required" })
   parts: z.array(
     z.object({
+      id: z.string().optional(),
       partCode: z.string().min(1, { message: "Part code is required" }),
       description: z.string().min(1, { message: "Description is required" }),
       quantity: z.number().min(1, { message: "Quantity is required" }),
@@ -42,24 +40,16 @@ export const JobCardSchema = z.object({
   ),
 });
 
-// Define the part type
-export type Part = {
-  id?: number;
-  partCode: string;
-  description: string;
-  quantity: number;
-  rate: number;
-  amount: number;
-};
-
 // Define the context type
 interface JobCardFormContextType {
   formValues: z.infer<typeof JobCardSchema>;
   setFormValues: React.Dispatch<
     React.SetStateAction<z.infer<typeof JobCardSchema>>
   >;
-  parts: Part[];
-  setParts: React.Dispatch<React.SetStateAction<Part[]>>;
+  parts: z.infer<typeof JobCardSchema>["parts"];
+  setParts: React.Dispatch<
+    React.SetStateAction<z.infer<typeof JobCardSchema>["parts"]>
+  >;
 }
 
 // Create the context
@@ -80,15 +70,16 @@ export function JobCardFormProvider({
     department: "",
     description: "",
     type: "",
-    vehicleId: "",
+    vehicleNo: "",
     nextServiceDate: "",
     nextServiceKm: 0,
     totalAmount: 0,
     parts: [],
   });
 
-  const [parts, setParts] = useState<Part[]>([
+  const [parts, setParts] = useState<z.infer<typeof JobCardSchema>["parts"]>([
     {
+      id: "",
       partCode: "",
       description: "",
       quantity: 0,
@@ -108,7 +99,14 @@ export function JobCardFormProvider({
     setFormValues((prev) => ({
       ...prev,
       totalAmount: total,
-      parts: parts,
+      parts: parts.map((part) => ({
+        id: part.id ?? "",
+        partCode: part.partCode || "",
+        description: part.description || "",
+        quantity: part.quantity || 0,
+        rate: part.rate || 0,
+        amount: part.amount || 0,
+      })),
     }));
   }, [parts]);
 

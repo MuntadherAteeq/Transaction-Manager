@@ -93,15 +93,17 @@ model JobCard {
   id              Int       @id @default(autoincrement())
   date            DateTime? @default(now())
   km              String?
+  model           String?
+  vehicleNo       String?
+  manufacturer    String?
   operator        String?
-  department      String?
-  description     String?
   mechanic        String?
   type            String?
+  department      String?
   totalAmount     Float?
   nextServiceDate DateTime?
   nextServiceKm   String?
-  vehicleId       String?
+  description     String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   Part            Part[]
@@ -110,14 +112,14 @@ model JobCard {
 }
 
 model Part {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   partCode    String?
   description String?
   quantity    Int?
   rate        Float?
   amount      Float?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
 
   JobCard   JobCard? @relation(fields: [jobCardId], references: [id])
   jobCardId Int?

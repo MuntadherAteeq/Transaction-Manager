@@ -17,10 +17,7 @@ import { Part } from "@prisma/client";
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 
-export default function PartTable(props: {
-  editable?: boolean;
-  parts?: Part[];
-}) {
+export default function PartTable(props: { editable?: boolean }) {
   const { parts, setParts, formValues, setFormValues } = useJobCardForm();
   const tableTheme = useTableTheme();
 
