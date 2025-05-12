@@ -70,6 +70,25 @@ export default function AccountTable() {
       resizable: false,
       lockPosition: true,
       flex: isMobile ? 0 : 1,
+      valueFormatter: (params: any) => {
+        // Format the date to dd/mm/yyyy
+        const date = new Date(params.value);
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      },
+      valueGetter: (params: any) => {
+        // Return the date as a Date object for proper filtering
+        return new Date(params.data.date);
+      },
+      filterParams: {
+        comparator: (filterLocalDateAtMidnight: Date, cellValue: string) => {
+          const cellDate = new Date(cellValue).setHours(0, 0, 0, 0);
+          const filterDate = filterLocalDateAtMidnight.getTime();
+          return cellDate === filterDate ? 0 : cellDate < filterDate ? -1 : 1;
+        },
+      },
     },
     {
       field: "operator",
