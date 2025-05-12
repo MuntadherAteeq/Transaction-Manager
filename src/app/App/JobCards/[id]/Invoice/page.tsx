@@ -3,7 +3,6 @@ import { useRef, useState } from "react";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -16,7 +15,7 @@ import { Download, Loader2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 import InvoiceLoading from "./invoice-loading";
-import { Prisma } from "@prisma/client";
+import { Prisma, VehicleType } from "@prisma/client";
 
 export default function InvoicePage() {
   const params = useParams();
@@ -147,7 +146,7 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCardWithParts }) {
                 <div>{jobCard.manufacturer || "N/A"}</div>
                 <div className="text-muted-foreground">Model:</div>
                 <div>{jobCard.model || "N/A"}</div>
-                <div className="text-muted-foreground">Type:</div>
+                <div className="text-muted-foreground">Vehicle Type:</div>
                 <div>{jobCard.type || "N/A"}</div>
                 <div className="text-muted-foreground">Current KM:</div>
                 <div>{jobCard.km || "N/A"}</div>

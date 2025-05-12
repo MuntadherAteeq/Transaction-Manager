@@ -1,3 +1,4 @@
+import { Vehicle } from "./../../App/Vehicles/Vehicles-Dialog";
 import { NextRequest, NextResponse } from "next/server";
 import { Authorization } from "../Authorization";
 import prisma from "@/lib/prisma";
@@ -10,6 +11,7 @@ export const GET = Authorization(
         where: {
           id: Number(id),
         },
+
         include: {
           Part: true,
         },
