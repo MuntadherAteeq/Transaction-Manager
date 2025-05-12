@@ -18,12 +18,30 @@ import InvoiceLoading from "./invoice-loading";
 import { Prisma, VehicleType } from "@prisma/client";
 import { Settings } from "@/lib/initSettings";
 
+type JobCardWithParts = Prisma.JobCardGetPayload<{
+  include: { Part: true };
+}>;
 export default function InvoicePage() {
   const params = useParams();
 
-  const { data, error, isLoading } = useSWR(`/api/JobCard?id=${params.id}`, {
-    fetcher: (url: string) => fetch(url).then((res) => res.json()),
+  const { data, error, isLoading } = useSWR<JobCardWithParts>(
+    `/api/JobCard?id=${params.id}`,
+    {
+      fetcher: (url: string) => fetch(url).then((res) => res.json()),
+    }
+  );
+
+  const { data: settings } = useSWR<Settings[]>("/api/settings", {
+    fetcher: (url) => fetch(url).then((res) => res.json()),
   });
+
+  const settingsMap = useMemo(() => {
+    const map = new Map<string, string>();
+    settings?.forEach((setting) => {
+      map.set(setting.name, setting.value);
+    });
+    return map;
+  }, [settings]);
 
   if (isLoading) {
     return <InvoiceLoading />;
@@ -33,26 +51,18 @@ export default function InvoicePage() {
     return <div>Error loading job card data</div>;
   }
 
-  return <JobCardInvoice jobCard={data} />;
+  return <JobCardInvoice jobCard={data} settingsMap={settingsMap} />;
 }
 
-type JobCardWithParts = Prisma.JobCardGetPayload<{
-  include: { Part: true };
-}>;
-
-function JobCardInvoice({ jobCard }: { jobCard: JobCardWithParts }) {
+function JobCardInvoice({
+  jobCard,
+  settingsMap,
+}: {
+  jobCard: JobCardWithParts;
+  settingsMap: Map<string, string>;
+}) {
   const invoiceRef = useRef<HTMLDivElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
-
-  const { data: settings } = useSWR<Settings[]>("/api/settings", {
-    fetcher: (url) => fetch(url).then((res) => res.json()),
-  });
-
-  const settingsMap = useMemo(
-    () =>
-      new Map(settings?.map((setting) => [setting.name, setting.value]) || []),
-    [settings]
-  );
 
   const generatePDF = async () => {
     if (!invoiceRef.current) return;
