@@ -16,5 +16,5 @@ export const GET = Authorization(
       );
     }
   },
-  ["Admin"]
+  ["Admin", "User"]
 );
