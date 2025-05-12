@@ -1,6 +1,7 @@
 "use server";
 import { getAccount } from "@/app/Auth/auth.actions";
 import { VehicleType } from "@prisma/client";
+import prisma from "@/lib/prisma";
 
 export async function getVehicleTypes(): Promise<{
   success: boolean;

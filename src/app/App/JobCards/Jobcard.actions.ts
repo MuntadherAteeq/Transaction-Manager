@@ -3,7 +3,7 @@
 import { getAccount } from "@/app/Auth/auth.actions";
 import { z } from "zod";
 import { JobCardSchema } from "./form-store";
-import { redirect } from "next/navigation";
+import prisma from "@/lib/prisma";
 
 export async function getJobCards() {
   try {

@@ -4,7 +4,7 @@ import { Account } from "@prisma/client";
 import { SignInSchema } from "./Account-Dialog";
 import { z } from "zod";
 import * as bcrypt from "bcrypt";
-import { getAccount } from "@/app/Auth/auth.actions";
+import prisma from "@/lib/prisma";
 
 export async function getAccounts(): Promise<Account[]> {
   const account = await prisma.account.findMany({});

@@ -8,12 +8,10 @@ import * as bcrypt from "bcrypt";
 import { z } from "zod";
 import { SignInSchema } from "./SignIn";
 import { SignUpSchema } from "./SignUp";
+import prisma from "@/lib/prisma";
 
 // Session duration in milliseconds (1 days)
 const SESSION_DURATION = 24 * 60 * 60 * 1000;
-
-// Create a new Prisma client instance
-const prisma = new PrismaClient();
 
 // Interface for user session
 

@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 import { Vehicle } from "./Vehicles-Dialog";
+import prisma from "@/lib/prisma";
 
 export async function getVehicle(id: string) {
   try {
