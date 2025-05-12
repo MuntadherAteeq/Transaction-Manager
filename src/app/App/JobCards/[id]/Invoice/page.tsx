@@ -139,7 +139,6 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCardWithParts }) {
         <div className="grid grid-cols-2 gap-6 mb-6 ">
           <div className=" bg-white gap-2 text-black rounded-xl border overflow-hidden">
             <h3 className="font-semibold p-2 bg-gray-100">Vehicle Details</h3>
-            <hr />
             <div className="p-2">
               <div className="grid grid-cols-2 gap-2 text-sm">
                 <div className="text-muted-foreground">Vehicle No:</div>
@@ -157,7 +156,6 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCardWithParts }) {
           </div>
           <div className=" bg-white text-black gap-2 border rounded-xl overflow-hidden">
             <h3 className="font-semibold bg-gray-100 p-2">Job Details</h3>
-            <hr />
             <div className="p-2">
               <div className="grid grid-cols-2 gap-2 text-sm">
                 <div className="text-muted-foreground">Mechanic:</div>

@@ -42,7 +42,7 @@ export default async function RootLayout(props: any) {
         >
           {props.children}
         </ThemeProvider>
-        <Toaster position="bottom-center" />
+        <Toaster position="top-center" />
       </body>
     </html>
   );

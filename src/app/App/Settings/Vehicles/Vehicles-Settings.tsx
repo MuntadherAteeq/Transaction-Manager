@@ -83,7 +83,7 @@ export default function VehiclesSettings() {
       mutate(); // Revalidate the SWR cache
       setEditingId(null);
 
-      toast("Success", {
+      toast.success("Success", {
         description: "Job card type updated successfully",
       });
     }
