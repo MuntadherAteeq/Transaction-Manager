@@ -15,7 +15,7 @@ import { Download, Loader2 } from "lucide-react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 import InvoiceLoading from "./invoice-loading";
-import { Prisma, VehicleType } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { Settings } from "@/lib/initSettings";
 
 type JobCardWithParts = Prisma.JobCardGetPayload<{
@@ -32,20 +32,17 @@ export default function InvoicePage() {
     fetcher: (url: string) => fetch(url).then((res) => res.json()),
   });
 
-  const { data: settings, isLoading: isCompany } = useSWR<Settings[]>(
-    "/api/settings",
-    {
-      fetcher: (url) => fetch(url).then((res) => res.json()),
-    }
-  );
-
-  const settingsMap = useMemo(() => {
-    const map = new Map<string, string>();
-    settings?.forEach((setting) => {
-      map.set(setting.name, setting.value);
-    });
-    return map;
-  }, [settings]);
+  const { data: settings, isLoading: isCompany } = useSWR<
+    Map<Settings["name"], string>
+  >("/api/settings", {
+    fetcher: async (url) => {
+      const res = await fetch(url);
+      const data = await res.json();
+      return new Map(
+        data.map((setting: Settings) => [setting.name, setting.value])
+      );
+    },
+  });
 
   if (isJobCard || isCompany) {
     return <InvoiceLoading />;
@@ -55,7 +52,7 @@ export default function InvoicePage() {
     return <div>Error loading job card data</div>;
   }
 
-  return <JobCardInvoice jobCard={data} settingsMap={settingsMap} />;
+  return <JobCardInvoice jobCard={data} settingsMap={settings} />;
 }
 
 function JobCardInvoice({
@@ -63,7 +60,7 @@ function JobCardInvoice({
   settingsMap,
 }: {
   jobCard: JobCardWithParts;
-  settingsMap: Map<string, string>;
+  settingsMap: Map<Settings["name"], string> | undefined;
 }) {
   const invoiceRef = useRef<HTMLDivElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -149,12 +146,12 @@ function JobCardInvoice({
             </div>
             <div className="text-start">
               <h2 className="text-2xl font-bold uppercase mb-2">
-                {settingsMap.get("companyName") || ""}
+                {settingsMap?.get("companyName") || ""}
               </h2>
               <address className="text-muted-foreground font-semibold">
-                {settingsMap.get("companyAddress") || ""}
+                {settingsMap?.get("companyAddress") || ""}
                 <br />
-                {settingsMap.get("companyPhone") || ""}
+                {settingsMap?.get("companyPhone") || ""}
               </address>
             </div>
           </div>
