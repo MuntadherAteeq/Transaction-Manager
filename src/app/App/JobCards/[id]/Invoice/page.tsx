@@ -24,27 +24,30 @@ type JobCardWithParts = Prisma.JobCardGetPayload<{
 export default function InvoicePage() {
   const params = useParams();
 
-  const { data, error, isLoading } = useSWR<JobCardWithParts>(
-    `/api/JobCard?id=${params.id}`,
+  const {
+    data,
+    error,
+    isLoading: isJobCard,
+  } = useSWR<JobCardWithParts>(`/api/JobCard?id=${params.id}`, {
+    fetcher: (url: string) => fetch(url).then((res) => res.json()),
+  });
+
+  const { data: settings, isLoading: isCompany } = useSWR<Settings[]>(
+    "/api/settings",
     {
-      fetcher: (url: string) => fetch(url).then((res) => res.json()),
+      fetcher: (url) => fetch(url).then((res) => res.json()),
     }
   );
 
-  const { data: settings } = useSWR<Settings[]>("/api/settings", {
-    fetcher: (url) => fetch(url).then((res) => res.json()),
-  });
-
   const settingsMap = useMemo(() => {
     const map = new Map<string, string>();
-    if (!settings) return map;
     settings?.forEach((setting) => {
       map.set(setting.name, setting.value);
     });
     return map;
   }, [settings]);
 
-  if (isLoading) {
+  if (isJobCard || isCompany) {
     return <InvoiceLoading />;
   }
 
