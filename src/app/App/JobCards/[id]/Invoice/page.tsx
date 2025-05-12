@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ import { useParams } from "next/navigation";
 import useSWR from "swr";
 import InvoiceLoading from "./invoice-loading";
 import { Prisma, VehicleType } from "@prisma/client";
+import { Settings } from "@/lib/initSettings";
 
 export default function InvoicePage() {
   const params = useParams();
@@ -42,6 +43,16 @@ type JobCardWithParts = Prisma.JobCardGetPayload<{
 function JobCardInvoice({ jobCard }: { jobCard: JobCardWithParts }) {
   const invoiceRef = useRef<HTMLDivElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  const { data: settings } = useSWR<Settings[]>("/api/settings", {
+    fetcher: (url) => fetch(url).then((res) => res.json()),
+  });
+
+  const settingsMap = useMemo(
+    () =>
+      new Map(settings?.map((setting) => [setting.name, setting.value]) || []),
+    [settings]
+  );
 
   const generatePDF = async () => {
     if (!invoiceRef.current) return;
@@ -123,13 +134,13 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCardWithParts }) {
               </div>
             </div>
             <div className="text-start">
-              <h2 className="text-xl font-semibold">Your Company Name</h2>
-              <address className="not-italic text-sm text-muted-foreground">
-                123 Business Street
+              <h2 className="text-2xl font-bold uppercase mb-2">
+                {settingsMap.get("companyName") || ""}
+              </h2>
+              <address className="text-muted-foreground font-semibold">
+                {settingsMap.get("companyAddress") || ""}
                 <br />
-                City, State, ZIP
-                <br />
-                Phone: (123) 456-7890
+                {settingsMap.get("companyPhone") || ""}
               </address>
             </div>
           </div>
@@ -256,6 +267,10 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCardWithParts }) {
           </div>
           <div>
             <p className="font-semibold mb-12">Mechanic Signature</p>
+            <div className="border-b h-0 w-48"></div>
+          </div>
+          <div>
+            <p className="font-semibold mb-12">Garage Manager Signature</p>
             <div className="border-b h-0 w-48"></div>
           </div>
         </div>

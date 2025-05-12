@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 import { JobCard } from "@prisma/client";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
@@ -24,11 +24,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
+import { deleteJobCard } from "./Jobcard.actions";
 
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-export default function AccountTable() {
+export default function JobCardsTable(props: any) {
   const tableTheme = useTableTheme();
 
   const isMobile = useIsMobile();
@@ -42,7 +44,11 @@ export default function AccountTable() {
   // };
   const [rowData, setRowData] = useState<JobCard[]>([]);
 
-  const { data } = useSWR("/api/jobCards", {
+  const { data, mutate, isLoading } = useSWR("/api/jobCards", {
+    fetcher: (url: string) => fetch(url).then((res) => res.json()),
+  });
+
+  const { data: session } = useSWR("/api/session", {
     fetcher: (url: string) => fetch(url).then((res) => res.json()),
   });
 
@@ -164,22 +170,34 @@ export default function AccountTable() {
                   <File size={20} className="mr-2" />
                   Invoice
                 </DropdownMenuItem>
-                {/* <DropdownMenuItem
-                  onClick={() =>
-                    router.push(`/App/JobCards/${params.data.id}/edit`)
-                  }
-                >
-                  <Edit size={20} className="mr-2" />
-                  Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    // handle delete
-                  }}
-                >
-                  <Trash size={20} className="mr-2" />
-                  Delete
-                </DropdownMenuItem> */}
+                {session?.account?.role === "Admin" && (
+                  <>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        toast.info("Still in Development", {
+                          description: "This feature is not available yet.",
+                        });
+                        // router.push(`/App/JobCards/${params.data.id}/edit`);
+                      }}
+                    >
+                      <Edit size={20} className="mr-2" />
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className="text-destructive-foreground hover:!bg-destructive  hover:!text-destructive-foreground"
+                      onClick={async () => {
+                        await deleteJobCard(params.data.id);
+                        mutate();
+                      }}
+                    >
+                      <Trash
+                        size={20}
+                        className="mr-2 text-destructive-foreground hover:!bg-destructive  hover:text-destructive-foreground"
+                      />
+                      Delete
+                    </DropdownMenuItem>
+                  </>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -236,6 +254,7 @@ export default function AccountTable() {
         // this will allow us to select multiple rows
         // rowSelection={rowSelection}
         // onRowSelected={onRowSelected}
+        loading={isLoading}
       />
     </div>
   );

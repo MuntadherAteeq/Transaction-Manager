@@ -38,6 +38,8 @@ export async function createJobCard(jobCard: z.infer<typeof JobCardSchema>) {
         data: {
           date: jobCard.date ? new Date(jobCard.date).toISOString() : undefined,
           km: jobCard.km?.toString(),
+          manufacturer: jobCard.manufacturer,
+          model: jobCard.model,
           operator: jobCard.operator,
           department: jobCard.department,
           description: jobCard.description,

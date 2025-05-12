@@ -65,7 +65,6 @@ export function JobCardForm(props: {
   } = useSWR<VehicleType[]>("/api/vehicleTypes", {
     fetcher: (url: string) => fetch(url).then((res) => res.json()),
   });
-  // Fetch vehicles from the API
 
   // Initialize the form
   const form = useForm<z.infer<typeof JobCardSchema>>({
@@ -307,6 +306,46 @@ export function JobCardForm(props: {
               />
               <FormField
                 control={form.control}
+                name="manufacturer"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Manufacturer</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={!editable}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          form.clearErrors("manufacturer");
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="model"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Model</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={!editable}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          form.clearErrors("model");
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="km"
                 render={({ field }) => (
                   <FormItem>
@@ -348,6 +387,26 @@ export function JobCardForm(props: {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="mechanic"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Mechanic</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={!editable}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          form.clearErrors("mechanic");
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <FormField
                 control={form.control}
@@ -378,6 +437,7 @@ export function JobCardForm(props: {
                     <FormLabel>Vehicle Type</FormLabel>
                     <Select
                       onValueChange={(value) => {
+                        console.log("Selected value:", value);
                         field.onChange(value);
                         form.clearErrors("type");
                       }}
@@ -394,7 +454,7 @@ export function JobCardForm(props: {
                       </FormControl>
                       <SelectContent>
                         {VehiclesTypes.map((type) => (
-                          <SelectItem key={type.id} value={type.id}>
+                          <SelectItem key={type.id} value={type.name}>
                             {type.name}
                           </SelectItem>
                         ))}
