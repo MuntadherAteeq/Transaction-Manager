@@ -195,8 +195,8 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCardWithParts }) {
         <div className="mb-8">
           <h3 className="font-semibold mb-4">Parts & Services</h3>
           <Table>
-            <TableHeader className="bg-gray-100">
-              <TableRow>
+            <TableHeader className="bg-gray-100 ">
+              <TableRow className="hover:bg-transparent">
                 <TableHead>Part Code</TableHead>
                 <TableHead>Description</TableHead>
                 <TableHead className="text-right">Quantity</TableHead>
@@ -206,7 +206,7 @@ function JobCardInvoice({ jobCard }: { jobCard: JobCardWithParts }) {
             </TableHeader>
             <TableBody>
               {jobCard.Part.map((part) => (
-                <TableRow key={part.id}>
+                <TableRow className="hover:bg-transparent" key={part.id}>
                   <TableCell>{part.partCode || "N/A"}</TableCell>
                   <TableCell>{part.description || "N/A"}</TableCell>
                   <TableCell className="text-right">

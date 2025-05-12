@@ -1,41 +1,41 @@
 "use client";
 
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, RefreshCcw, RefreshCcwDotIcon } from "lucide-react";
 import { CurrencySelector } from "@/components/Currency-Selector";
 import useSWR from "swr";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { updateSettings } from "./Profile.actions";
 
-const CompanyProfileSchema = z.object({
-  name: z.string().min(1, "Company name is required"),
-  address: z.string().min(1, "Company address is required"),
-  contactNumber: z.string().min(1, "Contact number is required"),
-  currency: z.string().min(1, "Currency is required"),
-});
-
-type CompanyProfile = z.infer<typeof CompanyProfileSchema>;
-
 export function ProfileSettings() {
+  const [currency, setCurrency] = useState("USD");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    address: "",
+    contactNumber: "",
+    currency: "USD",
+  });
+  const [errors, setErrors] = useState({
+    name: "",
+    address: "",
+    contactNumber: "",
+    currency: "",
+  });
+
   const {
     data,
     error,
     mutate,
     isLoading: isFetching,
-  } = useSWR<CompanyProfile>(`/api/settings`, (url: string) =>
-    fetch(url).then((res) => res.json())
-  );
-  console.log("Company Profile Data:", data);
+  } = useSWR("/api/settings", (url) => fetch(url).then((res) => res.json()));
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (data && Array.isArray(data)) {
       const name =
         data.find((item) => item.name === "companyName")?.value || "";
@@ -43,29 +43,72 @@ export function ProfileSettings() {
         data.find((item) => item.name === "companyAddress")?.value || "";
       const contactNumber =
         data.find((item) => item.name === "companyPhone")?.value || "";
-      const currency =
-        data.find((item) => item.name === "companyCurrency")?.value || "";
+      const companyCurrency =
+        data.find((item) => item.name === "companyCurrency")?.value || "USD";
 
-      setValue("name", name);
-      setValue("address", address);
-      setValue("contactNumber", contactNumber);
-      setValue("currency", currency);
+      setFormData({
+        name,
+        address,
+        contactNumber,
+        currency: companyCurrency,
+      });
+
+      setCurrency(companyCurrency);
     }
   }, [data]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-    setValue,
-    getValues,
-  } = useForm<CompanyProfile>({
-    resolver: zodResolver(CompanyProfileSchema),
-    defaultValues: data,
-  });
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
 
-  const onSubmit = async (formData: CompanyProfile) => {
+    // Clear error when user starts typing
+    if (errors[id]) {
+      setErrors((prev) => ({
+        ...prev,
+        [id]: "",
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {
+      name: formData.name ? "" : "Company name is required",
+      address: formData.address ? "" : "Company address is required",
+      contactNumber: formData.contactNumber ? "" : "Contact number is required",
+      currency: formData.currency ? "" : "Currency is required",
+    };
+
+    setErrors(newErrors);
+    return !Object.values(newErrors).some((error) => error);
+  };
+
+  const handleCurrencyChange = (value: any) => {
+    setCurrency(value);
+    setFormData((prev) => ({
+      ...prev,
+      currency: value,
+    }));
+
+    if (errors.currency) {
+      setErrors((prev) => ({
+        ...prev,
+        currency: "",
+      }));
+    }
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
     const formattedData = [
       { name: "companyName", value: formData.name },
       { name: "companyAddress", value: formData.address },
@@ -74,22 +117,61 @@ export function ProfileSettings() {
     ];
 
     try {
-      const res = await updateSettings(formattedData);
-
+      await updateSettings(formattedData);
       toast.success("Profile settings updated successfully");
-      reset();
       mutate();
     } catch (error) {
       toast.error("Error updating profile settings");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
+  const handleCancel = () => {
+    // Reset form to current data
+    if (data && Array.isArray(data)) {
+      const name =
+        data.find((item) => item.name === "companyName")?.value || "";
+      const address =
+        data.find((item) => item.name === "companyAddress")?.value || "";
+      const contactNumber =
+        data.find((item) => item.name === "companyPhone")?.value || "";
+      const companyCurrency =
+        data.find((item) => item.name === "companyCurrency")?.value || "USD";
+
+      setFormData({
+        name,
+        address,
+        contactNumber,
+        currency: companyCurrency,
+      });
+
+      setCurrency(companyCurrency);
+    }
+
+    // Clear any validation errors
+    setErrors({
+      name: "",
+      address: "",
+      contactNumber: "",
+      currency: "",
+    });
+  };
+
   if (isFetching) {
-    return <Loader2 className="animate-spin" />;
+    return (
+      <div className="flex justify-center items-center p-8">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
   }
 
   if (error) {
-    return <div>Error loading profile settings</div>;
+    return (
+      <div className="p-6 text-center text-red-500">
+        Error loading profile settings. Please try again later.
+      </div>
+    );
   }
 
   return (
@@ -105,7 +187,7 @@ export function ProfileSettings() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit}>
         <Card className="shadow-sm">
           <CardContent className="space-y-6 pt-6">
             <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
@@ -125,12 +207,13 @@ export function ProfileSettings() {
                   <Input
                     id="name"
                     placeholder="Enter company name"
-                    {...register("name")}
+                    value={formData.name}
+                    onChange={handleInputChange}
                     autoComplete="off"
                     autoCorrect="off"
                   />
                   {errors.name && (
-                    <p className="text-red-500">{errors.name.message}</p>
+                    <p className="text-sm text-red-500">{errors.name}</p>
                   )}
                 </div>
                 <div className="space-y-2">
@@ -138,12 +221,13 @@ export function ProfileSettings() {
                   <Input
                     id="address"
                     placeholder="Enter company address"
-                    {...register("address")}
+                    value={formData.address}
+                    onChange={handleInputChange}
                     autoComplete="off"
                     autoCorrect="off"
                   />
                   {errors.address && (
-                    <p className="text-red-500">{errors.address.message}</p>
+                    <p className="text-sm text-red-500">{errors.address}</p>
                   )}
                 </div>
               </div>
@@ -155,34 +239,39 @@ export function ProfileSettings() {
                     id="contactNumber"
                     type="text"
                     placeholder="+973 173789"
-                    {...register("contactNumber")}
+                    value={formData.contactNumber}
+                    onChange={handleInputChange}
                     autoComplete="off"
                     autoCorrect="off"
                   />
                   {errors.contactNumber && (
-                    <p className="text-red-500">
-                      {errors.contactNumber.message}
+                    <p className="text-sm text-red-500">
+                      {errors.contactNumber}
                     </p>
                   )}
                 </div>
                 <div className="space-y-2">
                   <Label>Company Currency</Label>
                   <CurrencySelector
-                    value={getValues("currency")}
-                    onChange={(value) => {
-                      setValue("currency", value);
-                    }}
+                    value={currency}
+                    onChange={handleCurrencyChange}
                   />
                   {errors.currency && (
-                    <p className="text-red-500">{errors.currency.message}</p>
+                    <p className="text-sm text-red-500">{errors.currency}</p>
                   )}
                 </div>
               </div>
             </div>
           </CardContent>
           <CardFooter className="flex justify-end gap-2 pt-2">
-            <Button type="button" variant="outline" disabled={isSubmitting}>
-              Cancel
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isSubmitting}
+              onClick={handleCancel}
+            >
+              <RefreshCcw />
+              Reset
             </Button>
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? (
