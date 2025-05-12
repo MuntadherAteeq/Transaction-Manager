@@ -437,7 +437,6 @@ export function JobCardForm(props: {
                     <FormLabel>Vehicle Type</FormLabel>
                     <Select
                       onValueChange={(value) => {
-                        console.log("Selected value:", value);
                         field.onChange(value);
                         form.clearErrors("type");
                       }}
