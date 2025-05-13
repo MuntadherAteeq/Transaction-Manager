@@ -13,6 +13,7 @@ import { ClientSideRowModelModule } from "ag-grid-community"; // Import the miss
 import { useTableTheme } from "@/hooks/use-TableTheme";
 import { useJobCardForm } from "./form-store";
 import { Part } from "@prisma/client";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
@@ -20,6 +21,7 @@ ModuleRegistry.registerModules([AllCommunityModule, ClientSideRowModelModule]);
 export default function PartTable(props: { editable?: boolean }) {
   const { parts, setParts, formValues, setFormValues } = useJobCardForm();
   const tableTheme = useTableTheme();
+  const isMobile = useIsMobile();
 
   const row = {
     partCode: "",
@@ -74,7 +76,7 @@ export default function PartTable(props: { editable?: boolean }) {
   const colDefs = useMemo<ColDef[]>(
     () => [
       {
-        flex: 1,
+        flex: isMobile ? 0 : 1,
         field: "partCode",
         headerName: "Part Code",
         sortable: true,
@@ -84,7 +86,7 @@ export default function PartTable(props: { editable?: boolean }) {
       },
 
       {
-        flex: 3,
+        flex: isMobile ? 0 : 3,
         field: "description",
         sortable: true,
         filter: true,
@@ -92,7 +94,7 @@ export default function PartTable(props: { editable?: boolean }) {
       },
       // Quantity column
       {
-        flex: 1,
+        flex: isMobile ? 0 : 1,
         field: "quantity",
         headerName: "Qty",
         editable: props?.editable !== undefined ? props.editable : true,
@@ -115,7 +117,7 @@ export default function PartTable(props: { editable?: boolean }) {
       },
       // Rate column
       {
-        flex: 1,
+        flex: isMobile ? 0 : 1,
         field: "rate",
         sortable: true,
         filter: true,
@@ -133,6 +135,7 @@ export default function PartTable(props: { editable?: boolean }) {
       },
       // amount column
       {
+        flex: isMobile ? 0 : 1,
         field: "amount",
         valueGetter: (params: { data: { rate: number; quantity: number } }) => {
           if (params.data?.rate && params.data?.quantity) {
