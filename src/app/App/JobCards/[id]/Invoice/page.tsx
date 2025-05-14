@@ -265,7 +265,7 @@ function JobCardInvoice({
             <div className="flex justify-between py-2 border-t border-t-border font-bold">
               <span>Total:</span>
               <span>
-                {jobCard.totalAmount?.toFixed(2) ||
+                {jobCard.totalAmount?.toFixed(3) ||
                   jobCard.Part.reduce(
                     (sum, part) => sum + (part.amount || 0),
                     0

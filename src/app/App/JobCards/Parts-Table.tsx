@@ -79,7 +79,7 @@ export default function PartTable(props: { editable?: boolean }) {
         field: "partCode",
         headerName: "Part Code",
         sortable: true,
-        filter: true,
+        filter: false,
         // if props.editable is not defined then it will be editable
         editable: props?.editable !== undefined ? props.editable : true,
       },
@@ -88,7 +88,7 @@ export default function PartTable(props: { editable?: boolean }) {
         flex: isMobile ? 0 : 3,
         field: "description",
         sortable: true,
-        filter: true,
+        filter: false,
         editable: props?.editable,
       },
       // Quantity column
@@ -98,7 +98,7 @@ export default function PartTable(props: { editable?: boolean }) {
         headerName: "Qty",
         editable: props?.editable !== undefined ? props.editable : true,
         sortable: true,
-        filter: true,
+        filter: false,
 
         valueGetter: (params: { data: { quantity: number } }) => {
           return params.data?.quantity ? params.data.quantity : undefined;
@@ -119,7 +119,7 @@ export default function PartTable(props: { editable?: boolean }) {
         flex: isMobile ? 0 : 1,
         field: "rate",
         sortable: true,
-        filter: true,
+        filter: false,
         editable: props?.editable !== undefined ? props.editable : true,
         valueGetter: (params: { data: { rate: number } }) => {
           return params.data?.rate ? params.data.rate / 1000 : undefined;
@@ -135,6 +135,7 @@ export default function PartTable(props: { editable?: boolean }) {
       // amount column
       {
         flex: isMobile ? 0 : 1,
+        filter: false,
         field: "amount",
         valueGetter: (params: { data: { rate: number; quantity: number } }) => {
           if (params.data?.rate && params.data?.quantity) {
