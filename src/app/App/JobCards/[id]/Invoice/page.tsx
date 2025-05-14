@@ -19,47 +19,49 @@ import { Prisma } from "@prisma/client";
 import { Settings } from "@/lib/initSettings";
 
 type JobCardWithParts = Prisma.JobCardGetPayload<{
-  include: { Part: true };
+  include: {
+    Part: true;
+  };
 }>;
+
 export default function InvoicePage() {
   const params = useParams();
 
-  const {
-    data,
-    error,
-    isLoading: isJobCard,
-  } = useSWR<JobCardWithParts>(`/api/JobCard?id=${params.id}`, {
-    fetcher: (url: string) => fetch(url).then((res) => res.json()),
-  });
+  const { data, error, isLoading } = useSWR(
+    `/api/jobCardInvoice?id=${params.id}`,
+    {
+      fetcher: (url: string) => fetch(url).then((res) => res.json()),
+    }
+  );
 
-  const { data: settings, isLoading: isCompany } = useSWR<
-    Map<Settings["name"], string>
-  >("/api/settings", {
-    fetcher: async (url) => {
-      const res = await fetch(url);
-      const data = await res.json();
-      return new Map(
-        data.map((setting: Settings) => [setting.name, setting.value])
-      );
-    },
-  });
-
-  if (isJobCard || isCompany) {
+  if (isLoading) {
     return <InvoiceLoading />;
   }
 
   if (error || !data) {
     return <div>Error loading job card data</div>;
   }
-
-  return <JobCardInvoice jobCard={data} settingsMap={settings} />;
+  if (data) {
+    const settingsMap = new Map<Settings["name"], string>();
+    if (data.settings) {
+      (data.settings as Settings[]).forEach((setting) => {
+        settingsMap.set(setting.name, setting.value);
+      });
+    }
+    return <JobCardInvoice jobCard={data.jobCard} settingsMap={settingsMap} />;
+  }
+  return <></>;
 }
 
 function JobCardInvoice({
   jobCard,
   settingsMap,
 }: {
-  jobCard: JobCardWithParts;
+  jobCard: Prisma.JobCardGetPayload<{
+    include: {
+      Part: true;
+    };
+  }>;
   settingsMap: Map<Settings["name"], string> | undefined;
 }) {
   const invoiceRef = useRef<HTMLDivElement>(null);
@@ -232,10 +234,12 @@ function JobCardInvoice({
                     {part.quantity || 0}
                   </TableCell>
                   <TableCell className="text-right">
-                    {part.rate?.toFixed(2) || "0.00"}
+                    {part.rate ? (part?.rate / 1000).toFixed(3) : "0.000"}
+                    {" BD"}
                   </TableCell>
                   <TableCell className="text-right">
-                    {part.amount?.toFixed(2) || "0.00"}
+                    {part.amount?.toFixed(3) || "0.00"}
+                    {" BD"}
                   </TableCell>
                 </TableRow>
               ))}
@@ -265,7 +269,8 @@ function JobCardInvoice({
                   jobCard.Part.reduce(
                     (sum, part) => sum + (part.amount || 0),
                     0
-                  ).toFixed(2)}
+                  ).toFixed(3)}
+                {" BD"}
               </span>
             </div>
           </div>

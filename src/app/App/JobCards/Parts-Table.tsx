@@ -1,7 +1,7 @@
 "use client";
 
 import { AgGridReact } from "ag-grid-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import {
   AllCommunityModule,
@@ -12,7 +12,6 @@ import {
 import { ClientSideRowModelModule } from "ag-grid-community"; // Import the missing module
 import { useTableTheme } from "@/hooks/use-TableTheme";
 import { useJobCardForm } from "./form-store";
-import { Part } from "@prisma/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 // Register the required modules
