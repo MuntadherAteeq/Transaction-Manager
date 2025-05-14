@@ -91,14 +91,14 @@ export default function Dashboard() {
               <DollarSign className=" text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold truncate">$45,231.89</div>
+              <div className="text-4xl font-bold truncate">0</div>
             </CardContent>
             <CardFooter className="flex items-center space-x-2">
               <Badge variant="destructive" className="text-xs">
                 <ArrowUp className="mr-1 h-3 w-3" />
-                12.5%
+                {/* 12.5% */}
               </Badge>
-              <p className="text-xs text-muted-foreground">from last month</p>
+              {/* <p className="text-xs text-muted-foreground">from last month</p> */}
             </CardFooter>
           </Card>
           <Card className="gap-1">
@@ -109,14 +109,14 @@ export default function Dashboard() {
               <Wrench className=" text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold truncate">24</div>
+              <div className="text-4xl font-bold truncate">0</div>
             </CardContent>
             <CardFooter className="flex items-center space-x-2">
-              <Badge variant="success">
+              {/* <Badge variant="success">
                 <ArrowUp className="mr-1 h-3 w-3" />
                 8.2%
-              </Badge>
-              <p className="text-xs text-muted-foreground">from last week</p>
+              </Badge> */}
+              {/* <p className="text-xs text-muted-foreground">from last week</p> */}
             </CardFooter>
           </Card>
           <Card className="gap-1">
@@ -127,14 +127,14 @@ export default function Dashboard() {
               <Package className=" text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold truncate">1,245</div>
+              <div className="text-4xl font-bold truncate">0</div>
             </CardContent>
             <CardFooter className="flex items-center space-x-2">
-              <Badge variant="warning" className="text-xs">
+              {/* <Badge variant="warning" className="text-xs">
                 <ArrowDown className="mr-1 h-3 w-3" />
                 3.1%
-              </Badge>
-              <p className="text-xs text-muted-foreground">low stock items</p>
+              </Badge> */}
+              {/* <p className="text-xs text-muted-foreground">low stock items</p> */}
             </CardFooter>
           </Card>
           <Card className="gap-1">
@@ -145,13 +145,13 @@ export default function Dashboard() {
               <ShoppingCart className=" text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold truncate">149</div>
+              <div className="text-4xl font-bold truncate">0</div>
               <div className="flex items-center space-x-2">
-                <Badge variant="success" className="text-xs">
+                {/* <Badge variant="success" className="text-xs">
                   <ArrowUp className="mr-1 h-3 w-3" />
                   18.3%
-                </Badge>
-                <p className="text-xs text-muted-foreground">from last week</p>
+                </Badge> */}
+                {/* <p className="text-xs text-muted-foreground">from last week</p> */}
               </div>
             </CardContent>
           </Card>
