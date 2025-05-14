@@ -94,10 +94,10 @@ export default function Dashboard() {
               <div className="text-4xl font-bold truncate">0</div>
             </CardContent>
             <CardFooter className="flex items-center space-x-2">
-              <Badge variant="destructive" className="text-xs">
+              {/* <Badge variant="destructive" className="text-xs">
                 <ArrowUp className="mr-1 h-3 w-3" />
-                {/* 12.5% */}
-              </Badge>
+                12.5%
+              </Badge> */}
               {/* <p className="text-xs text-muted-foreground">from last month</p> */}
             </CardFooter>
           </Card>
