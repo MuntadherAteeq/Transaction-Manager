@@ -26,6 +26,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { deleteJobCard } from "./Jobcard.actions";
+import { AlertDialog } from "@/components/ui/alert-dialog";
+import { Alert_Dialog } from "@/components/Alert_Dialog";
 
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -183,12 +185,13 @@ export default function JobCardsTable(props: any) {
                       <Edit size={20} className="mr-2" />
                       Edit
                     </DropdownMenuItem>
+
                     <DropdownMenuItem
-                      className="text-destructive-foreground hover:!bg-destructive  hover:!text-destructive-foreground"
                       onClick={async () => {
                         await deleteJobCard(params.data.id);
                         mutate();
                       }}
+                      className="text-destructive-foreground hover:!bg-destructive  hover:!text-destructive-foreground"
                     >
                       <Trash
                         size={20}
