@@ -22,10 +22,17 @@ export type Settings = {
   value: string;
 };
 
-const defaultSettings: Settings[] = settingNames.map((name) => ({
-  name,
-  value: "",
-}));
+const defaultSettings: Settings[] = settingNames.map((name) =>
+  name === "SecretKey"
+    ? {
+        name,
+        value: process.env.SECRET_KEY || "",
+      }
+    : {
+        name,
+        value: "",
+      }
+);
 
 export async function initializeSettings() {
   // Remove settings not included in settingNames

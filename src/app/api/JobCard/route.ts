@@ -1,4 +1,3 @@
-import { Vehicle } from "./../../App/Vehicles/Vehicles-Dialog";
 import { NextRequest, NextResponse } from "next/server";
 import { Authorization } from "../Authorization";
 import prisma from "@/lib/prisma";

@@ -18,5 +18,3 @@ export const GET = Authorization(
   },
   ["Admin", "User"]
 );
-
-

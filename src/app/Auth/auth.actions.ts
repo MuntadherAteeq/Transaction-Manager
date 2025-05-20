@@ -134,7 +134,16 @@ export async function signUp(formData: z.infer<typeof SignUpSchema>) {
   const role = formData.role as string;
   const secretKey = formData.secretKey as string;
 
-  if (secretKey !== process.env.SECRET_KEY) {
+  const secretKeyBD = await prisma.settings.findUnique({
+    where: {
+      name: "SecretKey",
+    },
+  });
+
+  if (
+    secretKey !== process.env.SECRET_KEY ||
+    secretKey !== secretKeyBD?.value
+  ) {
     return {
       error: "Invalid secret key",
     };
