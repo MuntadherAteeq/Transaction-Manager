@@ -113,16 +113,17 @@ export function TeamSwitcher() {
 import {
   Bell,
   ChevronsUpDown,
+  Loader2,
   LogOut,
   Moon,
   Settings,
   User2,
 } from "lucide-react";
 import { signOut } from "@/app/Auth/auth.actions";
-import { AddNewRecordBTN } from "@/components/Record/Record-List";
 import { Account } from "@prisma/client";
 import { Activities } from "@/lib/Activities";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 export function NavUser({ account }: { account: Account | null }) {
   const { isMobile } = useSidebar();
@@ -218,6 +219,14 @@ export function NavUser({ account }: { account: Account | null }) {
 
 export function NavMain(props: { role: string | undefined }) {
   const path = usePathname();
+  const [loading, setLoading] = useState("");
+
+  useEffect(() => {
+    if (loading === path) {
+      setLoading("");
+    }
+  }, [path]);
+
   const isActive = (Activity: string) => {
     const url = path.split("/").slice(0, 3).join("/");
     return url === Activity;
@@ -233,6 +242,9 @@ export function NavMain(props: { role: string | undefined }) {
                 isActive={isActive(url)}
                 tooltip={title}
                 size={"lg"}
+                onClick={() => {
+                  setLoading(url);
+                }}
               >
                 <i
                   className={cn(
@@ -241,10 +253,16 @@ export function NavMain(props: { role: string | undefined }) {
                     !isActive(url) && "text-muted-foreground"
                   )}
                 />
-
-                <span className={cn(!isActive(url) && "text-muted-foreground")}>
-                  {title}
-                </span>
+                <div className="flex items-center justify-between w-full">
+                  <span
+                    className={cn(!isActive(url) && "text-muted-foreground")}
+                  >
+                    {title}
+                  </span>
+                  {loading === url && (
+                    <Loader2 className="mr-2 size-3 animate-spin" />
+                  )}
+                </div>
               </SidebarMenuButton>
             </Link>
           </SidebarMenuItem>

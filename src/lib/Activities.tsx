@@ -22,11 +22,11 @@ export const Activities = (role: string | undefined | null) => {
           url: "/App/Vehicles",
           icon: "icon-[hugeicons--car-01]",
         },
-        // {
-        //   title: "Archive",
-        //   url: "/App/Archive",
-        //   icon: "icon-[stash--folder-alt]",
-        // },
+        {
+          title: "Sales",
+          url: "/App/Sales",
+          icon: "icon-[stash--folder-alt]",
+        },
         // {
         //   title: "History",
         //   url: "/App/History",
