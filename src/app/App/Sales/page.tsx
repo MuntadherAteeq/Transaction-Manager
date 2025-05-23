@@ -10,7 +10,7 @@ import {
   RowSelectionOptions,
 } from "ag-grid-community";
 import { useTableTheme } from "@/hooks/use-TableTheme";
-import { Edit, Plus, Trash, User2 } from "lucide-react";
+import { Edit, Plus, Trash } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,6 +18,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Account } from "@prisma/client";
 import useSWR from "swr";
 import { Alert_Dialog } from "@/components/Alert_Dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import CustomerDialog from "./CustomerDialog";
 
 // Register the required modules
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -83,46 +85,24 @@ export default function VehiclesTable() {
 
   return (
     <div className=" flex flex-col w-full h-full">
-      {/* Table Header */}
-      <Card className="flex flex-row p-0 m-0 rounded-none">
-        <CardContent className="w-full p-3 space-x-3">
-          <Button
-            variant={"ghost"}
-            className=" bg-transparent hover:bg-background  border "
-          >
-            <Edit />
-            <span className="max-sm:hidden me-2 ">Edit</span>
-          </Button>
-
-          <Alert_Dialog
-            title={"Are You Sure ?"}
-            description={
-              "This action will remove the user and cannot be undone. "
-            }
-            confirmText={"Delete"}
-          >
-            <Button
-              variant={"destructive"}
-              className=" bg-transparent hover:bg-background hover:text-destructive-foreground border"
-            >
-              <Trash />
-              <span className=" max-sm:hidden me-2 ">Delete</span>
-            </Button>
-          </Alert_Dialog>
-        </CardContent>
-      </Card>
-      <AgGridReact
-        theme={tableTheme}
-        className=" h-full w-full "
-        rowData={rowData}
-        columnDefs={colDefs}
-        // this will make the grid responsive
-        rowHeight={60}
-        // This will prevent the column from removed when dragged out
-        suppressDragLeaveHidesColumns
-        // this will allow us to select multiple rows
-        rowSelection={rowSelection}
-      />
+      {isMobile ? (
+        <>
+          <CustomerDialog />
+        </>
+      ) : (
+        <AgGridReact
+          theme={tableTheme}
+          className=" h-full w-full "
+          rowData={rowData}
+          columnDefs={colDefs}
+          // this will make the grid responsive
+          rowHeight={60}
+          // This will prevent the column from removed when dragged out
+          suppressDragLeaveHidesColumns
+          // this will allow us to select multiple rows
+          rowSelection={rowSelection}
+        />
+      )}
     </div>
   );
 }
