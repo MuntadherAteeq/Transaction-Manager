@@ -38,7 +38,7 @@ import {
 } from "@/components/ui/select";
 import { Capacitor } from "@capacitor/core";
 
-export default function CustomerDialog() {
+export default function CustomerDialog(props: any) {
   const [open, setOpen] = useState(false);
   const [contacts, setContacts] = useState<any[]>([]);
 
@@ -120,14 +120,7 @@ export default function CustomerDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          size="lg"
-          className="fixed bottom-4 right-4 size-10 rounded-full"
-        >
-          <Plus className="size-7" />
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{props.children}</DialogTrigger>
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Add Customer Information</DialogTitle>
