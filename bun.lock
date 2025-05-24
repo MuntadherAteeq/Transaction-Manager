@@ -4,6 +4,7 @@
     "": {
       "name": "transaction-manager",
       "dependencies": {
+        "@capacitor-community/contacts": "^7.0.0",
         "@capacitor/android": "^7.2.0",
         "@capacitor/cli": "^7.2.0",
         "@capacitor/core": "^7.2.0",
@@ -89,6 +90,8 @@
     "@antfu/utils": ["@antfu/utils@8.1.1", "", {}, "sha512-Mex9nXf9vR6AhcXmMrlz/HVgYYZpVGJ6YlPgwl7UnaFpnshXs6EK/oa5Gpf3CzENMjkvEx2tQtntGnb7UtSTOQ=="],
 
     "@babel/runtime": ["@babel/runtime@7.26.9", "", { "dependencies": { "regenerator-runtime": "^0.14.0" } }, "sha512-aA63XwOkcl4xxQa3HjPMqOP6LiK0ZDv3mUPYEFXkpHbaFjtGggE1A61FjFzJnB+p7/oy2gA8E+rcBNl/zC1tMg=="],
+
+    "@capacitor-community/contacts": ["@capacitor-community/contacts@7.0.0", "", { "peerDependencies": { "@capacitor/core": ">=7.0.0" } }, "sha512-CDn+YBUpP0YugXxDVqax1afXiJV85wQj4yS7Bz2dK+pSpRURabdIFpurlA1z41IlX+erg2z5+C2FcT2drWhTrw=="],
 
     "@capacitor/android": ["@capacitor/android@7.2.0", "", { "peerDependencies": { "@capacitor/core": "^7.2.0" } }, "sha512-zdhEy3jZPG5Toe/pGzKtDgIiBGywjaoEuQWnGVjBYPlSAEUtAhpZ2At7V0SCb26yluAuzrAUV0Ue+LQeEtHwFQ=="],
 

@@ -28,10 +28,39 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Contacts } from "@capacitor-community/contacts";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Capacitor } from "@capacitor/core";
 
 export default function CustomerDialog() {
   const [open, setOpen] = useState(false);
+  const [contacts, setContacts] = useState<any[]>([]);
 
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+    const printContactsData = async () => {
+      try {
+        const result = await Contacts.getContacts({
+          projection: {
+            // Specify which fields should be retrieved.
+            name: true,
+            phones: true,
+            postalAddresses: true,
+          },
+        });
+        setContacts(result.contacts);
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+      }
+    };
+    printContactsData();
+  }, []);
   useEffect(() => {
     if (open === false) {
       setFormData({
@@ -81,74 +110,6 @@ export default function CustomerDialog() {
       address: "",
     });
     setAvatarUrl("");
-  };
-
-  const pickContact = async () => {
-    // Check if the Contact Picker API is available
-    if ("contacts" in navigator && "ContactsManager" in window) {
-      try {
-        // Define properties to select from contacts
-        const props = ["name", "email", "tel", "address"];
-        const opts = { multiple: false };
-
-        // Open contact picker
-        const contacts = await (navigator.contacts as any).select(props, opts);
-
-        if (contacts.length > 0) {
-          const contact = contacts[0];
-
-          // Extract name parts (if available)
-          if (contact.name && contact.name.length > 0) {
-            const fullName = contact.name[0];
-            const nameParts = fullName.split(" ");
-
-            if (nameParts.length >= 2) {
-              setFormData((prev) => ({
-                ...prev,
-                firstName: nameParts[0] || "",
-                lastName: nameParts.slice(1).join(" ") || "",
-              }));
-            } else if (nameParts.length === 1) {
-              setFormData((prev) => ({
-                ...prev,
-                firstName: nameParts[0] || "",
-              }));
-            }
-          }
-
-          // Extract email (if available)
-          if (contact.email && contact.email.length > 0) {
-            setFormData((prev) => ({
-              ...prev,
-              email: contact.email[0] || "",
-            }));
-          }
-
-          // Extract phone (if available)
-          if (contact.tel && contact.tel.length > 0) {
-            setFormData((prev) => ({
-              ...prev,
-              phone: contact.tel[0] || "",
-            }));
-          }
-
-          // Extract address (if available)
-          if (contact.address && contact.address.length > 0) {
-            setFormData((prev) => ({
-              ...prev,
-              address: contact.address[0] || "",
-            }));
-          }
-        }
-      } catch (error) {
-        console.error("Error picking contact:", error);
-        alert(
-          "Failed to access contacts. Please ensure you've granted permission."
-        );
-      }
-    } else {
-      alert("Contact Picker API is not supported in this browser.");
-    }
   };
 
   const getInitials = () => {
@@ -211,15 +172,18 @@ export default function CustomerDialog() {
 
               {/* Import Contact Button */}
               <div className="flex justify-center">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={pickContact}
-                  className="flex items-center gap-2"
-                >
-                  <ContactsIcon className="w-4 h-4" />
-                  Import from Contacts
-                </Button>
+                <Select>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Contact" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {contacts.map((contact) => (
+                      <SelectItem key={contact.id} value={contact.id}>
+                        {contact.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               {/* Name Fields */}

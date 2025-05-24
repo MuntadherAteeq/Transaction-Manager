@@ -87,7 +87,14 @@ export default function VehiclesTable() {
     <div className=" flex flex-col w-full h-full">
       {isMobile ? (
         <>
-          <CustomerDialog />
+          <CustomerDialog>
+            <Button
+              size="lg"
+              className="fixed bottom-4 right-4 size-10 rounded-full"
+            >
+              <Plus className="size-7" />
+            </Button>
+          </CustomerDialog>
         </>
       ) : (
         <AgGridReact
